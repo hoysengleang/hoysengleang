@@ -72,7 +72,7 @@ export default function Experience({ params }: ExperiencePageProps) {
           >
             <Image
               src={hoysengleang}
-              alt={"naman"}
+              alt={"hoysengleang"}
               width={42}
               height={42}
               className="rounded-full bg-background"

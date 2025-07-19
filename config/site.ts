@@ -9,11 +9,11 @@ export const siteConfig = {
     twitter: "https://x.com/hoysengleang",
     github: "https://github.com/hoysengleang",
   },
-  ogImage: "https://nbarkiya.xyz/naman-img.jpg",
+  ogImage: "https://nbarkiya.xyz/hoysengleang-img.jpg",
   iconIco:
-    "https://res.cloudinary.com/dbfvcn3f6/image/upload/v1692357384/assets/naman-favicon.ico",
+    "https://res.cloudinary.com/dbfvcn3f6/image/upload/v1692357384/assets/hoysengleang-favicon.ico",
   logoIcon:
-    "https://res.cloudinary.com/dbfvcn3f6/image/upload/v1692357294/assets/naman-logo.png",
+    "https://res.cloudinary.com/dbfvcn3f6/image/upload/v1692357294/assets/hoysengleang-logo.png",
   keywords: [
     "Hoysengleang",
     "Full Stack Developer",
