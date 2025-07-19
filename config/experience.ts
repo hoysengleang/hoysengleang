@@ -173,7 +173,7 @@ export const Experiences: ExperienceInterface[] = [
     category: ["Mobile Dev", "Full Stack", "UI/UX"],
     shortDescription:
       "Developed a feature-rich mobile shopping application with admin panel, user authentication, and seamless product management using React Native and Firebase.",
-    githubLink: "https://github.com/namanbarkiya/apex-shopping-app",
+    githubLink: "https://github.com/hoysengleang/apex-shopping-app",
     techStack: ["React Native", "Javascript", "Redux", "Node.js", "express.js"],
     startDate: new Date("2021-07-14"),
     endDate: new Date("2022-07-01"),
@@ -295,8 +295,8 @@ export const Experiences: ExperienceInterface[] = [
     category: ["Web Dev", "Frontend", "3D Modeling"],
     shortDescription:
       "Forged an immersive 3D Portfolio Card utilizing the prowess of Three.js and Blender, where art and technology converge in an interactive masterpiece.",
-    websiteLink: "https://card.namanbarkiya.xyz/",
-    githubLink: "https://github.com/namanbarkiya/3d-portfolio-card",
+    websiteLink: "https://card.hoysengleang.xyz/",
+    githubLink: "https://github.com/hoysengleang/3d-portfolio-card",
     techStack: ["React", "Javascript", "HTML 5", "CSS 3"],
     startDate: new Date("2022-03-01"),
     endDate: new Date("2022-07-01"),
@@ -349,7 +349,7 @@ export const Experiences: ExperienceInterface[] = [
     category: ["Web Dev", "Frontend", "UI/UX"],
     shortDescription:
       "Created a dashboard project using React and Tailwind CSS, focusing on UI design and routing implementation.",
-    websiteLink: "https://cirql-ui.namanbarkiya.xyz/",
+    websiteLink: "https://cirql-ui.hoysengleang.xyz/",
     techStack: ["React", "Tailwind CSS", "Google Auth"],
     startDate: new Date("2023-01-01"),
     endDate: new Date("2023-02-15"),
@@ -392,8 +392,8 @@ export const Experiences: ExperienceInterface[] = [
     category: ["Web Dev", "UI/UX"],
     shortDescription:
       "Developed a user-friendly website for Inscript Hindi typing, addressing the need for a simple tool for Hindi writers to convey data digitally.",
-    websiteLink: "https://hindityping.namanbarkiya.xyz",
-    githubLink: "https://github.com/namanbarkiya/inscript-hindi-keyboard",
+    websiteLink: "https://hindityping.hoysengleang.xyz",
+    githubLink: "https://github.com/hoysengleang/inscript-hindi-keyboard",
     techStack: ["HTML 5", "CSS 3", "Javascript"],
     startDate: new Date("2022-05-01"),
     endDate: new Date("2022-06-15"),

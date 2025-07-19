@@ -1,13 +1,13 @@
 export const siteConfig = {
   name: "Hoysengleang | Developer Portfolio",
   authorName: "Hoysengleang",
-  username: "namanbarkiya",
+  username: "hoysengleang",
   description:
     "Hoysengleang's portfolio - A modern, responsive Next.js portfolio for developers. This open-source template can be customized to showcase your own skills, projects, and professional experience.",
   url: "https://nbarkiya.xyz",
   links: {
-    twitter: "https://x.com/namanbarkiya",
-    github: "https://github.com/namanbarkiya",
+    twitter: "https://x.com/hoysengleang",
+    github: "https://github.com/hoysengleang",
   },
   ogImage: "https://nbarkiya.xyz/naman-img.jpg",
   iconIco:
