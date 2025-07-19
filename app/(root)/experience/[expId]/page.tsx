@@ -10,7 +10,7 @@ import CustomTooltip from "@/components/ui/custom-tooltip";
 import { Experiences } from "@/config/experience";
 import { siteConfig } from "@/config/site";
 import { cn, formatDateFromObj } from "@/lib/utils";
-import namanImg from "@/public/naman-img.jpg";
+import hoysengleang from "@/public/hoysengleang-bg-black.jpg";
 
 interface ExperiencePageProps {
   params: {
@@ -18,7 +18,7 @@ interface ExperiencePageProps {
   };
 }
 
-const githubUsername = "namanbarkiya";
+const githubUsername = "hoysengleang";
 
 export default function Experience({ params }: ExperiencePageProps) {
   let exp = Experiences.find((val) => val.id === params.expId);
@@ -71,7 +71,7 @@ export default function Experience({ params }: ExperiencePageProps) {
             className="flex items-center space-x-2 text-sm"
           >
             <Image
-              src={namanImg}
+              src={hoysengleang}
               alt={"naman"}
               width={42}
               height={42}
@@ -81,7 +81,7 @@ export default function Experience({ params }: ExperiencePageProps) {
             <div className="flex-1 text-left leading-tight">
               <p className="font-medium">{"Hoysengleang"}</p>
               <p className="text-[12px] text-muted-foreground">
-                @{siteConfig.username}
+                @{githubUsername}
               </p>
             </div>
           </Link>
