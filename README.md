@@ -50,17 +50,7 @@ I'm a passionate and curious developer who loves building robust, scalable, and 
 ![Postman](https://img.shields.io/badge/-Postman-FF6C37?style=flat-square&logo=postman&logoColor=white)
 ![Docker](https://img.shields.io/badge/-Docker-2496ED?style=flat-square&logo=docker&logoColor=white)
 
----
 
-## 📈 GitHub Stats
-
-<p align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=hoysengleang&show_icons=true&theme=radical&count_private=true&hide_border=true" alt="stats" />
-  <br />
-  <img src="https://github-readme-streak-stats.herokuapp.com?user=hoysengleang&theme=radical&hide_border=true" alt="streak" />
-</p>
-
----
 
 ## 📬 Connect With Me
 
