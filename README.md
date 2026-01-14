@@ -10,7 +10,7 @@
 
 I'm a passionate and curious developer who loves building robust, scalable, and user-friendly applications. I specialize in both **frontend** and **backend** development and have experience working across various frameworks and technologies.
 
-- 🔭 Currently building **real-world web apps** with `Next.js`, `Laravel`, and `Django`
+- 🔭 Currently building **real-world web apps** with `Next.js`, `Laravel`
 - 🌱 Deep-diving into **DevOps**, **Docker**, and **CI/CD pipelines**
 - 🛠 Open to collaborating on exciting full-stack projects
 - 💡 I enjoy solving performance and architecture challenges
@@ -25,14 +25,12 @@ I'm a passionate and curious developer who loves building robust, scalable, and 
 ![JavaScript](https://img.shields.io/badge/-JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black)
 ![TypeScript](https://img.shields.io/badge/-TypeScript-007ACC?style=flat-square&logo=typescript&logoColor=white)
 ![PHP](https://img.shields.io/badge/-PHP-777BB4?style=flat-square&logo=php&logoColor=white)
-![Python](https://img.shields.io/badge/-Python-3776AB?style=flat-square&logo=python&logoColor=white)
 
 ### ⚙️ Frameworks & Libraries
 
 ![Next.js](https://img.shields.io/badge/-Next.js-000000?style=flat-square&logo=next.js)
 ![React](https://img.shields.io/badge/-React-61DAFB?style=flat-square&logo=react&logoColor=black)
 ![Laravel](https://img.shields.io/badge/-Laravel-FF2D20?style=flat-square&logo=laravel&logoColor=white)
-![Django](https://img.shields.io/badge/-Django-092E20?style=flat-square&logo=django&logoColor=white)
 ![TailwindCSS](https://img.shields.io/badge/-TailwindCSS-38B2AC?style=flat-square&logo=tailwind-css)
 
 ### 🛢 Databases
