@@ -115,7 +115,7 @@ export default function Experience({ params }: ExperiencePageProps) {
         />
       </div>
 
-      <div className="mb-7 ">
+      {/* <div className="mb-7 ">
         <h2 className="inline-block font-heading text-3xl leading-tight lg:text-3xl mb-5">
           Page Info
         </h2>
@@ -140,7 +140,7 @@ export default function Experience({ params }: ExperiencePageProps) {
             </div>
           </div>
         ))}
-      </div>
+      </div> */}
 
       <hr className="mt-12" />
       <div className="flex justify-center py-6 lg:py-10">

@@ -31,6 +31,12 @@ import {
   User,
   X,
   Zap,
+  Database,
+  Server,
+  Code,
+  Layout,
+  Globe,
+  Languages,
 } from "lucide-react";
 import { AiFillStar } from "react-icons/ai";
 import { BiLaugh, BiSolidUser } from "react-icons/bi";
@@ -65,6 +71,13 @@ import {
   SiTailwindcss,
   SiTwitter,
   SiTypescript,
+  SiLaravel,
+  SiPhp,
+  SiCsharp,
+  SiDotnet,
+  SiPostman,
+  SiLinux,
+  SiNginx,
 } from "react-icons/si";
 
 export const Icons = {
@@ -121,6 +134,19 @@ export const Icons = {
   socketio: SiSocketdotio,
   tailwindcss: SiTailwindcss,
   typescript: SiTypescript,
+  laravel: SiLaravel,
+  php: SiPhp,
+  csharp: SiCsharp,
+  dotnet: SiDotnet,
+  postman: SiPostman,
+  linux: SiLinux,
+  nginx: SiNginx,
+  database: Database,
+  server: Server,
+  code: Code,
+  layout: Layout,
+  globe: Globe,
+  languages: Languages,
   gmail: SiGmail,
   twitter: SiTwitter,
   linkedin: SiLinkedin,

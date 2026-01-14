@@ -1,19 +1,17 @@
 export const siteConfig = {
-  name: "Hoysengleang | Developer Portfolio",
-  authorName: "Hoysengleang",
+  name: "HOUY SENGLEANG | Full Stack Developer",
+  authorName: "HOUY SENGLEANG",
   username: "hoysengleang",
   description:
-    "Hoysengleang's portfolio - A modern, responsive Next.js portfolio for developers. This open-source template can be customized to showcase your own skills, projects, and professional experience.",
-  url: "https://nbarkiya.xyz",
+    "Results-oriented Developer with expertise in API architecture and Scalable Web Solutions. I am an ambitious team player known for my resilience and creative approach to problem-solving. committed to building efficient software that drives business growth.",
+  url: "https://hoysengleang.vercel.app",
   links: {
-    twitter: "https://x.com/hoysengleang",
+    twitter: "https://t.me/hoysengleang", // Using telegram as twitter link for now since resume lists telegram
     github: "https://github.com/hoysengleang",
   },
-  ogImage: "https://nbarkiya.xyz/hoysengleang-img.jpg",
-  iconIco:
-    "https://res.cloudinary.com/dbfvcn3f6/image/upload/v1692357384/assets/hoysengleang-favicon.ico",
-  logoIcon:
-    "https://res.cloudinary.com/dbfvcn3f6/image/upload/v1692357294/assets/hoysengleang-logo.png",
+  ogImage: "https://hoysengleang.vercel.app/og.png", // Placeholder
+  iconIco: "/favicon.ico",
+  logoIcon: "/logo.png",
   keywords: [
     "Hoysengleang",
     "Full Stack Developer",

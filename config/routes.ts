@@ -13,10 +13,6 @@ export const routesConfig: any = {
       href: "/career",
     },
     {
-      title: "Contributions",
-      href: "/contributions",
-    },
-    {
       title: "Contact",
       href: "/contact",
     },
