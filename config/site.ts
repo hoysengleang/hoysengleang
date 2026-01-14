@@ -10,7 +10,7 @@ export const siteConfig = {
     github: "https://github.com/hoysengleang",
   },
   ogImage: "https://hoysengleang.vercel.app/og.png", // Placeholder
-  iconIco: "/favicon.ico",
+  iconIco: "/logo.png",
   logoIcon: "/logo.png",
   keywords: [
     "Hoysengleang",
