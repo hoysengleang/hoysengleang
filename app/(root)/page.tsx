@@ -205,7 +205,7 @@ export default function IndexPage() {
             Education
           </AnimatedText>
         </div>
-        <Timeline experiences={education} />
+        <Timeline experiences={education} baseUrl="/education" />
       </AnimatedSection>
 
       <AnimatedSection

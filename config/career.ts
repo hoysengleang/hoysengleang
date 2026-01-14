@@ -48,9 +48,15 @@ export const education: CareerExperienceInterface[] = [
     location: "Phnom Penh",
     startDate: new Date("2023-01-01"),
     endDate: new Date("2025-01-01"),
-    description: [],
-    achievements: [],
-    skills: [],
+    description: [
+      "Specialized in Software Engineering, focusing on full-stack development, database management, and system architecture.",
+      "Completed intensive coursework in Algorithms, Data Structures, Web Development, and Mobile Application Development.",
+      "Collaborated with peers on various group projects, leading technical implementation and code reviews.",
+    ],
+    achievements: [
+      "Successfully developed and deployed a student management system prototype as a semester project.",
+    ],
+    skills: ["OOP", "Database Design", "MVC Architecture"],
     logo: "/beltei.png",
   },
 ];

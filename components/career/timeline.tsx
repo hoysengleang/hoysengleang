@@ -14,6 +14,7 @@ interface TimelineItemProps {
   isLast: boolean;
   expandedId: string | null;
   toggleExpand: (id: string) => void;
+  baseUrl: string;
 }
 
 // Helper function to extract year from date
@@ -26,6 +27,7 @@ const TimelineItem: React.FC<TimelineItemProps> = ({
   isLast,
   expandedId,
   toggleExpand,
+  baseUrl,
 }) => {
   const isExpanded = expandedId === experience.id;
 
@@ -110,8 +112,8 @@ const TimelineItem: React.FC<TimelineItemProps> = ({
                   {typeof experience.endDate === "string"
                     ? getYearFromDate(experience.startDate) + " - Now"
                     : getYearFromDate(experience.startDate) +
-                      " - " +
-                      getYearFromDate(experience.endDate)}
+                    " - " +
+                    getYearFromDate(experience.endDate)}
                 </div>
                 <motion.div
                   animate={{ rotate: isExpanded ? 180 : 0 }}
@@ -167,7 +169,7 @@ const TimelineItem: React.FC<TimelineItemProps> = ({
                   </div>
 
                   <Link
-                    href={`/career/${experience.id}`}
+                    href={`${baseUrl}/${experience.id}`}
                     className="inline-flex items-center mt-1 sm:mt-2 text-xs sm:text-sm font-medium text-primary hover:underline"
                     onClick={(e) => e.stopPropagation()}
                   >
@@ -186,9 +188,10 @@ const TimelineItem: React.FC<TimelineItemProps> = ({
 
 interface TimelineProps {
   experiences: CareerExperienceInterface[];
+  baseUrl?: string;
 }
 
-const Timeline: React.FC<TimelineProps> = ({ experiences }) => {
+const Timeline: React.FC<TimelineProps> = ({ experiences, baseUrl = "/career" }) => {
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
   // Sort experiences by date (most recent first)
@@ -218,6 +221,7 @@ const Timeline: React.FC<TimelineProps> = ({ experiences }) => {
           isLast={index === sortedExperiences.length - 1}
           expandedId={expandedId}
           toggleExpand={toggleExpand}
+          baseUrl={baseUrl}
         />
       ))}
     </div>
