@@ -14,7 +14,7 @@ export default function ContactUnified() {
                     <div className="space-y-2">
                         <h3 className="font-heading text-3xl md:text-4xl">Get in Touch</h3>
                         <p className="text-muted-foreground text-lg">
-                            Have a project in mind or just want to chat? I'm just a click away.
+                            Have a project in mind or just want to chat? I&apos;m just a click away.
                         </p>
                     </div>
 
