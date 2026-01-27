@@ -173,7 +173,7 @@ export default function IndexPage() {
             as="h2"
             className="font-heading text-3xl leading-[1.1] sm:text-3xl md:text-6xl"
           >
-            Experience
+            Career Timeline
           </AnimatedText>
           <AnimatedText
             as="p"
