@@ -8,7 +8,7 @@
 
 ## 🧑‍💻 About Me
 
-I'm a mid-level full-stack developer focused on building high-performance APIs and scalable web architectures. I specialize in backend systems using **.NET** and **PHP (Laravel)**, paired with modern frontend frameworks.
+I'm a full-stack developer focused on building high-performance APIs and scalable web architectures. I specialize in backend systems using **.NET** and **PHP (Laravel)**, paired with modern frontend frameworks.
 
 - 🔭 Currently building **Mimic**, an open-source mock API tool using `.NET WebAPI` and `Vue.js`
 - 🌱 Deep-diving into **DevOps**, **Nginx configuration**, and **Docker** orchestration
