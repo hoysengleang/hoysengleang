@@ -1,7 +1,4 @@
 <h1 align="center">Hi there, I'm Houy Sengleang 👋</h1>
-<p align="center">
-  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=600&size=25&pause=1000&color=4A90E2&center=true&vCenter=true&width=435&lines=Full-Stack+Web+Developer;Python+%26+Laravel+Expert;AI+%26+Machine+Learning+Enthusiast;Vue.js+Developer+%F0%9F%9A%80" alt="Typing SVG" />
-</p>
 
 ---
 
