@@ -27,16 +27,10 @@ export const skillsUnsorted: skillsInterface[] = [
     icon: Icons.javascript,
   },
   {
-    name: "C#",
-    description: "Modern, object-oriented language.",
+    name: "Python",
+    description: "Interpreted, high-level programming language.",
     rating: 4,
-    icon: Icons.csharp,
-  },
-  {
-    name: ".NET",
-    description: "Framework for building various applications.",
-    rating: 4,
-    icon: Icons.dotnet,
+    icon: Icons.python,
   },
   {
     name: "MySQL",

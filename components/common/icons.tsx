@@ -78,6 +78,7 @@ import {
   SiPostman,
   SiLinux,
   SiNginx,
+  SiPython,
 } from "react-icons/si";
 
 export const Icons = {
@@ -122,6 +123,7 @@ export const Icons = {
   graphql: SiGraphql,
   html5: SiHtml5,
   javascript: SiJavascript,
+  python: SiPython,
   mongodb: SiMongodb,
   mui: SiMui,
   mysql: SiMysql,
