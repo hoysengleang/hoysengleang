@@ -71,4 +71,12 @@ export const pagesConfig: PagesConfig = {
       description: "Hoysengleang's professional journey and career timeline.",
     },
   },
+  blog: {
+    title: "Blog & Articles",
+    description: "Technical articles, tutorials, and insights about web development, databases, and software engineering.",
+    metadata: {
+      title: "Blog & Articles",
+      description: "In-depth technical articles, tutorials, and insights from Hoysengleang's development journey.",
+    },
+  },
 };
