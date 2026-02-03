@@ -54,7 +54,7 @@ export const skillsUnsorted: skillsInterface[] = [
     name: "Git/GitHub",
     description: "Version control and collaboration.",
     rating: 5,
-    icon: Icons.gitHub,
+    icon: Icons.gitRepoIcon,
   },
   {
     name: "Postman",

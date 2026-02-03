@@ -54,6 +54,7 @@ import {
   SiCss3,
   SiExpress,
   SiGmail,
+  SiGithub,
   SiGraphql,
   SiHtml5,
   SiJavascript,
@@ -83,7 +84,7 @@ import {
 
 export const Icons = {
   contact: Phone,
-  gitRepoIcon: BookMarked,
+  gitRepoIcon: SiGithub,
   gitOrgBuilding: Building,
   gitBranch: IoIosGitBranch,
   close: X,

@@ -15,35 +15,36 @@ export interface CareerExperienceInterface {
 }
 
 export const careerExperiences: CareerExperienceInterface[] = [
-  {
-    id: "east-group",
-    position: "R&D Software Engineer",
-    company: "East Group",
-    location: "Phnom Penh",
-    startDate: new Date("2025-01-01"),
-    endDate: "Present",
-    description: [
-      "Leading research and development initiatives to innovate and optimize internal business processes through advanced software solutions.",
-      "Developing high-performance, scalable applications by applying modern software engineering principles and best practices.",
-      "Collaborating with cross-functional teams to design and implement robust system architectures for enterprise-grade applications.",
-      "Exploring and integrating emerging technologies to enhance system efficiency and user experience across platforms.",
-    ],
-    achievements: [
-      "System Innovation: Spearheaded the research and implementation of new technologies, significantly improving operational workflows.",
-      "Performance Optimization: Enhanced application performance and stability through rigorous code reviews and architectural improvements.",
-      "Technical Leadership: Mentored junior developers and established best practices for secure and maintainable codebases.",
-    ],
-    skills: ["System Optimization", "Database Design", "RESTful APIs", "OOP", "MVC Architecture"],
-    companyUrl: "#", // Placeholder URL
-    logo: "/east-group.png", // Use logo if available
-  },
+  // {
+  //   id: "east-group",
+  //   position: "R&D Software Engineer",
+  //   company: "East Group",
+  //   location: "Phnom Penh",
+  //   startDate: new Date("2025-01-01"),
+  //   endDate: "Present",
+  //   description: [
+  //     "Leading research and development initiatives to innovate and optimize internal business processes through advanced software solutions.",
+  //     "Developing high-performance, scalable applications by applying modern software engineering principles and best practices.",
+  //     "Collaborating with cross-functional teams to design and implement robust system architectures for enterprise-grade applications.",
+  //     "Exploring and integrating emerging technologies to enhance system efficiency and user experience across platforms.",
+  //   ],
+  //   achievements: [
+  //     "System Innovation: Spearheaded the research and implementation of new technologies, significantly improving operational workflows.",
+  //     "Performance Optimization: Enhanced application performance and stability through rigorous code reviews and architectural improvements.",
+  //     "Technical Leadership: Mentored junior developers and established best practices for secure and maintainable codebases.",
+  //   ],
+  //   skills: ["System Optimization", "Database Design", "RESTful APIs", "OOP", "MVC Architecture"],
+  //   companyUrl: "#", // Placeholder URL
+  //   logo: "/east-group.png", // Use logo if available
+  // },
   {
     id: "wintech",
     position: "Software Developer",
     company: "Wintech Software Development",
     location: "Phnom Penh",
     startDate: new Date("2023-01-01"), 
-    endDate: new Date("2025-01-01"),
+    // endDate: new Date("2025-01-01"),
+    endDate: "Present",
     description: [
       "Architected and developed a robust Loan and Pawn Management System using Laravel as the core framework.",
       "Designed and implemented secure, scalable RESTful APIs to handle complex financial transactions, pawn collateral tracking, and interest calculation schedules.",
