@@ -10,10 +10,10 @@ interface MarketingLayoutProps {
 export default function MarketingLayout({ children }: MarketingLayoutProps) {
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="container z-50 bg-background print:hidden">
-        <div className="flex h-20 items-center justify-between py-6">
+      <header className="container z-50 bg-background print:hidden px-4 sm:px-6 md:px-8">
+        <div className="flex h-16 sm:h-20 items-center justify-between py-4 sm:py-6">
           <MainNav items={routesConfig.mainNav} />
-          <nav className="flex items-center gap-5">
+          <nav className="flex items-center gap-3 sm:gap-5">
             {/* <Link
                             href={"https://github.com/hoysengleang"}
                             target="_blank"
@@ -31,7 +31,7 @@ export default function MarketingLayout({ children }: MarketingLayoutProps) {
           </nav>
         </div>
       </header>
-      <main className="container flex-1 print:!p-0 print:!m-0 print:!max-w-full">{children}</main>
+      <main className="container flex-1 print:!p-0 print:!m-0 print:!max-w-full px-0 sm:px-6 md:px-8">{children}</main>
       <SiteFooter />
     </div>
   );
