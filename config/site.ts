@@ -1,15 +1,15 @@
 export const siteConfig = {
-  name: "HOUY SENGLEANG | Full Stack Developer",
+  name: "HOUY SENGLEANG | Backend Developer",
   authorName: "HOUY SENGLEANG",
   username: "hoysengleang",
   description:
-    "Results-oriented Developer with expertise in API architecture and Scalable Web Solutions. I am an ambitious team player known for my resilience and creative approach to problem-solving. committed to building efficient software that drives business growth.",
+    "Detail-oriented Backend Developer with over 3 years of experience in Fintech systems and API architecture. Currently serving as an R&D Officer specializing in technical research, environment standardization using Docker, and performance benchmarking. Proven track record in architecting secure, 100% accurate financial systems—including Core Banking and Pawn Management—with a focus on high-volume transaction reliability and scalable system design.",
   url: "https://hoysengleang.vercel.app",
   links: {
     twitter: "https://t.me/hoysengleang", // Using telegram as twitter link for now since resume lists telegram
     github: "https://github.com/hoysengleang",
   },
-  ogImage: "https://hoysengleang.vercel.app/og.png", // Placeholder
+  ogImage: "https://hoysengleang.vercel.app/og-image",
   iconIco: "/logo.png",
   logoIcon: "/logo.png",
   keywords: [

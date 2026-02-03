@@ -91,4 +91,5 @@ export type ValidPages =
   | "career"
   | "contact"
   | "contributions"
-  | "resume";
+  | "resume"
+  | "blog";

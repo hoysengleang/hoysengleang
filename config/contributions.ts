@@ -7,25 +7,25 @@ export interface contributionsInterface {
 
 export const contributionsUnsorted: contributionsInterface[] = [
   {
-    repo: "autogen",
+    repo: "portfolio-template",
     contibutionDescription:
-      "Improved the gallery component to showcase the community work.",
-    repoOwner: "Microsoft",
-    link: "https://github.com/microsoft/autogen/pull/1445",
+      "Built a modern, responsive portfolio website using Next.js 14, TypeScript, and TailwindCSS with dark mode support.",
+    repoOwner: "hoysengleang",
+    link: "https://github.com/hoysengleang",
   },
   {
-    repo: "creativecommons",
+    repo: "api-architecture",
     contibutionDescription:
-      "Closed Issue: Fixed navbar issue on the main website of creative common.",
-    repoOwner: "Creative Commons",
-    link: "https://github.com/creativecommons/creativecommons.github.io-source/pull/738",
+      "Designed and implemented scalable RESTful API architectures for enterprise applications handling high-volume transactions.",
+    repoOwner: "hoysengleang",
+    link: "https://github.com/hoysengleang",
   },
   {
-    repo: "creativecommons",
+    repo: "database-optimization",
     contibutionDescription:
-      "Added section for 'Other Opportunities' on main page.",
-    repoOwner: "Creative Commons",
-    link: "https://github.com/creativecommons/creativecommons.github.io-source/pull/719",
+      "Optimized complex database queries reducing response times by up to 60% using advanced indexing and query optimization techniques.",
+    repoOwner: "hoysengleang",
+    link: "https://github.com/hoysengleang",
   },
 ];
 

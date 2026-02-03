@@ -479,3 +479,30 @@
     stroke-dashoffset: 0;
   }
 }
+
+/* Blog Article Content Styles */
+.article-content {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-size: 1.125rem;
+  line-height: 1.8;
+  color: hsl(var(--muted-foreground));
+}
+
+.article-content strong {
+  color: hsl(var(--foreground));
+}
+
+.article-content h1,
+.article-content h2,
+.article-content h3 {
+  scroll-margin-top: 2rem;
+}
+
+.article-content code {
+  font-size: 0.9em;
+}
+
+.article-content pre {
+  font-size: 0.875rem;
+  line-height: 1.7;
+}

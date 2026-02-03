@@ -29,8 +29,50 @@ export const skillsUnsorted: skillsInterface[] = [
   {
     name: "Python",
     description: "Interpreted, high-level programming language.",
+    rating: 5,
+    icon: Icons.python,
+  },
+  {
+    name: "TypeScript",
+    description: "Typed superset of JavaScript.",
+    rating: 4,
+    icon: Icons.typescript,
+  },
+  {
+    name: "Django",
+    description: "High-level Python web framework.",
     rating: 4,
     icon: Icons.python,
+  },
+  {
+    name: "FastAPI",
+    description: "Modern Python web framework for APIs.",
+    rating: 4,
+    icon: Icons.python,
+  },
+  {
+    name: "Vue.js",
+    description: "Progressive JavaScript framework.",
+    rating: 4,
+    icon: Icons.code,
+  },
+  {
+    name: "TailwindCSS",
+    description: "Utility-first CSS framework.",
+    rating: 5,
+    icon: Icons.tailwindcss,
+  },
+  {
+    name: "Docker",
+    description: "Containerization platform.",
+    rating: 3,
+    icon: Icons.server,
+  },
+  {
+    name: "AI & Machine Learning",
+    description: "TensorFlow, Pandas, NumPy, scikit-learn.",
+    rating: 3,
+    icon: Icons.code,
   },
   {
     name: "MySQL",

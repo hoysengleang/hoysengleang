@@ -6,6 +6,7 @@ import Script from "next/script";
 import { AnimatedSection } from "@/components/common/animated-section";
 import { AnimatedText } from "@/components/common/animated-text";
 import { ClientPageWrapper } from "@/components/common/client-page-wrapper";
+import CurrentlyLearning from "@/components/common/currently-learning";
 import { Icons } from "@/components/common/icons";
 import ContributionCard from "@/components/contributions/contribution-card";
 import ProjectCard from "@/components/experience/project-card";
@@ -37,7 +38,7 @@ export default function IndexPage() {
     name: siteConfig.authorName,
     url: siteConfig.url,
     image: siteConfig.ogImage,
-    jobTitle: "Full Stack Developer",
+    jobTitle: "Backend Developer",
     sameAs: [siteConfig.links.github, siteConfig.links.twitter],
   };
 
@@ -96,7 +97,7 @@ export default function IndexPage() {
             delay={0.4}
             className="font-heading text-base sm:text-xl md:text-xl lg:text-2xl"
           >
-            Full Stack Developer
+            Backend Developer
           </AnimatedText>
           <div className="mt-4 max-w-[42rem] text-center">
             <p className="leading-normal text-muted-foreground text-sm sm:text-base">
@@ -163,6 +164,10 @@ export default function IndexPage() {
             </Button>
           </Link>
         </AnimatedText>
+      </AnimatedSection>
+
+      <AnimatedSection className="py-10 my-14">
+        <CurrentlyLearning />
       </AnimatedSection>
       <AnimatedSection
         className="container space-y-6 bg-muted py-10 my-14"

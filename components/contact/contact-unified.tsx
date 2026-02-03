@@ -11,10 +11,17 @@ export default function ContactUnified() {
             <div className="grid grid-cols-1 md:grid-cols-2">
                 {/* Left Side: Actions */}
                 <div className="p-8 md:p-12 flex flex-col justify-center space-y-8 bg-gradient-to-br from-primary/10 via-primary/5 to-background">
-                    <div className="space-y-2">
+                    <div className="space-y-3">
+                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20">
+                            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                            <span className="text-sm font-medium text-green-700 dark:text-green-400">Available for Opportunities</span>
+                        </div>
                         <h3 className="font-heading text-3xl md:text-4xl">Get in Touch</h3>
                         <p className="text-muted-foreground text-lg">
                             Have a project in mind or just want to chat? I&apos;m just a click away.
+                        </p>
+                        <p className="text-sm text-muted-foreground">
+                            Expected response time: <span className="font-semibold text-foreground">24-48 hours</span>
                         </p>
                     </div>
 
@@ -31,6 +38,39 @@ export default function ContactUnified() {
                                 Send Email
                             </Button>
                         </Link>
+                        <Link href="/resume" className="w-full">
+                            <Button variant="secondary" className="w-full h-14 text-lg font-medium shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1 border-2">
+                                <Icons.page className="w-6 h-6 mr-3" />
+                                Download Resume
+                            </Button>
+                        </Link>
+                    </div>
+
+                    {/* Social Links */}
+                    <div className="pt-4 border-t border-border/50">
+                        <p className="text-sm text-muted-foreground mb-3">Connect with me:</p>
+                        <div className="flex gap-3">
+                            <Link href="https://github.com/hoysengleang" target="_blank">
+                                <Button size="icon" variant="ghost" className="h-12 w-12 rounded-full hover:bg-primary/10">
+                                    <Icons.gitHub className="w-6 h-6" />
+                                </Button>
+                            </Link>
+                            <Link href="https://linkedin.com/in/hoysengleang" target="_blank">
+                                <Button size="icon" variant="ghost" className="h-12 w-12 rounded-full hover:bg-primary/10">
+                                    <Icons.linkedin className="w-6 h-6" />
+                                </Button>
+                            </Link>
+                            <Link href="https://t.me/hoysengleang" target="_blank">
+                                <Button size="icon" variant="ghost" className="h-12 w-12 rounded-full hover:bg-primary/10">
+                                    <Icons.contact className="w-6 h-6" />
+                                </Button>
+                            </Link>
+                            <Link href="mailto:hoysengleang617@gmail.com">
+                                <Button size="icon" variant="ghost" className="h-12 w-12 rounded-full hover:bg-primary/10">
+                                    <Icons.gmail className="w-6 h-6" />
+                                </Button>
+                            </Link>
+                        </div>
                     </div>
                 </div>
 

@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 
 export function SiteFooter({ className }: React.HTMLAttributes<HTMLElement>) {
   return (
-    <footer className={cn(className)}>
+    <footer className={cn(className, "print:hidden")}>
       <div className="container flex items-center justify-center gap-8 mt-10 py-10 md:h-24">
         {SocialLinks.map((item, ind) => (
           <CustomTooltip icon={item.icon} text={item.username} key={ind}>
