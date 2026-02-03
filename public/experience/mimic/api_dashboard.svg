@@ -1,0 +1,89 @@
+<svg width="1200" height="675" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f172a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1e293b;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1200" height="675" fill="url(#bg)"/>
+  
+  <!-- Header Bar -->
+  <rect x="0" y="0" width="1200" height="60" fill="#1e293b" opacity="0.8"/>
+  <text x="30" y="38" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#f8fafc">
+    Mimic Mock API - Backend Dashboard
+  </text>
+  <circle cx="1140" cy="30" r="8" fill="#10b981"/>
+  <text x="1070" y="38" font-family="Arial, sans-serif" font-size="14" fill="#94a3b8">Running</text>
+  
+  <!-- Sidebar -->
+  <rect x="0" y="60" width="250" height="615" fill="#1e293b" opacity="0.5"/>
+  <text x="30" y="100" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#94a3b8">ENDPOINTS</text>
+  
+  <!-- Endpoint Items -->
+  <rect x="20" y="120" width="210" height="40" fill="#3b82f6" rx="6" opacity="0.2"/>
+  <text x="40" y="145" font-family="Arial, sans-serif" font-size="14" fill="#60a5fa">GET /api/users</text>
+  
+  <rect x="20" y="170" width="210" height="40" fill="#8b5cf6" rx="6" opacity="0.15"/>
+  <text x="40" y="195" font-family="Arial, sans-serif" font-size="14" fill="#a78bfa">POST /api/users</text>
+  
+  <rect x="20" y="220" width="210" height="40" fill="#f59e0b" rx="6" opacity="0.15"/>
+  <text x="40" y="245" font-family="Arial, sans-serif" font-size="14" fill="#fbbf24">PUT /api/users/:id</text>
+  
+  <rect x="20" y="270" width="210" height="40" fill="#ef4444" rx="6" opacity="0.15"/>
+  <text x="40" y="295" font-family="Arial, sans-serif" font-size="14" fill="#f87171">DELETE /api/users/:id</text>
+  
+  <!-- Main Content Area -->
+  <rect x="280" y="90" width="890" height="560" fill="#1e293b" rx="12" opacity="0.3"/>
+  
+  <!-- Code/JSON Display -->
+  <text x="310" y="130" font-family="monospace" font-size="14" fill="#94a3b8">Response Configuration</text>
+  
+  <rect x="310" y="150" width="830" height="450" fill="#0f172a" rx="8" opacity="0.8"/>
+  
+  <!-- JSON Content -->
+  <text x="330" y="180" font-family="monospace" font-size="13" fill="#cbd5e1">{</text>
+  <text x="360" y="205" font-family="monospace" font-size="13" fill="#60a5fa">"path"</text>
+  <text x="420" y="205" font-family="monospace" font-size="13" fill="#cbd5e1">:</text>
+  <text x="440" y="205" font-family="monospace" font-size="13" fill="#4ade80">"/api/users"</text>
+  <text x="580" y="205" font-family="monospace" font-size="13" fill="#cbd5e1">,</text>
+  
+  <text x="360" y="230" font-family="monospace" font-size="13" fill="#60a5fa">"method"</text>
+  <text x="450" y="230" font-family="monospace" font-size="13" fill="#cbd5e1">:</text>
+  <text x="470" y="230" font-family="monospace" font-size="13" fill="#4ade80">"GET"</text>
+  <text x="540" y="230" font-family="monospace" font-size="13" fill="#cbd5e1">,</text>
+  
+  <text x="360" y="255" font-family="monospace" font-size="13" fill="#60a5fa">"status_code"</text>
+  <text x="490" y="255" font-family="monospace" font-size="13" fill="#cbd5e1">:</text>
+  <text x="510" y="255" font-family="monospace" font-size="13" fill="#f59e0b">200</text>
+  <text x="550" y="255" font-family="monospace" font-size="13" fill="#cbd5e1">,</text>
+  
+  <text x="360" y="280" font-family="monospace" font-size="13" fill="#60a5fa">"response"</text>
+  <text x="460" y="280" font-family="monospace" font-size="13" fill="#cbd5e1">: {</text>
+  
+  <text x="390" y="305" font-family="monospace" font-size="13" fill="#60a5fa">"users"</text>
+  <text x="460" y="305" font-family="monospace" font-size="13" fill="#cbd5e1">: [</text>
+  
+  <text x="420" y="330" font-family="monospace" font-size="13" fill="#cbd5e1">{</text>
+  <text x="450" y="355" font-family="monospace" font-size="13" fill="#60a5fa">"id"</text>
+  <text x="490" y="355" font-family="monospace" font-size="13" fill="#cbd5e1">:</text>
+  <text x="510" y="355" font-family="monospace" font-size="13" fill="#f59e0b">1</text>
+  <text x="540" y="355" font-family="monospace" font-size="13" fill="#cbd5e1">,</text>
+  
+  <text x="450" y="380" font-family="monospace" font-size="13" fill="#60a5fa">"name"</text>
+  <text x="510" y="380" font-family="monospace" font-size="13" fill="#cbd5e1">:</text>
+  <text x="530" y="380" font-family="monospace" font-size="13" fill="#4ade80">"John Doe"</text>
+  
+  <text x="420" y="405" font-family="monospace" font-size="13" fill="#cbd5e1">}</text>
+  <text x="390" y="430" font-family="monospace" font-size="13" fill="#cbd5e1">]</text>
+  <text x="360" y="455" font-family="monospace" font-size="13" fill="#cbd5e1">}</text>
+  <text x="330" y="480" font-family="monospace" font-size="13" fill="#cbd5e1">}</text>
+  
+  <!-- Status Badge -->
+  <rect x="310" y="620" width="100" height="30" fill="#10b981" rx="6" opacity="0.2"/>
+  <text x="330" y="642" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#10b981">FastAPI</text>
+  
+  <rect x="420" y="620" width="120" height="30" fill="#6366f1" rx="6" opacity="0.2"/>
+  <text x="440" y="642" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#818cf8">Python 3.12</text>
+</svg>

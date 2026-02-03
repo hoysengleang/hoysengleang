@@ -1,0 +1,125 @@
+<svg width="1200" height="800" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1200" height="800" fill="#0f172a"/>
+  
+  <!-- Title -->
+  <text x="600" y="50" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="white" text-anchor="middle">
+    Responsive Design Improvements
+  </text>
+  <text x="600" y="85" font-family="Arial, sans-serif" font-size="18" fill="#94a3b8" text-anchor="middle">
+    Optimized for ALL devices - from phones to large desktops
+  </text>
+  
+  <!-- Mobile Phone -->
+  <rect x="50" y="130" width="180" height="320" rx="20" fill="#1e293b" stroke="#3b82f6" stroke-width="3"/>
+  <rect x="70" y="150" width="140" height="280" rx="8" fill="#0f172a"/>
+  <text x="140" y="180" font-family="Arial, sans-serif" font-size="12" fill="#94a3b8" text-anchor="middle">1 Column</text>
+  <rect x="80" y="195" width="120" height="60" rx="6" fill="#3b82f6" opacity="0.2"/>
+  <rect x="80" y="265" width="120" height="60" rx="6" fill="#3b82f6" opacity="0.2"/>
+  <rect x="80" y="335" width="120" height="60" rx="6" fill="#3b82f6" opacity="0.2"/>
+  
+  <text x="140" y="450" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#60a5fa" text-anchor="middle">
+    Mobile
+  </text>
+  <text x="140" y="470" font-family="Arial, sans-serif" font-size="12" fill="#94a3b8" text-anchor="middle">
+    &lt; 640px
+  </text>
+  <text x="140" y="490" font-family="Arial, sans-serif" font-size="11" fill="#94a3b8" text-anchor="middle">
+    Compact spacing
+  </text>
+  <text x="140" y="505" font-family="Arial, sans-serif" font-size="11" fill="#94a3b8" text-anchor="middle">
+    Small text
+  </text>
+  
+  <!-- Tablet -->
+  <rect x="280" y="130" width="380" height="280" rx="20" fill="#1e293b" stroke="#8b5cf6" stroke-width="3"/>
+  <rect x="300" y="150" width="340" height="240" rx="8" fill="#0f172a"/>
+  <text x="470" y="175" font-family="Arial, sans-serif" font-size="12" fill="#94a3b8" text-anchor="middle">2 Columns</text>
+  <rect x="315" y="190" width="145" height="85" rx="6" fill="#8b5cf6" opacity="0.2"/>
+  <rect x="315" y="285" width="145" height="85" rx="6" fill="#8b5cf6" opacity="0.2"/>
+  <rect x="475" y="190" width="145" height="85" rx="6" fill="#8b5cf6" opacity="0.2"/>
+  <rect x="475" y="285" width="145" height="85" rx="6" fill="#8b5cf6" opacity="0.2"/>
+  
+  <text x="470" y="450" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#a78bfa" text-anchor="middle">
+    Tablet
+  </text>
+  <text x="470" y="470" font-family="Arial, sans-serif" font-size="12" fill="#94a3b8" text-anchor="middle">
+    640px - 1023px
+  </text>
+  <text x="470" y="490" font-family="Arial, sans-serif" font-size="11" fill="#94a3b8" text-anchor="middle">
+    Medium spacing
+  </text>
+  <text x="470" y="505" font-family="Arial, sans-serif" font-size="11" fill="#94a3b8" text-anchor="middle">
+    Medium text
+  </text>
+  
+  <!-- Desktop -->
+  <rect x="710" y="130" width="450" height="280" rx="20" fill="#1e293b" stroke="#10b981" stroke-width="3"/>
+  <rect x="730" y="150" width="410" height="240" rx="8" fill="#0f172a"/>
+  <text x="935" y="175" font-family="Arial, sans-serif" font-size="12" fill="#94a3b8" text-anchor="middle">3 Columns</text>
+  <rect x="745" y="190" width="115" height="85" rx="6" fill="#10b981" opacity="0.2"/>
+  <rect x="745" y="285" width="115" height="85" rx="6" fill="#10b981" opacity="0.2"/>
+  <rect x="875" y="190" width="115" height="85" rx="6" fill="#10b981" opacity="0.2"/>
+  <rect x="875" y="285" width="115" height="85" rx="6" fill="#10b981" opacity="0.2"/>
+  <rect x="1005" y="190" width="115" height="85" rx="6" fill="#10b981" opacity="0.2"/>
+  <rect x="1005" y="285" width="115" height="85" rx="6" fill="#10b981" opacity="0.2"/>
+  
+  <text x="935" y="450" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#4ade80" text-anchor="middle">
+    Desktop
+  </text>
+  <text x="935" y="470" font-family="Arial, sans-serif" font-size="12" fill="#94a3b8" text-anchor="middle">
+    e 1024px
+  </text>
+  <text x="935" y="490" font-family="Arial, sans-serif" font-size="11" fill="#94a3b8" text-anchor="middle">
+    Generous spacing
+  </text>
+  <text x="935" y="505" font-family="Arial, sans-serif" font-size="11" fill="#94a3b8" text-anchor="middle">
+    Large text
+  </text>
+  
+  <!-- Key Improvements -->
+  <rect x="50" y="540" width="1100" height="240" rx="12" fill="#1e293b" opacity="0.6"/>
+  <text x="600" y="570" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#f8fafc" text-anchor="middle">
+     Key Improvements
+  </text>
+  
+  <!-- Improvement items -->
+  <text x="80" y="610" font-family="Arial, sans-serif" font-size="14" fill="#4ade80">
+     Fluid responsive grids (1�2�3 columns)
+  </text>
+  <text x="80" y="635" font-family="Arial, sans-serif" font-size="14" fill="#4ade80">
+     Progressive text scaling (mobile�desktop)
+  </text>
+  <text x="80" y="660" font-family="Arial, sans-serif" font-size="14" fill="#4ade80">
+     Touch-friendly targets (min 36px)
+  </text>
+  <text x="80" y="685" font-family="Arial, sans-serif" font-size="14" fill="#4ade80">
+     Optimized image loading per device
+  </text>
+  
+  <text x="650" y="610" font-family="Arial, sans-serif" font-size="14" fill="#4ade80">
+     Consistent spacing progression
+  </text>
+  <text x="650" y="635" font-family="Arial, sans-serif" font-size="14" fill="#4ade80">
+     Mobile-first approach
+  </text>
+  <text x="650" y="660" font-family="Arial, sans-serif" font-size="14" fill="#4ade80">
+     Zero horizontal scrolling
+  </text>
+  <text x="650" y="685" font-family="Arial, sans-serif" font-size="14" fill="#4ade80">
+     Perfect on ALL screen sizes
+  </text>
+  
+  <!-- Footer -->
+  <rect x="300" y="720" width="600" height="50" rx="8" fill="url(#grad)"/>
+  <text x="600" y="752" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="white" text-anchor="middle">
+    Test at http://localhost:3000/experience
+  </text>
+</svg>

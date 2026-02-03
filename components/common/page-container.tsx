@@ -17,7 +17,7 @@ export default function PageContainer({
     <ClientPageWrapper>
       <div>
         <PageHeader title={title} description={description} className="print:hidden" />
-        <div className="mx-6 print:mx-0">{children}</div>
+        <div className="mx-3 sm:mx-4 md:mx-6 print:mx-0">{children}</div>
       </div>
     </ClientPageWrapper>
   );

@@ -13,28 +13,67 @@ export const siteConfig = {
   iconIco: "/logo.png",
   logoIcon: "/logo.png",
   keywords: [
+    // Personal branding
     "Hoysengleang",
+    "Houy Sengleang",
+    "HOUY SENGLEANG",
+    
+    // Core expertise
+    "Backend Developer",
     "Full Stack Developer",
-    "Web Developer Portfolio",
-    "Next.js portfolio template",
-    "React portfolio template",
-    "Developer portfolio template",
-    "Portfolio website template",
-    "Next.js template",
-    "Modern portfolio website",
-    "Frontend developer portfolio",
-    "Full stack developer portfolio",
-    "Open source portfolio template",
-    "Web developer portfolio template",
-    "Responsive portfolio template",
-    "React.js portfolio",
-    "Tailwind CSS portfolio",
-    "Developer showcase template",
-    "Free portfolio template",
-    "Next.js 13 template",
-    "Shadcn UI template",
-    "Career timeline template",
-    "Portfolio with dark mode",
-    "GitHub portfolio template",
+    "R&D Officer",
+    "API Architect",
+    
+    // Technical skills - Backend
+    "Laravel Developer",
+    "PHP Developer",
+    "FastAPI Developer",
+    "Python Developer",
+    "RESTful API",
+    "MySQL Database",
+    "PostgreSQL",
+    "Database Optimization",
+    
+    // Technical skills - DevOps & Tools
+    "Docker Specialist",
+    "Docker Compose",
+    "Git Version Control",
+    "System Architecture",
+    "Performance Benchmarking",
+    
+    // Domain expertise
+    "Fintech Developer",
+    "Core Banking System",
+    "Pawn Management System",
+    "Financial Software",
+    "Payment Systems",
+    "High-volume Transactions",
+    
+    // Frontend (secondary)
+    "Vue.js Developer",
+    "Next.js",
+    "React Developer",
+    "TypeScript",
+    "Tailwind CSS",
+    
+    // Project types
+    "Financial System Development",
+    "API Development",
+    "System Integration",
+    "Technical Research",
+    "Environment Standardization",
+    
+    // Location & availability
+    "Backend Developer Cambodia",
+    "Software Engineer Phnom Penh",
+    "Remote Backend Developer",
+    
+    // Portfolio template
+    "Developer Portfolio",
+    "Backend Developer Portfolio",
+    "Modern Portfolio Website",
+    "Next.js Portfolio Template",
+    "Open Source Portfolio",
+    "Professional Portfolio",
   ],
 };

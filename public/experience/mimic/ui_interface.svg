@@ -1,0 +1,123 @@
+<svg width="1200" height="675" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="uibg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f172a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1e293b;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1200" height="675" fill="url(#uibg)"/>
+  
+  <!-- Header -->
+  <rect x="0" y="0" width="1200" height="70" fill="#1e293b" opacity="0.8"/>
+  <text x="30" y="45" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#f8fafc">
+    Mimic Mock API
+  </text>
+  
+  <!-- Nav Pills -->
+  <rect x="900" y="25" width="100" height="30" fill="#3b82f6" rx="15"/>
+  <text x="928" y="46" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white">
+    Mocks
+  </text>
+  
+  <rect x="1010" y="25" width="100" height="30" fill="#1e293b" rx="15" opacity="0.5"/>
+  <text x="1030" y="46" font-family="Arial, sans-serif" font-size="14" fill="#94a3b8">
+    Settings
+  </text>
+  
+  <!-- Search Bar -->
+  <rect x="50" y="110" width="400" height="50" fill="#1e293b" rx="10" opacity="0.6"/>
+  <text x="70" y="142" font-family="Arial, sans-serif" font-size="16" fill="#94a3b8">
+    Search endpoints...
+  </text>
+  
+  <!-- Add Button -->
+  <rect x="1020" y="110" width="130" height="50" fill="#3b82f6" rx="10"/>
+  <text x="1045" y="142" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="white">
+    + New Mock
+  </text>
+  
+  <!-- Cards Grid -->
+  <!-- Card 1 -->
+  <rect x="50" y="200" width="350" height="180" fill="#1e293b" rx="12" opacity="0.6"/>
+  <rect x="70" y="220" width="60" height="24" fill="#3b82f6" rx="4" opacity="0.3"/>
+  <text x="80" y="237" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#60a5fa">GET</text>
+  
+  <text x="70" y="265" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#f8fafc">
+    /api/users
+  </text>
+  <text x="70" y="290" font-family="Arial, sans-serif" font-size="14" fill="#94a3b8">
+    Returns list of users
+  </text>
+  
+  <rect x="70" y="310" width="60" height="22" fill="#10b981" rx="4" opacity="0.2"/>
+  <text x="80" y="325" font-family="Arial, sans-serif" font-size="12" fill="#10b981">200 OK</text>
+  
+  <rect x="140" y="310" width="80" height="22" fill="#6366f1" rx="4" opacity="0.2"/>
+  <text x="150" y="325" font-family="Arial, sans-serif" font-size="12" fill="#818cf8">0ms delay</text>
+  
+  <rect x="70" y="345" width="70" height="28" fill="#3b82f6" rx="6"/>
+  <text x="85" y="364" font-family="Arial, sans-serif" font-size="13" fill="white">Edit</text>
+  
+  <!-- Card 2 -->
+  <rect x="425" y="200" width="350" height="180" fill="#1e293b" rx="12" opacity="0.6"/>
+  <rect x="445" y="220" width="70" height="24" fill="#8b5cf6" rx="4" opacity="0.3"/>
+  <text x="455" y="237" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#a78bfa">POST</text>
+  
+  <text x="445" y="265" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#f8fafc">
+    /api/users
+  </text>
+  <text x="445" y="290" font-family="Arial, sans-serif" font-size="14" fill="#94a3b8">
+    Create new user
+  </text>
+  
+  <rect x="445" y="310" width="75" height="22" fill="#10b981" rx="4" opacity="0.2"/>
+  <text x="455" y="325" font-family="Arial, sans-serif" font-size="12" fill="#10b981">201 Created</text>
+  
+  <rect x="530" y="310" width="80" height="22" fill="#6366f1" rx="4" opacity="0.2"/>
+  <text x="540" y="325" font-family="Arial, sans-serif" font-size="12" fill="#818cf8">100ms delay</text>
+  
+  <rect x="445" y="345" width="70" height="28" fill="#3b82f6" rx="6"/>
+  <text x="460" y="364" font-family="Arial, sans-serif" font-size="13" fill="white">Edit</text>
+  
+  <!-- Card 3 -->
+  <rect x="800" y="200" width="350" height="180" fill="#1e293b" rx="12" opacity="0.6"/>
+  <rect x="820" y="220" width="80" height="24" fill="#ef4444" rx="4" opacity="0.3"/>
+  <text x="830" y="237" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#f87171">DELETE</text>
+  
+  <text x="820" y="265" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#f8fafc">
+    /api/users/:id
+  </text>
+  <text x="820" y="290" font-family="Arial, sans-serif" font-size="14" fill="#94a3b8">
+    Delete user by ID
+  </text>
+  
+  <rect x="820" y="310" width="90" height="22" fill="#10b981" rx="4" opacity="0.2"/>
+  <text x="830" y="325" font-family="Arial, sans-serif" font-size="12" fill="#10b981">204 No Content</text>
+  
+  <rect x="920" y="310" width="80" height="22" fill="#6366f1" rx="4" opacity="0.2"/>
+  <text x="930" y="325" font-family="Arial, sans-serif" font-size="12" fill="#818cf8">50ms delay</text>
+  
+  <rect x="820" y="345" width="70" height="28" fill="#3b82f6" rx="6"/>
+  <text x="835" y="364" font-family="Arial, sans-serif" font-size="13" fill="white">Edit</text>
+  
+  <!-- Stats Footer -->
+  <rect x="50" y="420" width="200" height="80" fill="#1e293b" rx="10" opacity="0.4"/>
+  <text x="70" y="450" font-family="Arial, sans-serif" font-size="14" fill="#94a3b8">Total Mocks</text>
+  <text x="70" y="480" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="#3b82f6">12</text>
+  
+  <rect x="270" y="420" width="200" height="80" fill="#1e293b" rx="10" opacity="0.4"/>
+  <text x="290" y="450" font-family="Arial, sans-serif" font-size="14" fill="#94a3b8">Total Requests</text>
+  <text x="290" y="480" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="#10b981">1.2K</text>
+  
+  <!-- Tech Stack Badges -->
+  <rect x="50" y="630" width="80" height="25" fill="#4ade80" rx="6" opacity="0.2"/>
+  <text x="65" y="648" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#4ade80">Vue 3</text>
+  
+  <rect x="140" y="630" width="110" height="25" fill="#3b82f6" rx="6" opacity="0.2"/>
+  <text x="155" y="648" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#60a5fa">TypeScript</text>
+  
+  <rect x="260" y="630" width="70" height="25" fill="#8b5cf6" rx="6" opacity="0.2"/>
+  <text x="275" y="648" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#a78bfa">Vite</text>
+</svg>

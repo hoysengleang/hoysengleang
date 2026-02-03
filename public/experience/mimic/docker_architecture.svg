@@ -1,0 +1,113 @@
+<svg width="1200" height="675" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="dockerbg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f172a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1e293b;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1200" height="675" fill="url(#dockerbg)"/>
+  
+  <!-- Title -->
+  <text x="600" y="50" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#f8fafc" text-anchor="middle">
+    Docker Architecture
+  </text>
+  
+  <!-- Docker Compose Label -->
+  <rect x="450" y="80" width="300" height="50" fill="#2496ed" rx="10" opacity="0.2"/>
+  <text x="600" y="113" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#2496ed" text-anchor="middle">
+    Docker Compose
+  </text>
+  
+  <!-- Backend Container -->
+  <rect x="100" y="200" width="420" height="350" fill="#1e293b" rx="15" opacity="0.8" stroke="#3b82f6" stroke-width="3"/>
+  
+  <!-- Backend Header -->
+  <rect x="100" y="200" width="420" height="60" fill="#3b82f6" rx="15" opacity="0.3"/>
+  <text x="310" y="235" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#60a5fa" text-anchor="middle">
+    Backend Container
+  </text>
+  
+  <!-- Backend Content -->
+  <rect x="130" y="290" width="360" height="50" fill="#0f172a" rx="8"/>
+  <text x="310" y="320" font-family="monospace" font-size="16" fill="#cbd5e1" text-anchor="middle">
+    python:3.12-slim
+  </text>
+  
+  <rect x="130" y="360" width="360" height="50" fill="#0f172a" rx="8"/>
+  <text x="310" y="390" font-family="monospace" font-size="16" fill="#4ade80" text-anchor="middle">
+    FastAPI + Uvicorn
+  </text>
+  
+  <rect x="130" y="430" width="360" height="50" fill="#0f172a" rx="8"/>
+  <text x="310" y="460" font-family="monospace" font-size="16" fill="#f59e0b" text-anchor="middle">
+    Port: 5000:8080
+  </text>
+  
+  <rect x="130" y="500" width="360" height="30" fill="#10b981" rx="6" opacity="0.2"/>
+  <text x="310" y="522" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#10b981" text-anchor="middle">
+    Hot Reload Enabled
+  </text>
+  
+  <!-- Frontend Container -->
+  <rect x="680" y="200" width="420" height="350" fill="#1e293b" rx="15" opacity="0.8" stroke="#8b5cf6" stroke-width="3"/>
+  
+  <!-- Frontend Header -->
+  <rect x="680" y="200" width="420" height="60" fill="#8b5cf6" rx="15" opacity="0.3"/>
+  <text x="890" y="235" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#a78bfa" text-anchor="middle">
+    Frontend Container
+  </text>
+  
+  <!-- Frontend Content -->
+  <rect x="710" y="290" width="360" height="50" fill="#0f172a" rx="8"/>
+  <text x="890" y="320" font-family="monospace" font-size="16" fill="#cbd5e1" text-anchor="middle">
+    node:20-alpine
+  </text>
+  
+  <rect x="710" y="360" width="360" height="50" fill="#0f172a" rx="8"/>
+  <text x="890" y="390" font-family="monospace" font-size="16" fill="#4ade80" text-anchor="middle">
+    Vue 3 + Vite
+  </text>
+  
+  <rect x="710" y="430" width="360" height="50" fill="#0f172a" rx="8"/>
+  <text x="890" y="460" font-family="monospace" font-size="16" fill="#f59e0b" text-anchor="middle">
+    Port: 3000:5173
+  </text>
+  
+  <rect x="710" y="500" width="360" height="30" fill="#10b981" rx="6" opacity="0.2"/>
+  <text x="890" y="522" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#10b981" text-anchor="middle">
+    HMR Enabled
+  </text>
+  
+  <!-- Connection Arrow -->
+  <path d="M 520 375 L 680 375" stroke="#6366f1" stroke-width="4" fill="none" marker-end="url(#arrowhead)"/>
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#6366f1" />
+    </marker>
+  </defs>
+  
+  <!-- API Connection Label -->
+  <rect x="540" y="350" width="100" height="30" fill="#6366f1" rx="6" opacity="0.3"/>
+  <text x="590" y="370" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#818cf8" text-anchor="middle">
+    REST API
+  </text>
+  
+  <!-- Volume Indicators -->
+  <rect x="130" y="560" width="170" height="30" fill="#f59e0b" rx="6" opacity="0.2"/>
+  <text x="215" y="581" font-family="Arial, sans-serif" font-size="12" fill="#fbbf24" text-anchor="middle">
+    =� Volume Mount
+  </text>
+  
+  <rect x="710" y="560" width="170" height="30" fill="#f59e0b" rx="6" opacity="0.2"/>
+  <text x="795" y="581" font-family="Arial, sans-serif" font-size="12" fill="#fbbf24" text-anchor="middle">
+    =� Volume Mount
+  </text>
+  
+  <!-- Footer Info -->
+  <rect x="300" y="610" width="600" height="50" fill="#1e293b" rx="10" opacity="0.6"/>
+  <text x="600" y="642" font-family="Arial, sans-serif" font-size="16" fill="#94a3b8" text-anchor="middle">
+    One Command Startup: docker-compose up --build
+  </text>
+</svg>

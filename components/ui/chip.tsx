@@ -4,7 +4,7 @@ interface ChipProps {
 
 export default function Chip({ content }: ChipProps) {
   return (
-    <div className="center relative inline-block select-none whitespace-nowrap rounded-md py-2 px-3 align-baseline font-sans text-xs font-bold leading-none text-primary border border-border bg-background">
+    <div className="relative inline-flex items-center select-none whitespace-nowrap rounded-full py-1 px-2 sm:py-1.5 sm:px-3 align-baseline text-[10px] sm:text-xs font-semibold leading-none text-primary border border-primary/20 bg-primary/5 transition-colors hover:bg-primary/10">
       {content}
     </div>
   );
