@@ -11,31 +11,31 @@ export default function ContributionCard({
   contributions,
 }: ContributionCardProps) {
   return (
-    <div className="mx-auto grid justify-center gap-4 sm:grid-cols-2 lg:grid-cols-3 static">
+    <div className="mx-auto grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {contributions.map((contribution, id) => (
-        <Link href={contribution.link} target="_blank" key={id}>
-          <div className="relative rounded-lg border bg-background p-2 hover:bg-accent hover:text-accent-foreground">
-            <Icons.externalLink
-              size={35}
-              className="absolute bottom-3 right-3 border bg-background rounded-full p-2 cursor-pointer text-muted-foreground "
-            />
-            <div className="flex h-[170px] flex-col justify-between rounded-md p-6 sm:h-[170px]">
-              <div className="flex flex-row justify-between">
-                <h3 className="font-bold flex space-x-2 items-center">
-                  <Icons.gitRepoIcon size={20} />
-                  <span>{contribution.repo}</span>
-                </h3>
-                <Icons.gitBranch size={20} />
-              </div>
-              <div className="space-y-4">
-                <p className="text-sm text-muted-foreground">
-                  {contribution.contibutionDescription}
-                </p>
-                <p className="text-sm text-muted-foreground flex space-x-2 items-center">
-                  <Icons.gitOrgBuilding size={15} />
-                  <span>{contribution.repoOwner}</span>
-                </p>
-              </div>
+        <Link href={contribution.link} target="_blank" key={id} className="group">
+          <div className="backend-panel backend-grid flex h-full flex-col justify-between p-5 transition-all hover:-translate-y-1 hover:border-primary/50">
+            <div className="flex items-start justify-between">
+              <h3 className="flex items-center gap-2 text-base font-semibold">
+                <Icons.gitRepoIcon size={18} />
+                <span className="line-clamp-1">{contribution.repo}</span>
+              </h3>
+              <Icons.externalLink className="h-4 w-4 text-muted-foreground transition-colors group-hover:text-primary" />
+            </div>
+
+            <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
+              {contribution.contibutionDescription}
+            </p>
+
+            <div className="mt-6 flex items-center justify-between gap-2 border-t border-border/70 pt-3">
+              <p className="flex items-center gap-2 text-xs text-muted-foreground">
+                <Icons.gitOrgBuilding size={14} />
+                <span>{contribution.repoOwner}</span>
+              </p>
+              <p className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.12em] text-primary">
+                <Icons.gitBranch size={14} />
+                Source
+              </p>
             </div>
           </div>
         </Link>

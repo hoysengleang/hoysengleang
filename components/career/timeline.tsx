@@ -17,7 +17,6 @@ interface TimelineItemProps {
   baseUrl: string;
 }
 
-// Helper function to extract year from date
 const getYearFromDate = (date: Date): string => {
   return new Date(date).getFullYear().toString();
 };
@@ -32,153 +31,133 @@ const TimelineItem: React.FC<TimelineItemProps> = ({
   const isExpanded = expandedId === experience.id;
 
   return (
-    <div className="relative">
-      {/* Timeline line */}
+    <div className="relative pb-6">
       {!isLast && (
-        <div className="absolute left-4 sm:left-8 top-12 w-0.5 bg-border h-full z-0" />
+        <div className="absolute left-[17px] top-10 h-full w-px bg-border sm:left-[23px]" />
       )}
 
-      {/* Timeline item */}
-      <div className="flex mb-8 relative">
-        {/* Timeline dot and date */}
-        <div className="relative">
-          <motion.div
-            className="w-8 h-8 sm:w-16 sm:h-16 rounded-full flex items-center justify-center z-10 relative"
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.3 }}
-            whileHover={{ scale: 1.05 }}
-          >
-            {experience.logo ? (
-              <div className="relative w-8 h-8 sm:w-16 sm:h-16 rounded-full border-2 border-primary overflow-hidden bg-white">
-                <Image
-                  src={experience.logo}
-                  alt={experience.company}
-                  fill
-                  className="object-contain p-2"
-                />
-              </div>
-            ) : (
-              <div className="w-8 h-8 sm:w-16 sm:h-16 rounded-full bg-primary flex items-center justify-center">
-                <Icons.work className="w-4 h-4 sm:w-8 sm:h-8 text-white" />
-              </div>
-            )}
-          </motion.div>
-        </div>
-
-        {/* Content card */}
+      <div className="flex gap-3 sm:gap-5">
         <motion.div
-          className="ml-3 sm:ml-6 flex-1"
-          initial={{ x: -10, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          transition={{ duration: 0.4 }}
+          className="relative z-10 mt-1 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg border border-border bg-background sm:h-11 sm:w-11"
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
         >
-          <motion.div
-            className={`
-              p-3 sm:p-5 rounded-lg border border-border bg-card hover:shadow-lg 
-              transition-all duration-300 cursor-pointer
-              ${isExpanded ? "shadow-md" : ""}
-            `}
+          {experience.logo ? (
+            <div className="relative h-7 w-7 overflow-hidden rounded-md bg-white sm:h-9 sm:w-9">
+              <Image
+                src={experience.logo}
+                alt={experience.company}
+                fill
+                className="object-contain p-1"
+              />
+            </div>
+          ) : (
+            <Icons.work className="h-4 w-4 text-primary sm:h-5 sm:w-5" />
+          )}
+        </motion.div>
+
+        <motion.div
+          className="backend-panel flex-1 p-4 sm:p-5"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+          layout
+        >
+          <button
+            type="button"
             onClick={() => toggleExpand(experience.id)}
-            whileHover={{ y: -2 }}
-            layout
+            className="w-full text-left"
           >
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
               <div>
-                <h3 className="text-lg sm:text-xl font-bold">
-                  {experience.position}
-                </h3>
-                <div className="flex items-center">
-                  <span className="text-muted-foreground text-sm sm:text-base">
-                    {experience.company}
-                  </span>
+                <h3 className="text-lg font-semibold sm:text-xl">{experience.position}</h3>
+                <div className="mt-1 flex items-center gap-2 text-sm text-muted-foreground sm:text-base">
+                  <span>{experience.company}</span>
                   {experience.companyUrl && (
                     <Link
                       href={experience.companyUrl}
                       target="_blank"
-                      className="ml-2 text-muted-foreground hover:text-foreground"
-                      onClick={(e) => e.stopPropagation()}
+                      onClick={(event) => event.stopPropagation()}
+                      className="inline-flex text-muted-foreground transition-colors hover:text-foreground"
                     >
-                      <Icons.externalLink className="w-3 h-3" />
+                      <Icons.externalLink className="h-3.5 w-3.5" />
                     </Link>
                   )}
                 </div>
-                <div className="text-xs sm:text-sm text-muted-foreground">
+                <p className="mt-1 text-xs text-muted-foreground sm:text-sm">
                   {experience.location}
-                </div>
+                </p>
               </div>
-              <div className="flex flex-row sm:flex-col items-center sm:items-end justify-between sm:justify-start gap-2">
-                <div className="inline-flex items-center justify-center bg-background border border-primary px-2 py-0.5 rounded-full text-xs font-medium text-primary shadow-sm">
+
+              <div className="flex items-center gap-2 self-start">
+                <span className="rounded-full border border-border bg-background px-2.5 py-1 text-xs text-muted-foreground">
                   {typeof experience.endDate === "string"
-                    ? getYearFromDate(experience.startDate) + " - Now"
-                    : getYearFromDate(experience.startDate) +
-                    " - " +
-                    getYearFromDate(experience.endDate)}
-                </div>
+                    ? `${getYearFromDate(experience.startDate)} - Now`
+                    : `${getYearFromDate(experience.startDate)} - ${getYearFromDate(
+                        experience.endDate
+                      )}`}
+                </span>
                 <motion.div
                   animate={{ rotate: isExpanded ? 180 : 0 }}
-                  transition={{ duration: 0.3 }}
+                  transition={{ duration: 0.2 }}
                 >
-                  <Icons.chevronDown className="w-5 h-5 text-muted-foreground" />
+                  <Icons.chevronDown className="h-4 w-4 text-muted-foreground" />
                 </motion.div>
               </div>
             </div>
+          </button>
 
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{
-                height: isExpanded ? "auto" : 0,
-                opacity: isExpanded ? 1 : 0,
-              }}
-              transition={{ duration: 0.3 }}
-              className="overflow-hidden"
-            >
-              {isExpanded && (
-                <div className="pt-3 mt-3 sm:pt-4 sm:mt-4 border-t border-border">
-                  <div className="mb-3 sm:mb-4">
-                    <h4 className="font-medium mb-1 sm:mb-2 text-xs sm:text-sm">
-                      Summary
-                    </h4>
-                    <ul className="list-disc pl-4 sm:pl-5 space-y-1">
-                      {experience.description.map((desc, idx) => (
-                        <li key={idx} className="text-xs sm:text-sm">
-                          {desc}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+          <motion.div
+            initial={false}
+            animate={{
+              height: isExpanded ? "auto" : 0,
+              opacity: isExpanded ? 1 : 0,
+              marginTop: isExpanded ? 16 : 0,
+            }}
+            transition={{ duration: 0.25 }}
+            className="overflow-hidden"
+          >
+            <div className="space-y-4 border-t border-border/80 pt-4">
+              <div>
+                <h4 className="text-xs font-semibold text-foreground sm:text-sm">
+                  Summary
+                </h4>
+                <ul className="mt-2 list-disc space-y-1.5 pl-5 text-sm">
+                  {experience.description.map((desc, idx) => (
+                    <li key={idx}>{desc}</li>
+                  ))}
+                </ul>
+              </div>
 
-                  <div className="mb-3 sm:mb-4">
-                    <h4 className="font-medium mb-1 sm:mb-2 text-xs sm:text-sm">
-                      Key Achievements
-                    </h4>
-                    <ul className="list-disc pl-4 sm:pl-5 space-y-1">
-                      {experience.achievements.map((achievement, idx) => (
-                        <li key={idx} className="text-xs sm:text-sm">
-                          {achievement}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+              <div>
+                <h4 className="text-xs font-semibold text-foreground sm:text-sm">
+                  Achievements
+                </h4>
+                <ul className="mt-2 list-disc space-y-1.5 pl-5 text-sm">
+                  {experience.achievements.map((achievement, idx) => (
+                    <li key={idx}>{achievement}</li>
+                  ))}
+                </ul>
+              </div>
 
-                  <div className="mb-3 sm:mb-4">
-                    <h4 className="font-medium mb-1 sm:mb-2 text-xs sm:text-sm">
-                      Skills
-                    </h4>
-                    <ChipContainer textArr={experience.skills} />
-                  </div>
-
-                  <Link
-                    href={`${baseUrl}/${experience.id}`}
-                    className="inline-flex items-center mt-1 sm:mt-2 text-xs sm:text-sm font-medium text-primary hover:underline"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    View Details
-                    <Icons.chevronRight className="ml-1 w-3 h-3 sm:w-4 sm:h-4" />
-                  </Link>
+              <div>
+                <h4 className="text-xs font-semibold text-foreground sm:text-sm">
+                  Stack
+                </h4>
+                <div className="mt-2">
+                  <ChipContainer textArr={experience.skills} />
                 </div>
-              )}
-            </motion.div>
+              </div>
+
+              <Link
+                href={`${baseUrl}/${experience.id}`}
+                className="inline-flex items-center text-sm font-semibold text-primary hover:underline"
+                onClick={(event) => event.stopPropagation()}
+              >
+                View Details
+                <Icons.chevronRight className="ml-1 h-4 w-4" />
+              </Link>
+            </div>
           </motion.div>
         </motion.div>
       </div>
@@ -194,14 +173,12 @@ interface TimelineProps {
 const Timeline: React.FC<TimelineProps> = ({ experiences, baseUrl = "/career" }) => {
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
-  // Sort experiences by date (most recent first)
   const sortedExperiences = [...experiences].sort((a, b) => {
     const dateA = a.endDate === "Present" ? new Date() : a.endDate;
     const dateB = b.endDate === "Present" ? new Date() : b.endDate;
     return dateB.getTime() - dateA.getTime();
   });
 
-  // Auto-expand the first item on initial load
   useEffect(() => {
     if (sortedExperiences.length > 0 && expandedId === null) {
       setExpandedId(sortedExperiences[0].id);
@@ -213,7 +190,7 @@ const Timeline: React.FC<TimelineProps> = ({ experiences, baseUrl = "/career" })
   };
 
   return (
-    <div className="container max-w-5xl mx-auto py-4 sm:py-8 px-2 sm:px-4">
+    <div className="mx-auto max-w-5xl py-2 sm:py-4">
       {sortedExperiences.map((experience, index) => (
         <TimelineItem
           key={experience.id}

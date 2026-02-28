@@ -8,26 +8,35 @@ import { cn } from "@/lib/utils";
 
 export function SiteFooter({ className }: React.HTMLAttributes<HTMLElement>) {
   return (
-    <footer className={cn(className, "print:hidden px-4 sm:px-6")}>
-      <div className="container flex items-center justify-center gap-4 sm:gap-6 md:gap-8 mt-6 sm:mt-8 md:mt-10 py-8 sm:py-10 md:h-24">
-        {SocialLinks.map((item, ind) => (
-          <CustomTooltip icon={item.icon} text={item.username} key={ind}>
-            <Link
-              href={item.link}
-              target="_blank"
-              className={cn(
-                buttonVariants({
-                  variant: "ghost",
-                  size: "sm",
-                }),
-                "h-10 w-10 sm:h-11 sm:w-11 p-2 sm:p-2.5 hover:scale-110 transition-transform"
-              )}
-              aria-label={`Visit ${item.username} on ${item.icon.name}`}
-            >
-              <item.icon className="h-5 w-5 sm:h-6 sm:w-6" />
-            </Link>
-          </CustomTooltip>
-        ))}
+    <footer className={cn(className, "print:hidden px-4 pb-8 sm:px-6")}>
+      <div className="container">
+        <div className="backend-panel flex flex-col items-center justify-between gap-5 px-5 py-6 sm:flex-row">
+          <div>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Thanks for visiting. I am open to backend engineering opportunities.
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
+            {SocialLinks.map((item, ind) => (
+              <CustomTooltip icon={item.icon} text={item.username} key={ind}>
+                <Link
+                  href={item.link}
+                  target="_blank"
+                  className={cn(
+                    buttonVariants({
+                      variant: "ghost",
+                      size: "sm",
+                    }),
+                    "h-10 w-10 rounded-xl border border-border/70 bg-background/70 p-2 hover:border-primary/50 hover:bg-primary/10"
+                  )}
+                  aria-label={`Visit ${item.username} on ${item.icon.name}`}
+                >
+                  <item.icon className="h-5 w-5" />
+                </Link>
+              </CustomTooltip>
+            ))}
+          </div>
+        </div>
       </div>
     </footer>
   );

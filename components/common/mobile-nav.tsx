@@ -1,4 +1,3 @@
-import { Norican } from "next/font/google";
 import Link from "next/link";
 import * as React from "react";
 
@@ -7,46 +6,36 @@ import { useLockBody } from "@/hooks/use-lock-body";
 import { cn } from "@/lib/utils";
 
 interface MobileNavProps {
-  items: any[];
+  items: { title: string; href: string; disabled?: boolean }[];
   children?: React.ReactNode;
 }
-
-const norican = Norican({
-  weight: ["400"],
-  style: ["normal"],
-  subsets: ["latin"],
-  display: "swap",
-});
 
 export function MobileNav({ items, children }: MobileNavProps) {
   useLockBody();
 
   return (
-    <div
-      className={cn(
-        "fixed inset-0 top-12 sm:top-16 z-50 grid h-[calc(100vh-3rem)] sm:h-[calc(100vh-4rem)] grid-flow-row auto-rows-max overflow-auto p-4 sm:p-6 pb-24 sm:pb-32 shadow-md animate-in slide-in-from-top-10 md:hidden"
-      )}
-    >
-      <div className="relative z-20 grid gap-4 sm:gap-6 rounded-lg sm:rounded-md bg-popover p-4 sm:p-5 text-popover-foreground shadow-md border border-border">
-        <Link href="/" className="flex items-center space-x-2 pb-2 border-b border-border">
-          <span className={cn(norican.className, "text-xl sm:text-2xl")}>
-            {siteConfig.authorName}
-          </span>
-        </Link>
-        <nav className="grid grid-flow-row auto-rows-max gap-1">
-          {items.map((item, index) => (
+    <div className="fixed inset-0 top-[72px] z-50 h-[calc(100vh-72px)] overflow-auto bg-background/70 p-4 backdrop-blur-md md:hidden">
+      <div className="backend-panel backend-grid space-y-5 p-5">
+        <div className="border-b border-border/80 pb-4">
+          <p className="mt-1 font-heading text-xl">{siteConfig.authorName}</p>
+        </div>
+
+        <nav className="grid gap-2">
+          {items.map((item) => (
             <Link
-              key={index}
+              key={item.href}
               href={item.disabled ? "#" : item.href}
               className={cn(
-                "flex w-full items-center rounded-lg p-3 sm:p-3.5 text-sm sm:text-base font-medium hover:bg-accent transition-colors active:scale-95",
-                item.disabled && "cursor-not-allowed opacity-60"
+                "rounded-xl border border-border/70 bg-background/60 px-4 py-3 text-sm font-semibold uppercase tracking-[0.08em] transition-all",
+                "hover:border-primary/50 hover:bg-primary/10",
+                item.disabled && "pointer-events-none opacity-60"
               )}
             >
               {item.title}
             </Link>
           ))}
         </nav>
+
         {children}
       </div>
     </div>

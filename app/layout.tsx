@@ -1,7 +1,6 @@
 import "./globals.css";
 
 import { GoogleAnalytics } from "@next/third-parties/google";
-import { Inter as FontSans } from "next/font/google";
 import localFont from "next/font/local";
 
 import { Analytics } from "@/components/common/analytics";
@@ -12,12 +11,22 @@ import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 import { ModalProvider } from "@/providers/modal-provider";
 
-const fontSans = FontSans({
-  subsets: ["latin"],
+const fontSans = localFont({
+  src: [
+    {
+      path: "../assets/fonts/Inter-Regular.ttf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../assets/fonts/Inter-Bold.ttf",
+      weight: "700",
+      style: "normal",
+    },
+  ],
   variable: "--font-sans",
 });
 
-// Font files can be colocated inside of `pages`
 const fontHeading = localFont({
   src: "../assets/fonts/CalSans-SemiBold.woff2",
   variable: "--font-heading",
@@ -119,15 +128,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           attribute="class"
           defaultTheme="system"
           enableSystem
-          themes={[
-            "light",
-            "dark",
-            "retro",
-            "cyberpunk",
-            "paper",
-            "aurora",
-            "synthwave",
-          ]}
+          themes={["light", "dark", "system"]}
         >
           {children}
           <Analytics />
