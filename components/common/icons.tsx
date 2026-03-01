@@ -80,6 +80,13 @@ import {
   SiLinux,
   SiNginx,
   SiPython,
+  SiDjango,
+  SiFastapi,
+  SiVuedotjs,
+  SiDocker,
+  SiPostgresql,
+  SiComposer,
+  SiTensorflow,
 } from "react-icons/si";
 
 export const Icons = {
@@ -144,6 +151,13 @@ export const Icons = {
   postman: SiPostman,
   linux: SiLinux,
   nginx: SiNginx,
+  django: SiDjango,
+  fastapi: SiFastapi,
+  vuejs: SiVuedotjs,
+  docker: SiDocker,
+  postgresql: SiPostgresql,
+  composer: SiComposer,
+  tensorflow: SiTensorflow,
   database: Database,
   server: Server,
   code: Code,

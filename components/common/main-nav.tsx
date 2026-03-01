@@ -24,18 +24,18 @@ export function MainNav({ items, children }: MainNavProps) {
   }, [pathname]);
 
   return (
-    <div className="flex items-center gap-5">
+    <div className="flex items-center gap-7">
       <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}>
         <Link href="/" className="hidden items-center gap-3 md:flex">
-          <span className="h-2 w-2 rounded-full bg-foreground/70" />
-          <span className={cn("font-heading text-lg tracking-tight")}>
+          <span className="h-3 w-3 rotate-45 rounded-[2px] bg-primary" />
+          <span className={cn("font-heading text-2xl tracking-tight")}>
             {siteConfig.authorName}
           </span>
         </Link>
       </motion.div>
 
       {items?.length ? (
-        <nav className="hidden items-center gap-1 rounded-xl border border-border bg-background p-1 md:flex">
+        <nav className="hidden items-center gap-1 md:flex">
           {items.map((item, index) => {
             const isActive =
               item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
@@ -50,10 +50,10 @@ export function MainNav({ items, children }: MainNavProps) {
                 <Link
                   href={item.disabled ? "#" : item.href}
                   className={cn(
-                    "inline-flex items-center rounded-lg px-3 py-2 text-xs font-medium transition-colors",
+                    "inline-flex items-center rounded-lg px-3 py-2 font-mono text-[12px] font-medium transition-colors",
                     isActive
-                      ? "bg-foreground text-background"
-                      : "text-muted-foreground hover:bg-muted hover:text-foreground",
+                      ? "text-foreground"
+                      : "text-muted-foreground hover:text-foreground",
                     item.disabled && "cursor-not-allowed opacity-60"
                   )}
                 >
@@ -66,7 +66,7 @@ export function MainNav({ items, children }: MainNavProps) {
       ) : null}
 
       <button
-        className="inline-flex items-center gap-2 rounded-lg border border-border bg-background px-3 py-2 text-xs font-medium md:hidden"
+        className="inline-flex items-center gap-2 rounded-lg border border-border/70 bg-background/50 px-3 py-2 font-mono text-[11px] font-medium uppercase tracking-[0.08em] md:hidden"
         onClick={() => setShowMobileMenu((prev) => !prev)}
       >
         {showMobileMenu ? <Icons.close className="h-4 w-4" /> : <Icons.menu className="h-4 w-4" />}

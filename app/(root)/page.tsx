@@ -10,14 +10,14 @@ import CurrentlyLearning from "@/components/common/currently-learning";
 import { Icons } from "@/components/common/icons";
 import ContributionCard from "@/components/contributions/contribution-card";
 import ProjectCard from "@/components/experience/project-card";
-import SkillsCard from "@/components/skills/skills-card";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { careerExperiences, education } from "@/config/career";
 import { featuredContributions } from "@/config/contributions";
 import { featuredExperiences } from "@/config/experience";
 import { pagesConfig } from "@/config/pages";
 import { siteConfig } from "@/config/site";
-import { featuredSkills, skills } from "@/config/skills";
+import { skills } from "@/config/skills";
+import { SocialLinks } from "@/config/socials";
 import { cn } from "@/lib/utils";
 import hoysengleang from "@/public/hoysengleang-bg-black.jpg";
 
@@ -53,19 +53,6 @@ const workStyle = [
 ];
 
 export default function IndexPage() {
-  const currentYear = new Date().getFullYear();
-  const firstCareerYear = Math.min(
-    ...careerExperiences.map((experience) => experience.startDate.getFullYear())
-  );
-  const yearsExperience = Math.max(1, currentYear - firstCareerYear);
-
-  const profileNumbers = [
-    { label: "Years", value: `${yearsExperience}+` },
-    { label: "Projects", value: String(featuredExperiences.length) },
-    { label: "Skills", value: String(skills.length) },
-    { label: "Open Source", value: String(featuredContributions.length) },
-  ];
-
   const personSchema = {
     "@context": "https://schema.org",
     "@type": "Person",
@@ -76,6 +63,18 @@ export default function IndexPage() {
     sameAs: [siteConfig.links.github, siteConfig.links.twitter],
   };
 
+  const currentYear = new Date().getFullYear();
+  const firstCareerYear = Math.min(
+    ...careerExperiences.map((experience) => experience.startDate.getFullYear())
+  );
+  const yearsExperience = Math.max(1, currentYear - firstCareerYear);
+
+  const quickStats = [
+    { label: "Years of Experience", value: `${yearsExperience}+` },
+    { label: "Completed Projects", value: `${featuredExperiences.length}+` },
+    { label: "Open Source", value: `${featuredContributions.length}+` },
+  ];
+
   return (
     <ClientPageWrapper>
       <Script
@@ -84,181 +83,217 @@ export default function IndexPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
       />
 
-      <section className="pb-10 pt-2 sm:pb-14">
-        <div className="backend-panel p-5 sm:p-7 lg:p-10">
-          <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
+      <div className="page-shell">
+        <section className="pb-2 pt-2 sm:pt-4">
+          <div className="backend-panel p-6 sm:p-8">
             <div className="space-y-6">
-              <span className="terminal-kicker">Hi, I am Sengleang</span>
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:gap-5">
+                <Image
+                  src={hoysengleang}
+                  alt="Houy Sengleang profile"
+                  width={106}
+                  height={106}
+                  className="h-[92px] w-[92px] rounded-full border-4 border-primary object-cover sm:h-[106px] sm:w-[106px]"
+                  priority
+                />
 
-              <div className="space-y-4">
-                <h1 className="font-heading text-4xl leading-[1.05] sm:text-5xl lg:text-6xl">
-                  Backend developer focused on clean, reliable systems.
-                </h1>
-                <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
-                  {siteConfig.description}
-                </p>
+                <div className="min-w-0 flex-1 space-y-2.5 pr-1 sm:pr-4">
+                  <h1 className="font-heading text-4xl leading-none tracking-tight sm:text-5xl">
+                    {siteConfig.authorName}
+                  </h1>
+                  <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
+                    Backend Engineer | API Systems | Reliability Focus
+                  </p>
+
+                  <div className="flex items-center gap-2.5 pt-1">
+                    {SocialLinks.slice(0, 4).map((social) => (
+                      <Link
+                        key={social.name}
+                        href={social.link}
+                        target="_blank"
+                        className="terminal-icon-btn h-9 w-9"
+                        aria-label={social.name}
+                      >
+                        <social.icon
+                          className="terminal-icon-brand h-4 w-4"
+                          style={{ color: social.color ?? "hsl(var(--foreground))" }}
+                        />
+                      </Link>
+                    ))}
+                  </div>
+                </div>
               </div>
 
-              <div className="flex flex-wrap gap-2">
-                {profileNumbers.map((item) => (
-                  <span key={item.label} className="metric-chip">
-                    <span>{item.label}</span>
-                    <strong>{item.value}</strong>
-                  </span>
+              <p className="w-full max-w-none text-center text-sm leading-8 tracking-[0.01em] text-muted-foreground sm:text-left sm:text-justify sm:text-base">
+                {siteConfig.description}
+              </p>
+
+              <div className="grid gap-3 sm:grid-cols-3">
+                {quickStats.map((item) => (
+                  <div key={item.label} className="terminal-surface p-3 text-center sm:p-4">
+                    <p className="font-heading text-xl text-foreground sm:text-2xl">{item.value}</p>
+                    <p className="mt-1 text-xs text-muted-foreground">{item.label}</p>
+                  </div>
                 ))}
               </div>
 
               <div className="flex flex-col gap-2 sm:flex-row">
                 <Link
+                  href="/resume"
+                  className={cn(
+                    buttonVariants({ size: "lg" }),
+                    "w-full bg-foreground text-background hover:bg-foreground/90 sm:flex-1"
+                  )}
+                >
+                  Download CV
+                  <Icons.arrowRight className="h-4 w-4" />
+                </Link>
+                <Link
                   href={siteConfig.links.github}
                   target="_blank"
-                  className={cn(buttonVariants({ size: "lg" }), "w-full sm:w-auto")}
+                  className="terminal-icon-btn h-12 w-full sm:w-12"
+                  aria-label="GitHub"
                 >
-                  <Icons.gitHub className="h-4 w-4" />
-                  GitHub
+                  <Icons.gitHub className="terminal-icon-glyph h-5 w-5" />
                 </Link>
                 <Link
                   href="/contact"
-                  className={cn(
-                    buttonVariants({ variant: "outline", size: "lg" }),
-                    "w-full sm:w-auto"
-                  )}
+                  className="terminal-icon-btn h-12 w-full sm:w-12"
+                  aria-label="Contact"
                 >
-                  <Icons.contact className="h-4 w-4" />
-                  Contact
+                  <Icons.contact className="terminal-icon-glyph h-5 w-5" />
                 </Link>
               </div>
-            </div>
 
-            <div className="rounded-xl border border-border bg-card p-4 sm:p-5">
-              <div className="mb-4 flex items-center gap-3">
-                <Image
-                  src={hoysengleang}
-                  alt="Houy Sengleang profile"
-                  width={54}
-                  height={54}
-                  className="h-14 w-14 rounded-lg border border-border object-cover"
-                  priority
-                />
-                <div>
-                  <p className="font-heading text-lg">HOUY SENGLEANG</p>
-                  <p className="text-sm text-muted-foreground">Backend Developer</p>
-                </div>
-              </div>
-
-              <div className="rounded-lg border border-border bg-background p-4">
-                <p className="text-sm font-medium">What I care about</p>
-                <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-muted-foreground">
-                  <li>APIs that are easy to maintain and safe to scale</li>
-                  <li>Database design that protects business data integrity</li>
-                  <li>Backend code that teams can understand and extend</li>
-                </ul>
+              <div className="grid max-w-xl grid-cols-2 gap-1 rounded-xl bg-muted/70 p-1">
+                <span className="rounded-lg bg-background px-3 py-2 text-center font-mono text-xs text-foreground">
+                  Portfolio
+                </span>
+                <span className="rounded-lg px-3 py-2 text-center font-mono text-xs text-muted-foreground">
+                  About
+                </span>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <AnimatedSection className="space-y-5 pb-8 sm:pb-12" id="skills">
-        <div className="space-y-3">
-          <span className="terminal-kicker">Skills</span>
-          <h2 className="font-heading text-3xl leading-tight sm:text-4xl">
-            Tools I use in real projects
-          </h2>
-          <p className="max-w-3xl text-sm text-muted-foreground sm:text-base">
-            A practical stack for building and maintaining backend applications.
-          </p>
-        </div>
-        <SkillsCard skills={featuredSkills} />
-        <Link href="/skills" className="inline-flex">
-          <Button variant="outline">
-            View all skills
-            <Icons.chevronRight className="h-4 w-4" />
-          </Button>
-        </Link>
-      </AnimatedSection>
-
-      <AnimatedSection className="pb-10 sm:pb-14">
-        <div className="space-y-5">
-          <span className="terminal-kicker">How I work</span>
-          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-            {workStyle.map((item) => (
-              <div key={item.title} className="backend-panel p-4">
-                <item.icon className="h-5 w-5 text-foreground" />
-                <h3 className="mt-3 text-sm font-semibold">{item.title}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">{item.description}</p>
-              </div>
-            ))}
+        <AnimatedSection className="pb-4 sm:pb-6" id="experience">
+          <div className="space-y-4">
+            <h2 className="font-heading text-4xl leading-tight">Projects</h2>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              {featuredExperiences.slice(0, 2).map((exp, index) => (
+                <AnimatedSection key={exp.id} delay={0.08 * (index + 1)} direction="up">
+                  <ProjectCard project={exp} />
+                </AnimatedSection>
+              ))}
+            </div>
+            <div className="pt-1 text-center">
+              <Link href="/experience" className="inline-flex">
+                <Button className="bg-foreground text-background hover:bg-foreground/90">
+                  See All Projects
+                </Button>
+              </Link>
+            </div>
           </div>
-        </div>
-      </AnimatedSection>
+        </AnimatedSection>
 
-      <AnimatedSection className="pb-8 sm:pb-12">
-        <CurrentlyLearning />
-      </AnimatedSection>
+        <AnimatedSection className="pb-8 sm:pb-10" id="skills">
+          <div className="backend-panel p-5 sm:p-6">
+            <div className="space-y-5">
+              <div className="space-y-3">
+                <span className="terminal-kicker">Tools</span>
+                <h2 className="font-heading text-3xl leading-tight sm:text-4xl">
+                  Tools I use in real projects
+                </h2>
+                <p className="max-w-3xl text-sm text-muted-foreground sm:text-base">
+                  Core tools I use for backend and API-focused production work.
+                </p>
+              </div>
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                {skills.map((skill) => (
+                  <div key={skill.name} className="terminal-surface flex items-center gap-3 p-4">
+                    <span className="terminal-icon-wrap">
+                      <skill.icon
+                        className="terminal-icon-brand h-6 w-6"
+                        style={{ color: skill.color ?? "hsl(var(--foreground))" }}
+                      />
+                    </span>
+                    <div className="space-y-0.5">
+                      <p className="font-medium">{skill.name}</p>
+                      <p className="line-clamp-1 text-xs text-muted-foreground">
+                        {skill.description}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </AnimatedSection>
 
-      <AnimatedSection className="space-y-5 pb-8 sm:pb-12" id="career">
-        <div className="space-y-3">
-          <span className="terminal-kicker">Career</span>
-          <h2 className="font-heading text-3xl leading-tight sm:text-4xl">Career timeline</h2>
-          <p className="max-w-3xl text-sm text-muted-foreground sm:text-base">
-            My professional journey in backend development so far.
-          </p>
-        </div>
-        <div className="backend-panel p-2 sm:p-4">
-          <Timeline experiences={careerExperiences} />
-        </div>
-        <Link href="/career" className="inline-flex">
-          <Button variant="outline">
-            View full timeline
-            <Icons.chevronRight className="h-4 w-4" />
-          </Button>
-        </Link>
-      </AnimatedSection>
+        <AnimatedSection className="pb-8 sm:pb-10">
+          <div className="backend-panel p-5 sm:p-6">
+            <div className="space-y-5">
+              <span className="terminal-kicker">How I work</span>
+              <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+                {workStyle.map((item) => (
+                  <div key={item.title} className="terminal-surface p-4">
+                    <item.icon className="terminal-icon-glyph h-5 w-5" />
+                    <h3 className="mt-3 text-sm font-semibold">{item.title}</h3>
+                    <p className="mt-2 text-sm text-muted-foreground">{item.description}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </AnimatedSection>
 
-      <AnimatedSection className="space-y-5 pb-8 sm:pb-12" id="experience">
-        <div className="space-y-3">
-          <span className="terminal-kicker">Projects</span>
-          <h2 className="font-heading text-3xl leading-tight sm:text-4xl">Selected work</h2>
-          <p className="max-w-3xl text-sm text-muted-foreground sm:text-base">
-            Projects that represent how I design and ship backend systems.
-          </p>
-        </div>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {featuredExperiences.map((exp, index) => (
-            <AnimatedSection key={exp.id} delay={0.08 * (index + 1)} direction="up">
-              <ProjectCard project={exp} />
-            </AnimatedSection>
-          ))}
-        </div>
-        <Link href="/experience" className="inline-flex">
-          <Button variant="outline">
-            Explore all projects
-            <Icons.chevronRight className="h-4 w-4" />
-          </Button>
-        </Link>
-      </AnimatedSection>
+        <AnimatedSection className="pb-8 sm:pb-10">
+          <div className="backend-panel p-5 sm:p-6">
+            <CurrentlyLearning />
+          </div>
+        </AnimatedSection>
 
-      <AnimatedSection className="space-y-5 pb-8 sm:pb-12" id="contributions">
-        <div className="space-y-3">
-          <span className="terminal-kicker">Open source</span>
-          <h2 className="font-heading text-3xl leading-tight sm:text-4xl">Contributions</h2>
-          <p className="max-w-3xl text-sm text-muted-foreground sm:text-base">
-            Repositories and improvements I have contributed to.
-          </p>
-        </div>
-        <ContributionCard contributions={featuredContributions} />
-      </AnimatedSection>
+        <AnimatedSection className="pb-8 sm:pb-10" id="career">
+          <div className="backend-panel p-5 sm:p-6">
+            <div className="space-y-5">
+              <div className="space-y-3">
+                <span className="terminal-kicker">Career</span>
+                <h2 className="font-heading text-3xl leading-tight sm:text-4xl">Career timeline</h2>
+              </div>
+              <div className="terminal-surface p-2 sm:p-4">
+                <Timeline experiences={careerExperiences} />
+              </div>
+            </div>
+          </div>
+        </AnimatedSection>
 
-      <AnimatedSection className="space-y-5" id="education">
-        <div className="space-y-3">
-          <span className="terminal-kicker">Education</span>
-          <h2 className="font-heading text-3xl leading-tight sm:text-4xl">Education</h2>
-        </div>
-        <div className="backend-panel p-2 sm:p-4">
-          <Timeline experiences={education} baseUrl="/education" />
-        </div>
-      </AnimatedSection>
+        <AnimatedSection className="pb-8 sm:pb-10" id="contributions">
+          <div className="backend-panel p-5 sm:p-6">
+            <div className="space-y-5">
+              <div className="space-y-3">
+                <span className="terminal-kicker">Open source</span>
+                <h2 className="font-heading text-3xl leading-tight sm:text-4xl">Contributions</h2>
+              </div>
+              <ContributionCard contributions={featuredContributions} />
+            </div>
+          </div>
+        </AnimatedSection>
+
+        <AnimatedSection className="space-y-5" id="education">
+          <div className="backend-panel p-5 sm:p-6">
+            <div className="space-y-5">
+              <div className="space-y-3">
+                <span className="terminal-kicker">Education</span>
+                <h2 className="font-heading text-3xl leading-tight sm:text-4xl">Education</h2>
+              </div>
+              <div className="terminal-surface p-2 sm:p-4">
+                <Timeline experiences={education} baseUrl="/education" />
+              </div>
+            </div>
+          </div>
+        </AnimatedSection>
+      </div>
     </ClientPageWrapper>
   );
 }

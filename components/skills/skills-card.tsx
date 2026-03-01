@@ -15,7 +15,13 @@ export default function SkillsCard({ skills }: SkillsCardProps) {
         >
           <div className="code-texture flex h-[210px] flex-col justify-between rounded-[1.2rem] p-5">
             <div className="flex items-start justify-between gap-3">
-              <skill.icon size={34} className="h-9 w-9 text-primary" />
+              <span className="terminal-icon-wrap h-10 w-10">
+                <skill.icon
+                  size={30}
+                  className="terminal-icon-brand h-8 w-8"
+                  style={{ color: skill.color ?? "hsl(var(--foreground))" }}
+                />
+              </span>
               <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-primary">
                 Skill Node
               </span>

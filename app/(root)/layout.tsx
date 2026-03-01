@@ -10,9 +10,9 @@ interface MarketingLayoutProps {
 export default function MarketingLayout({ children }: MarketingLayoutProps) {
   return (
     <div className="relative flex min-h-screen flex-col">
-      <header className="sticky top-0 z-50 print:hidden">
-        <div className="container px-4 pt-4 sm:px-6">
-          <div className="rounded-xl border border-border bg-background/95 px-4 sm:px-5 h-[68px] flex items-center justify-between">
+      <header className="sticky top-0 z-50 border-b border-border/70 bg-card/90 backdrop-blur-md print:hidden">
+        <div className="container px-4 sm:px-6">
+          <div className="mx-auto flex h-[66px] w-full max-w-[1220px] items-center justify-between">
             <MainNav items={routesConfig.mainNav} />
             <nav className="flex items-center gap-3 sm:gap-4">
               <ModeToggle />

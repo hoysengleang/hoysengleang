@@ -55,10 +55,12 @@ export default function CurrentlyLearning() {
           <AnimatedText
             key={index}
             delay={0.1 * (index + 1)}
-            className="backend-panel p-5"
+            className="terminal-surface p-5"
           >
-            <item.icon className="h-8 w-8 text-primary" />
-            <h3 className="mt-4 text-lg font-semibold">{item.title}</h3>
+            <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-primary">
+              learning.node.{index + 1}
+            </p>
+            <h3 className="mt-2 text-base font-semibold">{item.title}</h3>
             <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
               {item.description}
             </p>

@@ -79,7 +79,7 @@ export default function EducationDetailPage({ params }: EducationDetailPageProps
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between">
                     <div className="flex flex-col sm:flex-row items-center sm:items-start gap-3 sm:gap-4 mb-4 md:mb-0">
                         {edu.logo ? (
-                            <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full border-2 border-primary overflow-hidden bg-white">
+                            <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full border-2 border-primary overflow-hidden bg-muted">
                                 <Image
                                     src={edu.logo}
                                     alt={edu.company}
@@ -90,7 +90,7 @@ export default function EducationDetailPage({ params }: EducationDetailPageProps
                             </div>
                         ) : (
                             <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-primary flex items-center justify-center">
-                                <Icons.work className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 text-white" />
+                                <Icons.work className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 text-foreground" />
                             </div>
                         )}
                         <div className="text-center sm:text-left">
