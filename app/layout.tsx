@@ -1,7 +1,7 @@
 import "./globals.css";
 
 import { GoogleAnalytics } from "@next/third-parties/google";
-import localFont from "next/font/local";
+import { Baloo_2, Fredoka } from "next/font/google";
 
 import { Analytics } from "@/components/common/analytics";
 import { StructuredData } from "@/components/common/structured-data";
@@ -11,24 +11,17 @@ import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 import { ModalProvider } from "@/providers/modal-provider";
 
-const fontSans = localFont({
-  src: [
-    {
-      path: "../assets/fonts/Inter-Regular.ttf",
-      weight: "400",
-      style: "normal",
-    },
-    {
-      path: "../assets/fonts/Inter-Bold.ttf",
-      weight: "700",
-      style: "normal",
-    },
-  ],
+const fontSans = Baloo_2({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
   variable: "--font-sans",
 });
 
-const fontHeading = localFont({
-  src: "../assets/fonts/CalSans-SemiBold.woff2",
+const fontHeading = Fredoka({
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
+  display: "swap",
   variable: "--font-heading",
 });
 

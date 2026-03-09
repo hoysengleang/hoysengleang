@@ -43,7 +43,6 @@ const nextConfig = {
         ],
       },
       {
-        // Security and performance headers for all routes
         source: "/(.*)",
         headers: [
           {
@@ -91,14 +90,26 @@ const nextConfig = {
     ];
   },
 
-  // Redirects (if needed in future)
   async redirects() {
     return [];
   },
 
-  // Rewrites (if needed in future)
   async rewrites() {
     return [];
+  },
+
+  webpack: (config, { dev, isServer }) => {
+    if (isServer) {
+      // Keep server chunk lookup aligned with emitted files under `.next/server/chunks`.
+      config.output.chunkFilename = "chunks/[id].js";
+    }
+
+    if (dev) {
+      // Prevent intermittent ENOENT errors from webpack filesystem pack cache.
+      config.cache = false;
+    }
+
+    return config;
   },
 };
 

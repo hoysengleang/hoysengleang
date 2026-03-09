@@ -755,6 +755,101 @@ Stay curious, keep learning, and remember that every expert was once a beginner!
     tags: ["Python", "AI", "Machine Learning", "TensorFlow"],
     featured: true,
   },
+  {
+    id: "4",
+    title: "localnet-control Is Live on PyPI: Share Local Services in Seconds",
+    slug: "localnet-control-live-on-pypi",
+    excerpt:
+      "localnet-control is now fully published on PyPI. Learn what it does, how to install it, and how to share local services across your LAN with optional tunnel and access controls.",
+    content: `# localnet-control Is Live on PyPI
+
+\`localnet-control\` is now fully released on PyPI and ready to install with a single command.
+
+- **Package**: https://pypi.org/project/localnet-control/
+- **Latest version**: **0.2.0**
+- **Release date**: **March 4, 2026**
+- **Repository**: https://github.com/hoysengleang/localnet
+
+As of **March 9, 2026**, version **0.2.0** is the latest release published on PyPI.
+
+## What localnet-control Solves
+
+During frontend, API, or full-stack development, we often need to share a local app quickly with teammates on the same Wi-Fi. This tool creates a lightweight TCP proxy so local services can be accessed across your LAN instantly.
+
+You run your app on localhost, then share it:
+
+\`\`\`bash
+# your app
+npm run dev
+
+# share local service to LAN
+localnet share 3000
+\`\`\`
+
+It prints a LAN URL and can show a QR code for mobile testing.
+
+## Install from PyPI
+
+\`\`\`bash
+pip install localnet-control
+\`\`\`
+
+If you prefer working from source:
+
+\`\`\`bash
+git clone https://github.com/hoysengleang/localnet.git
+cd localnet
+pip install -e .
+\`\`\`
+
+## Key Features
+
+- LAN-first sharing for local dev servers
+- Optional public URL with Cloudflare Tunnel (\`--tunnel\`)
+- Token auth for protected access (\`--token\`)
+- IP/CIDR allow and deny rules (\`--allow\` / \`--deny\`)
+- QR code output for fast mobile access
+- Live HTTP request logging (\`--http-log\`)
+- Service discovery support (\`localnet scan\`)
+
+## Example Commands
+
+\`\`\`bash
+# share local port 3000
+localnet share 3000
+
+# require token
+localnet share 3000 --token myteam123
+
+# add public tunnel
+localnet share 3000 --tunnel
+
+# list active shares
+localnet list
+
+# stop share
+localnet stop 3000
+\`\`\`
+
+## Platform Notes
+
+Current release is **Linux-first**. macOS may work in many setups. Windows support is not yet the target for this version.
+
+## Why This Release Matters
+
+Publishing to PyPI makes installation and adoption much easier for teams:
+
+1. No manual setup overhead
+2. Faster onboarding for collaborators
+3. Versioned releases with a clear upgrade path
+4. Cleaner integration into Python-based dev workflows
+
+If you are building APIs, frontend apps, or internal tools and need quick sharing in real environments, this package removes a lot of friction from daily development.`,
+    publishedAt: new Date("2026-03-09"),
+    author: "Houy Sengleang",
+    tags: ["Python", "PyPI", "Networking", "Developer Tools"],
+    featured: true,
+  },
 ];
 
 export const featuredPosts = blogPosts.filter((post) => post.featured);

@@ -10,7 +10,7 @@ import CurrentlyLearning from "@/components/common/currently-learning";
 import { Icons } from "@/components/common/icons";
 import ContributionCard from "@/components/contributions/contribution-card";
 import ProjectCard from "@/components/experience/project-card";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { careerExperiences, education } from "@/config/career";
 import { featuredContributions } from "@/config/contributions";
 import { featuredExperiences } from "@/config/experience";
@@ -70,10 +70,25 @@ export default function IndexPage() {
   const yearsExperience = Math.max(1, currentYear - firstCareerYear);
 
   const quickStats = [
-    { label: "Years of Experience", value: `${yearsExperience}+` },
-    { label: "Completed Projects", value: `${featuredExperiences.length}+` },
-    { label: "Open Source", value: `${featuredContributions.length}+` },
+    {
+      label: "Experience",
+      value: `${yearsExperience}+`,
+      detail: "Years building and maintaining backend systems",
+    },
+    {
+      label: "Projects",
+      value: `${featuredExperiences.length}+`,
+      detail: "Production and personal apps shipped end-to-end",
+    },
+    {
+      label: "Open Source",
+      value: "2+",
+      detail: "Community contributions and tools",
+    },
   ];
+
+  const focusAreas = ["API architecture", "Database optimization", "System reliability"];
+  const marqueeSkills = skills.slice(0, 12);
 
   return (
     <ClientPageWrapper>
@@ -84,28 +99,54 @@ export default function IndexPage() {
       />
 
       <div className="page-shell">
-        <section className="pb-2 pt-2 sm:pt-4">
-          <div className="backend-panel p-6 sm:p-8">
-            <div className="space-y-6">
-              <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:gap-5">
-                <Image
-                  src={hoysengleang}
-                  alt="Houy Sengleang profile"
-                  width={106}
-                  height={106}
-                  className="h-[92px] w-[92px] rounded-full border-4 border-primary object-cover sm:h-[106px] sm:w-[106px]"
-                  priority
-                />
+        <section className="pb-3 pt-2 sm:pt-5">
+          <div className="hero-panel">
+            <div className="grid items-start gap-6 md:gap-8 xl:grid-cols-[minmax(0,1fr)_340px] 2xl:grid-cols-[minmax(0,1fr)_420px]">
+              <div className="order-2 min-w-0 xl:order-1">
+                <p className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
+                  Scalable Backend Systems
+                </p>
 
-                <div className="min-w-0 flex-1 space-y-2.5 pr-1 sm:pr-4">
-                  <h1 className="font-heading text-4xl leading-none tracking-tight sm:text-5xl">
-                    {siteConfig.authorName}
-                  </h1>
-                  <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
-                    Backend Engineer | API Systems | Reliability Focus
-                  </p>
+                <div className="mt-5 space-y-6">
+                  <h1 className="hero-display max-w-[8ch]">Backend Engineer</h1>
 
-                  <div className="flex items-center gap-2.5 pt-1">
+                  <div className="w-full text-sm leading-8 text-muted-foreground sm:text-base">
+                    <p className="text-left md:text-justify [text-align-last:left] hyphens-auto">
+                      Detail-oriented Backend Developer with over 3 years of experience in Fintech systems and API architecture. Currently serving as an R&D Officer specializing in technical research, environment standardization using Docker, and performance benchmarking. Proven track record in architecting secure, 100% accurate financial systems including Core Banking and Pawn Management, with a focus on high-volume transaction reliability and scalable system design. I design and ship practical APIs with strong architecture, clear data flow, and stable performance in production.
+                    </p>
+                  </div>
+
+                  <div className="pt-1">
+                    <Link href="/contact" className="hero-cta-link">
+                      Get In Touch
+                      <Icons.arrowRight className="h-4 w-4" />
+                    </Link>
+                  </div>
+
+                  <div className="flex flex-wrap gap-2">
+                    {focusAreas.map((area) => (
+                      <span
+                        key={area}
+                        className="rounded-md bg-background/70 px-2.5 py-1 font-mono text-[11px] uppercase tracking-[0.07em] text-foreground"
+                      >
+                        {area}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
+                    {quickStats.map((item) => (
+                      <div key={item.label} className="stat-tile">
+                        <p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+                          {item.label}
+                        </p>
+                        <p className="mt-1 font-heading text-3xl leading-none text-foreground">{item.value}</p>
+                        <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{item.detail}</p>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="flex flex-wrap items-center gap-2.5 pt-1">
                     {SocialLinks.slice(0, 4).map((social) => (
                       <Link
                         key={social.name}
@@ -124,171 +165,174 @@ export default function IndexPage() {
                 </div>
               </div>
 
-              <p className="w-full max-w-none text-center text-sm leading-8 tracking-[0.01em] text-muted-foreground sm:text-left sm:text-justify sm:text-base">
-                {siteConfig.description}
-              </p>
-
-              <div className="grid gap-3 sm:grid-cols-3">
-                {quickStats.map((item) => (
-                  <div key={item.label} className="terminal-surface p-3 text-center sm:p-4">
-                    <p className="font-heading text-xl text-foreground sm:text-2xl">{item.value}</p>
-                    <p className="mt-1 text-xs text-muted-foreground">{item.label}</p>
-                  </div>
-                ))}
-              </div>
-
-              <div className="flex flex-col gap-2 sm:flex-row">
-                <Link
-                  href="/resume"
-                  className={cn(
-                    buttonVariants({ size: "lg" }),
-                    "w-full bg-foreground text-background hover:bg-foreground/90 sm:flex-1"
-                  )}
-                >
-                  Download CV
-                  <Icons.arrowRight className="h-4 w-4" />
-                </Link>
-                <Link
-                  href={siteConfig.links.github}
-                  target="_blank"
-                  className="terminal-icon-btn h-12 w-full sm:w-12"
-                  aria-label="GitHub"
-                >
-                  <Icons.gitHub className="terminal-icon-glyph h-5 w-5" />
-                </Link>
-                <Link
-                  href="/contact"
-                  className="terminal-icon-btn h-12 w-full sm:w-12"
-                  aria-label="Contact"
-                >
-                  <Icons.contact className="terminal-icon-glyph h-5 w-5" />
-                </Link>
-              </div>
-
-              <div className="grid max-w-xl grid-cols-2 gap-1 rounded-xl bg-muted/70 p-1">
-                <span className="rounded-lg bg-background px-3 py-2 text-center font-mono text-xs text-foreground">
-                  Portfolio
-                </span>
-                <span className="rounded-lg px-3 py-2 text-center font-mono text-xs text-muted-foreground">
-                  About
-                </span>
+              <div className="order-1 pb-1 xl:order-2 xl:pb-0 xl:pt-6">
+                <div className="hero-photo-shell">
+                  <Image
+                    src={hoysengleang}
+                    alt={`${siteConfig.authorName} profile`}
+                    fill
+                    priority
+                    className="hero-photo-image"
+                    sizes="(max-width: 1024px) 82vw, 440px"
+                  />
+                </div>
               </div>
             </div>
           </div>
         </section>
 
-        <AnimatedSection className="pb-4 sm:pb-6" id="experience">
-          <div className="space-y-4">
-            <h2 className="font-heading text-4xl leading-tight">Projects</h2>
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              {featuredExperiences.slice(0, 2).map((exp, index) => (
-                <AnimatedSection key={exp.id} delay={0.08 * (index + 1)} direction="up">
-                  <ProjectCard project={exp} />
-                </AnimatedSection>
-              ))}
-            </div>
-            <div className="pt-1 text-center">
-              <Link href="/experience" className="inline-flex">
-                <Button className="bg-foreground text-background hover:bg-foreground/90">
+        <AnimatedSection className="pb-8 sm:pb-10" id="experience">
+          <div className="section-panel-alt">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+              <div className="space-y-2">
+                <span className="terminal-kicker">Selected projects</span>
+                <h2 className="section-title">Projects</h2>
+                <p className="max-w-2xl text-sm text-muted-foreground sm:text-base">
+                  Backend-heavy work with clean architecture, practical trade-offs, and reliable delivery.
+                </p>
+              </div>
+              <Link href="/experience" className="inline-flex w-full sm:w-auto">
+                <Button variant="secondary" className="w-full sm:w-auto">
                   See All Projects
                 </Button>
               </Link>
+            </div>
+
+            <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
+              {featuredExperiences.slice(0, 3).map((exp, index) => (
+                <AnimatedSection
+                  key={exp.id}
+                  delay={0.07 * (index + 1)}
+                  direction="up"
+                  className={cn(index === 0 ? "sm:col-span-2" : "")}
+                >
+                  <ProjectCard project={exp} />
+                </AnimatedSection>
+              ))}
             </div>
           </div>
         </AnimatedSection>
 
         <AnimatedSection className="pb-8 sm:pb-10" id="skills">
-          <div className="backend-panel p-5 sm:p-6">
-            <div className="space-y-5">
-              <div className="space-y-3">
-                <span className="terminal-kicker">Tools</span>
-                <h2 className="font-heading text-3xl leading-tight sm:text-4xl">
-                  Tools I use in real projects
-                </h2>
-                <p className="max-w-3xl text-sm text-muted-foreground sm:text-base">
-                  Core tools I use for backend and API-focused production work.
-                </p>
-              </div>
-              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                {skills.map((skill) => (
-                  <div key={skill.name} className="terminal-surface flex items-center gap-3 p-4">
-                    <span className="terminal-icon-wrap">
-                      <skill.icon
-                        className="terminal-icon-brand h-6 w-6"
-                        style={{ color: skill.color ?? "hsl(var(--foreground))" }}
-                      />
-                    </span>
-                    <div className="space-y-0.5">
-                      <p className="font-medium">{skill.name}</p>
-                      <p className="line-clamp-1 text-xs text-muted-foreground">
-                        {skill.description}
-                      </p>
+          <div className="section-panel">
+            <div className="space-y-2">
+              <span className="terminal-kicker">Core stack</span>
+              <h2 className="section-title">Tools I use in real projects</h2>
+              <p className="max-w-3xl text-sm text-muted-foreground sm:text-base">
+                Technology choices centered on stability, speed of delivery, and long-term maintainability.
+              </p>
+            </div>
+
+            <div className="mt-5">
+              <p className="pb-2 font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
+                Hover this row to slow down
+              </p>
+              <div className="skills-marquee-mask">
+                <div className="skills-marquee-track">
+                  {[...marqueeSkills, ...marqueeSkills].map((skill, index) => (
+                    <div
+                      key={`${skill.name}-${index}`}
+                      className="skills-marquee-item section-panel-soft flex min-w-[260px] items-center gap-3 sm:min-w-[300px]"
+                    >
+                      <span className="terminal-icon-wrap">
+                        <skill.icon
+                          className="terminal-icon-brand h-6 w-6"
+                          style={{ color: skill.color ?? "hsl(var(--foreground))" }}
+                        />
+                      </span>
+                      <div className="space-y-0.5">
+                        <p className="font-semibold">{skill.name}</p>
+                        <p className="line-clamp-1 text-xs text-muted-foreground">{skill.description}</p>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
           </div>
         </AnimatedSection>
 
-        <AnimatedSection className="pb-8 sm:pb-10">
-          <div className="backend-panel p-5 sm:p-6">
-            <div className="space-y-5">
-              <span className="terminal-kicker">How I work</span>
-              <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-                {workStyle.map((item) => (
-                  <div key={item.title} className="terminal-surface p-4">
+        <AnimatedSection className="pb-8 sm:pb-10" id="how-i-work">
+          <div className="section-panel-alt">
+            <div className="space-y-2">
+              <span className="terminal-kicker">Approach</span>
+              <h2 className="section-title">How I work</h2>
+            </div>
+
+            <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+              {workStyle.map((item, index) => (
+                <div key={item.title} className="section-panel-soft">
+                  <div className="flex items-center justify-between">
+                    <span
+                      className={cn(
+                        "rounded-md bg-background/70 px-2 py-1 font-mono text-[11px] text-foreground"
+                      )}
+                    >
+                      0{index + 1}
+                    </span>
                     <item.icon className="terminal-icon-glyph h-5 w-5" />
-                    <h3 className="mt-3 text-sm font-semibold">{item.title}</h3>
-                    <p className="mt-2 text-sm text-muted-foreground">{item.description}</p>
                   </div>
-                ))}
-              </div>
+                  <h3 className="mt-3 text-base font-semibold">{item.title}</h3>
+                  <p className="mt-2 text-sm text-muted-foreground">{item.description}</p>
+                </div>
+              ))}
             </div>
           </div>
         </AnimatedSection>
 
         <AnimatedSection className="pb-8 sm:pb-10">
-          <div className="backend-panel p-5 sm:p-6">
-            <CurrentlyLearning />
+          <div className="section-panel">
+            <div className="space-y-2 pb-4">
+              <span className="terminal-kicker">Now learning</span>
+              <h2 className="section-title">Learning Roadmap</h2>
+            </div>
+            <div className="section-panel-soft">
+              <CurrentlyLearning />
+            </div>
           </div>
         </AnimatedSection>
 
         <AnimatedSection className="pb-8 sm:pb-10" id="career">
-          <div className="backend-panel p-5 sm:p-6">
-            <div className="space-y-5">
-              <div className="space-y-3">
+          <div className="section-panel-alt">
+            <div className="grid gap-6 xl:grid-cols-[260px_minmax(0,1fr)] xl:gap-8 xl:items-start">
+              <div className="space-y-3 xl:pt-2">
                 <span className="terminal-kicker">Career</span>
-                <h2 className="font-heading text-3xl leading-tight sm:text-4xl">Career timeline</h2>
+                <h2 className="section-title">Career timeline</h2>
+                <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
+                  Milestones from hands-on backend development, real business constraints, and continuous improvement.
+                </p>
               </div>
-              <div className="terminal-surface p-2 sm:p-4">
-                <Timeline experiences={careerExperiences} />
+              <div className="section-panel-soft p-3 sm:p-4 xl:p-5">
+                <Timeline experiences={careerExperiences} className="max-w-[760px] py-1" />
               </div>
             </div>
           </div>
         </AnimatedSection>
 
         <AnimatedSection className="pb-8 sm:pb-10" id="contributions">
-          <div className="backend-panel p-5 sm:p-6">
-            <div className="space-y-5">
-              <div className="space-y-3">
-                <span className="terminal-kicker">Open source</span>
-                <h2 className="font-heading text-3xl leading-tight sm:text-4xl">Contributions</h2>
-              </div>
+          <div className="section-panel">
+            <div className="space-y-2 pb-4">
+              <span className="terminal-kicker">Open source</span>
+              <h2 className="section-title">Contributions</h2>
+            </div>
+            <div className="section-panel-soft">
               <ContributionCard contributions={featuredContributions} />
             </div>
           </div>
         </AnimatedSection>
 
         <AnimatedSection className="space-y-5" id="education">
-          <div className="backend-panel p-5 sm:p-6">
-            <div className="space-y-5">
-              <div className="space-y-3">
+          <div className="section-panel-alt">
+            <div className="grid gap-6 xl:grid-cols-[260px_minmax(0,1fr)] xl:gap-8 xl:items-start">
+              <div className="space-y-3 xl:pt-2">
                 <span className="terminal-kicker">Education</span>
-                <h2 className="font-heading text-3xl leading-tight sm:text-4xl">Education</h2>
+                <h2 className="section-title">Education</h2>
+                <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
+                  Academic foundation that supports practical engineering work and system thinking.
+                </p>
               </div>
-              <div className="terminal-surface p-2 sm:p-4">
-                <Timeline experiences={education} baseUrl="/education" />
+              <div className="section-panel-soft p-3 sm:p-4 xl:p-5">
+                <Timeline experiences={education} baseUrl="/education" className="max-w-[760px] py-1" />
               </div>
             </div>
           </div>

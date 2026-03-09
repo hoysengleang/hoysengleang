@@ -7,25 +7,25 @@ export interface contributionsInterface {
 
 export const contributionsUnsorted: contributionsInterface[] = [
   {
-    repo: "portfolio-template",
+    repo: "Mimic-Mock-Api-Best",
     contibutionDescription:
-      "Built a modern, responsive portfolio website using Next.js 14, TypeScript, and TailwindCSS with dark mode support.",
+      "Open-source full-stack mock API platform built with FastAPI and Vue 3 for rapid prototyping, API testing, integration testing, and Docker-first internal workflows.",
     repoOwner: "hoysengleang",
-    link: "https://github.com/hoysengleang",
+    link: "https://github.com/hoysengleang/Mimic-Mock-Api-Best",
   },
   {
-    repo: "api-architecture",
+    repo: "localnet",
     contibutionDescription:
-      "Designed and implemented scalable RESTful API architectures for enterprise applications handling high-volume transactions.",
+      "LAN-first dev sharing tool that exposes local services across network devices with QR support, optional Cloudflare Tunnel, token auth, and access control rules.",
     repoOwner: "hoysengleang",
-    link: "https://github.com/hoysengleang",
+    link: "https://github.com/hoysengleang/localnet",
   },
   {
-    repo: "database-optimization",
+    repo: "QuickNotes-Docker",
     contibutionDescription:
-      "Optimized complex database queries reducing response times by up to 60% using advanced indexing and query optimization techniques.",
+      "Containerized full-stack notes app using Vue 3, ASP.NET Core 8, SQL Server, Redis, and Docker Compose with secure auth, search, recovery, and admin monitoring.",
     repoOwner: "hoysengleang",
-    link: "https://github.com/hoysengleang",
+    link: "https://github.com/hoysengleang/QuickNotes-Docker",
   },
 ];
 

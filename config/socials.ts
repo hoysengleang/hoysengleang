@@ -14,7 +14,7 @@ export const SocialLinks: SocialInterface[] = [
     username: "@hoysengleang",
     icon: Icons.gitHub,
     link: "https://github.com/hoysengleang",
-    color: "#F0F6FC",
+    color: "hsl(var(--foreground))",
   },
   {
     name: "LinkedIn",
@@ -24,11 +24,11 @@ export const SocialLinks: SocialInterface[] = [
     color: "#0A66C2",
   },
   {
-    name: "Twitter",
-    username: "@hoysengleang",
-    icon: Icons.twitter,
-    link: "https://twitter.com/hoysengleang",
-    color: "#1DA1F2",
+    name: "Telegram",
+    username: "@houysengleang",
+    icon: Icons.telegram,
+    link: "https://t.me/houysengleang",
+    color: "#229ED9",
   },
   {
     name: "Gmail",

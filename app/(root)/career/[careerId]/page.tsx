@@ -37,19 +37,19 @@ export default function CareerDetailPage({ params }: CareerDetailPageProps) {
     <article className="container relative max-w-3xl py-4 sm:py-6 lg:py-10 px-3 sm:px-4 md:px-6">
       {/* Desktop back link (hidden on mobile/smaller screens) */}
       <Link
-        href="/career"
+        href="/"
         className={cn(
           buttonVariants({ variant: "ghost" }),
           "absolute left-[-200px] top-14 hidden xl:inline-flex"
         )}
       >
         <Icons.chevronLeft className="mr-2 h-4 w-4" />
-        All Career Experience
+        Back to Home
       </Link>
 
       {/* Mobile back link (shown only on mobile/smaller screens) */}
       <Link
-        href="/career"
+        href="/"
         className={cn(
           buttonVariants({ variant: "ghost", size: "sm" }),
           "mb-3 sm:mb-4 inline-flex xl:hidden"
@@ -227,7 +227,7 @@ export default function CareerDetailPage({ params }: CareerDetailPageProps) {
         transition={{ duration: 0.5, delay: 0.3 }}
       >
         <Link
-          href="/career"
+          href="/"
           className={cn(
             buttonVariants({
               variant: "outline",
@@ -237,7 +237,7 @@ export default function CareerDetailPage({ params }: CareerDetailPageProps) {
           )}
         >
           <Icons.chevronLeft className="mr-1 h-3 w-3 sm:mr-2 sm:h-4 sm:w-4" />
-          All Career Experience
+          Back to Home
         </Link>
       </motion.div>
     </article>

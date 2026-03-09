@@ -40,7 +40,7 @@ export const Experiences: ExperienceInterface[] = [
     techStack: ["Python", "FastAPI", "Vue.js", "Typescript", "Docker"],
     startDate: new Date("2024-10-01"),
     endDate: new Date(), // Present / Active Development
-    companyLogoImg: "/experience/mimic/logo.png",
+    companyLogoImg: "/experience/mimic/mimic-logo.svg",
     pagesInfoArr: [
       {
         title: "Backend Architecture (FastAPI)",
@@ -75,6 +75,63 @@ export const Experiences: ExperienceInterface[] = [
         "JSON-backed data persistence for mock configurations",
         "Multi-environment support (Dev, Staging, Production)",
         "Open-source and actively maintained on GitHub",
+      ],
+    },
+  },
+  {
+    id: "localnet",
+    companyName: "localnet-control",
+    type: "Personal Project",
+    category: ["Backend", "Web Dev"],
+    shortDescription:
+      "A LAN-first developer tool to share localhost services instantly, now published on PyPI with optional tunnel mode, token auth, and network access controls.",
+    websiteLink: "https://pypi.org/project/localnet-control/",
+    githubLink: "https://github.com/hoysengleang/localnet",
+    techStack: ["Python", "Linux", "Docker", "CI/CD", "Git"],
+    startDate: new Date("2026-02-01"),
+    endDate: new Date(),
+    companyLogoImg: "/experience/localnet/logo.svg",
+    pagesInfoArr: [
+      {
+        title: "What It Does",
+        description:
+          "localnet-control exposes localhost services to your LAN with a lightweight TCP proxy, so teammates and mobile devices can access your dev app instantly without internet dependency.",
+        imgArr: ["/experience/localnet/logo.svg"],
+      },
+      {
+        title: "Install and Quick Start",
+        description:
+          "Install with `pip install localnet-control`, start your app locally, then run `localnet share 3000` to generate a LAN URL and QR code. You can also run from source via the GitHub repository for development mode.",
+        imgArr: ["/experience/localnet/logo.svg"],
+      },
+      {
+        title: "Security and Access Controls",
+        description:
+          "The CLI supports token-based access (`--token`), allow/deny rules for IP and CIDR (`--allow` / `--deny`), live HTTP logs, and optional public sharing with Cloudflare Tunnel (`--tunnel`) when external access is needed.",
+        imgArr: ["/experience/localnet/logo.svg"],
+      },
+      {
+        title: "Release and Ecosystem",
+        description:
+          "The package is published on PyPI as localnet-control (latest 0.2.0 released on March 4, 2026), with Linux-first support, clear command workflow (`share`, `list`, `stop`, `scan`), and full documentation in the project README.",
+        imgArr: ["/experience/localnet/logo.svg"],
+      },
+    ],
+    descriptionDetails: {
+      paragraphs: [
+        "localnet-control is a lightweight LAN sharing tool for development workflows. It exposes local services to devices on the same network without requiring internet access.",
+        "The CLI supports fast sharing, QR output for mobile access, service discovery, and request visibility using HTTP logs. It is designed for practical day-to-day frontend and API collaboration.",
+        "Security and control features include token-based access, allow/deny IP and CIDR filters, and optional Cloudflare tunnel support for temporary public URLs when needed.",
+        "The project is fully released on PyPI as localnet-control, making installation and updates straightforward for teams through standard Python tooling.",
+      ],
+      bullets: [
+        "Published package: localnet-control on PyPI",
+        "LAN-first TCP proxy for sharing localhost apps quickly",
+        "Token auth and IP/CIDR allow-deny access controls",
+        "Optional Cloudflare tunnel support for public sharing",
+        "QR code output and LAN discovery for team workflows",
+        "Linux-first CLI with practical commands for dev environments",
+        "README and source: github.com/hoysengleang/localnet",
       ],
     },
   },

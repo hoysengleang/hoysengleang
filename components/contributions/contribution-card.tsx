@@ -14,7 +14,7 @@ export default function ContributionCard({
     <div className="mx-auto grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {contributions.map((contribution, id) => (
         <Link href={contribution.link} target="_blank" key={id} className="group">
-          <div className="terminal-surface backend-grid flex h-full flex-col justify-between p-5 transition-colors hover:border-primary/60">
+          <div className="terminal-surface backend-grid flex h-full flex-col justify-between p-5 transition-colors">
             <div className="flex items-start justify-between">
               <h3 className="flex items-center gap-2 text-base font-semibold">
                 <Icons.gitRepoIcon size={18} />
@@ -27,7 +27,7 @@ export default function ContributionCard({
               {contribution.contibutionDescription}
             </p>
 
-            <div className="mt-6 flex items-center justify-between gap-2 border-t border-border/70 pt-3 font-mono text-[10px] uppercase tracking-[0.1em]">
+            <div className="mt-6 flex items-center justify-between gap-2 pt-3 font-mono text-[10px] uppercase tracking-[0.1em]">
               <p className="flex items-center gap-2 text-xs text-muted-foreground">
                 <Icons.gitOrgBuilding size={14} />
                 <span>{contribution.repoOwner}</span>

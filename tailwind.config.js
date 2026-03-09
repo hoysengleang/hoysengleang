@@ -59,8 +59,24 @@ module.exports = {
         },
       },
       fontFamily: {
-        sans: ["var(--font-sans)", ...fontFamily.sans],
-        heading: ["var(--font-heading)", ...fontFamily.sans],
+        sans: [
+          "var(--font-sans)",
+          "Comic Sans MS",
+          "Comic Neue",
+          "Chalkboard SE",
+          "Marker Felt",
+          "cursive",
+          ...fontFamily.sans,
+        ],
+        heading: [
+          "var(--font-heading)",
+          "Comic Sans MS",
+          "Comic Neue",
+          "Chalkboard SE",
+          "Marker Felt",
+          "cursive",
+          ...fontFamily.sans,
+        ],
         mono: ["var(--font-mono)", ...fontFamily.mono],
       },
       borderRadius: {

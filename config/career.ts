@@ -72,9 +72,19 @@ export const education: CareerExperienceInterface[] = [
     location: "Phnom Penh",
     startDate: new Date("2023-01-01"),
     endDate: new Date("2025-01-01"),
-    description: [],
-    achievements: [],
-    skills: ["OOP", "Database Design", "MVC Architecture"],
+    description: [
+      "Completed core software engineering coursework focused on algorithms, object-oriented design, and database systems.",
+      "Built academic projects using MVC architecture, RESTful API principles, and normalized relational database design.",
+      "Practiced collaborative development through team assignments, code reviews, and project documentation.",
+      "Strengthened software testing, debugging, and requirement analysis skills through practical lab work.",
+    ],
+    achievements: [
+      "Graduated with strong practical foundation in backend engineering and system design concepts.",
+      "Delivered multiple end-to-end course projects with clear technical documentation and presentation.",
+      "Consistently applied clean coding practices and structured problem-solving in capstone assignments.",
+      "Built confidence in translating business requirements into maintainable software modules.",
+    ],
+    skills: ["OOP", "Database Design", "MVC Architecture", "RESTful APIs", "MySQL", "Git"],
     logo: "/beltei.png",
   },
 ];

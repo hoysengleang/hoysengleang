@@ -8,6 +8,7 @@ import React, { useEffect, useState } from "react";
 import { Icons } from "@/components/common/icons";
 import ChipContainer from "@/components/ui/chip-container";
 import { CareerExperienceInterface } from "@/config/career";
+import { cn } from "@/lib/utils";
 
 interface TimelineItemProps {
   experience: CareerExperienceInterface;
@@ -36,9 +37,9 @@ const TimelineItem: React.FC<TimelineItemProps> = ({
         <div className="absolute left-[17px] top-10 h-full w-px bg-border sm:left-[23px]" />
       )}
 
-      <div className="flex gap-3 sm:gap-5">
+      <div className="flex gap-3 sm:gap-4">
         <motion.div
-          className="relative z-10 mt-1 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg border border-border bg-background sm:h-11 sm:w-11"
+          className="relative z-10 mt-1 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-background/90 sm:h-11 sm:w-11"
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
         >
@@ -57,7 +58,7 @@ const TimelineItem: React.FC<TimelineItemProps> = ({
         </motion.div>
 
         <motion.div
-          className="backend-panel flex-1 p-4 sm:p-5"
+          className="section-panel-soft flex-1 p-4 sm:p-5"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
@@ -70,7 +71,7 @@ const TimelineItem: React.FC<TimelineItemProps> = ({
           >
             <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
               <div>
-                <h3 className="text-lg font-semibold sm:text-xl">{experience.position}</h3>
+                <h3 className="text-lg font-semibold leading-snug sm:text-xl">{experience.position}</h3>
                 <div className="mt-1 flex items-center gap-2 text-sm text-muted-foreground sm:text-base">
                   <span>{experience.company}</span>
                   {experience.companyUrl && (
@@ -90,7 +91,7 @@ const TimelineItem: React.FC<TimelineItemProps> = ({
               </div>
 
               <div className="flex items-center gap-2 self-start">
-                <span className="rounded-full border border-border bg-background px-2.5 py-1 text-xs text-muted-foreground">
+                <span className="rounded-full bg-background/80 px-2.5 py-1 font-mono text-[11px] text-muted-foreground">
                   {typeof experience.endDate === "string"
                     ? `${getYearFromDate(experience.startDate)} - Now`
                     : `${getYearFromDate(experience.startDate)} - ${getYearFromDate(
@@ -117,7 +118,7 @@ const TimelineItem: React.FC<TimelineItemProps> = ({
             transition={{ duration: 0.25 }}
             className="overflow-hidden"
           >
-            <div className="space-y-4 border-t border-border/80 pt-4">
+            <div className="space-y-4 pt-4">
               <div>
                 <h4 className="text-xs font-semibold text-foreground sm:text-sm">
                   Summary
@@ -168,9 +169,10 @@ const TimelineItem: React.FC<TimelineItemProps> = ({
 interface TimelineProps {
   experiences: CareerExperienceInterface[];
   baseUrl?: string;
+  className?: string;
 }
 
-const Timeline: React.FC<TimelineProps> = ({ experiences, baseUrl = "/career" }) => {
+const Timeline: React.FC<TimelineProps> = ({ experiences, baseUrl = "/career", className }) => {
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
   const sortedExperiences = [...experiences].sort((a, b) => {
@@ -190,7 +192,7 @@ const Timeline: React.FC<TimelineProps> = ({ experiences, baseUrl = "/career" })
   };
 
   return (
-    <div className="mx-auto max-w-5xl py-2 sm:py-4">
+    <div className={cn("mx-auto max-w-5xl py-2 sm:py-4", className)}>
       {sortedExperiences.map((experience, index) => (
         <TimelineItem
           key={experience.id}
