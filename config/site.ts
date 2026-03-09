@@ -6,7 +6,7 @@ export const siteConfig = {
     "Detail-oriented Backend Developer with over 3 years of experience in Fintech systems and API architecture. Currently serving as an R&D Officer specializing in technical research, environment standardization using Docker, and performance benchmarking. Proven track record in architecting secure, 100% accurate financial systems—including Core Banking and Pawn Management—with a focus on high-volume transaction reliability and scalable system design.",
   url: "https://hoysengleang.vercel.app",
   links: {
-    twitter: "https://t.me/hoysengleang", // Using telegram as twitter link for now since resume lists telegram
+    twitter: "https://t.me/houysengleang", // Using telegram as twitter link for now since resume lists telegram
     github: "https://github.com/hoysengleang",
   },
   ogImage: "https://hoysengleang.vercel.app/og-image",

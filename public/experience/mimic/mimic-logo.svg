@@ -1,0 +1,43 @@
+<svg width="1200" height="675" viewBox="0 0 1200 675" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Mimic Mock API logo">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#071018" />
+      <stop offset="100%" stop-color="#0a0f14" />
+    </linearGradient>
+    <linearGradient id="chip" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#5eead4" />
+      <stop offset="100%" stop-color="#2dd4bf" />
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="675" fill="url(#bg)"/>
+
+  <g opacity="0.18" stroke="#e5e7eb" stroke-width="1">
+    <path d="M0 120H1200"/>
+    <path d="M0 240H1200"/>
+    <path d="M0 360H1200"/>
+    <path d="M0 480H1200"/>
+    <path d="M150 0V675"/>
+    <path d="M300 0V675"/>
+    <path d="M450 0V675"/>
+    <path d="M600 0V675"/>
+    <path d="M750 0V675"/>
+    <path d="M900 0V675"/>
+    <path d="M1050 0V675"/>
+  </g>
+
+  <rect x="96" y="90" width="1008" height="495" rx="26" fill="#0f1720" stroke="#f8fafc" stroke-opacity="0.20"/>
+
+  <g transform="translate(185 220)">
+    <rect x="0" y="0" width="130" height="96" rx="18" fill="url(#chip)"/>
+    <circle cx="42" cy="48" r="13" fill="#072a2a"/>
+    <circle cx="88" cy="48" r="13" fill="#072a2a"/>
+    <path d="M26 74 Q65 98 104 74" stroke="#072a2a" stroke-width="8" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <text x="350" y="275" fill="#f8fafc" font-family="'Baloo 2', 'Fredoka', sans-serif" font-size="104" font-weight="700" letter-spacing="2">MIMIC</text>
+  <text x="350" y="354" fill="#cbd5e1" font-family="'IBM Plex Mono', monospace" font-size="34" letter-spacing="2">OPEN-SOURCE MOCK API TOOL</text>
+
+  <rect x="350" y="404" width="510" height="54" rx="12" fill="#111827" stroke="#f8fafc" stroke-opacity="0.15"/>
+  <text x="374" y="440" fill="#94a3b8" font-family="'IBM Plex Mono', monospace" font-size="22">fastapi • vue 3 • docker • restful testing</text>
+</svg>

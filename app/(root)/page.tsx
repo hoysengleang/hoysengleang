@@ -3,35 +3,56 @@ import Image from "next/image";
 import Link from "next/link";
 import Script from "next/script";
 
+import Timeline from "@/components/career/timeline";
 import { AnimatedSection } from "@/components/common/animated-section";
-import { AnimatedText } from "@/components/common/animated-text";
 import { ClientPageWrapper } from "@/components/common/client-page-wrapper";
 import CurrentlyLearning from "@/components/common/currently-learning";
 import { Icons } from "@/components/common/icons";
 import ContributionCard from "@/components/contributions/contribution-card";
 import ProjectCard from "@/components/experience/project-card";
-import SkillsCard from "@/components/skills/skills-card";
-import Timeline from "@/components/career/timeline";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
+import { careerExperiences, education } from "@/config/career";
 import { featuredContributions } from "@/config/contributions";
 import { featuredExperiences } from "@/config/experience";
-import { careerExperiences, education } from "@/config/career";
 import { pagesConfig } from "@/config/pages";
 import { siteConfig } from "@/config/site";
-import { featuredSkills } from "@/config/skills";
+import { skills } from "@/config/skills";
+import { SocialLinks } from "@/config/socials";
 import { cn } from "@/lib/utils";
 import hoysengleang from "@/public/hoysengleang-bg-black.jpg";
 
 export const metadata: Metadata = {
-  title: `${pagesConfig.home.metadata.title} | Modern Next.js Developer Portfolio Template`,
-  description: `${pagesConfig.home.metadata.description} This open-source Next.js portfolio template is customizable to showcase your skills and projects.`,
+  title: `${pagesConfig.home.metadata.title} | Backend Portfolio`,
+  description: pagesConfig.home.metadata.description,
   alternates: {
     canonical: siteConfig.url,
   },
 };
 
+const workStyle = [
+  {
+    title: "Understand the business problem",
+    description: "Before coding, I make sure the requirements and edge cases are clear.",
+    icon: Icons.user,
+  },
+  {
+    title: "Design for reliability first",
+    description: "I focus on clean architecture, data integrity, and maintainable APIs.",
+    icon: Icons.server,
+  },
+  {
+    title: "Build with practical trade-offs",
+    description: "I choose tools that solve the problem well and keep the team productive.",
+    icon: Icons.code,
+  },
+  {
+    title: "Review and improve continuously",
+    description: "I revisit performance, security, and developer experience after shipping.",
+    icon: Icons.database,
+  },
+];
+
 export default function IndexPage() {
-  // Structured data for personal portfolio
   const personSchema = {
     "@context": "https://schema.org",
     "@type": "Person",
@@ -42,24 +63,32 @@ export default function IndexPage() {
     sameAs: [siteConfig.links.github, siteConfig.links.twitter],
   };
 
-  // Structured data for website as a software application (template)
-  const softwareSchema = {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    name: "Next.js Portfolio Template",
-    applicationCategory: "DeveloperApplication",
-    operatingSystem: "Web",
-    offers: {
-      "@type": "Offer",
-      price: "0",
-      priceCurrency: "USD",
+  const currentYear = new Date().getFullYear();
+  const firstCareerYear = Math.min(
+    ...careerExperiences.map((experience) => experience.startDate.getFullYear())
+  );
+  const yearsExperience = Math.max(1, currentYear - firstCareerYear);
+
+  const quickStats = [
+    {
+      label: "Experience",
+      value: `${yearsExperience}+`,
+      detail: "Years building and maintaining backend systems",
     },
-    author: {
-      "@type": "Person",
-      name: siteConfig.authorName,
-      url: siteConfig.url,
+    {
+      label: "Projects",
+      value: `${featuredExperiences.length}+`,
+      detail: "Production and personal apps shipped end-to-end",
     },
-  };
+    {
+      label: "Open Source",
+      value: "2+",
+      detail: "Community contributions and tools",
+    },
+  ];
+
+  const focusAreas = ["API architecture", "Database optimization", "System reliability"];
+  const marqueeSkills = skills.slice(0, 12);
 
   return (
     <ClientPageWrapper>
@@ -68,191 +97,247 @@ export default function IndexPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
       />
-      <Script
-        id="schema-software"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareSchema) }}
-      />
 
-      <section className="space-y-4 sm:space-y-6 pb-6 pt-4 sm:pb-8 sm:pt-6 md:pb-12 md:py-20 lg:py-32 min-h-screen flex items-center px-4 sm:px-6">
-        <div className="container flex max-w-[64rem] flex-col items-center gap-3 sm:gap-4 text-center mx-auto">
-          <Image
-            src={hoysengleang}
-            height={100}
-            width={100}
-            sizes="(max-width: 640px) 45vw, (max-width: 768px) 30vw, 16rem"
-            className="bg-primary rounded-full mb-1 sm:mb-0 md:mb-2 w-[45%] sm:w-[40%] md:w-[35%] max-w-[10rem] sm:max-w-[12rem] md:max-w-[16rem] border-4 sm:border-6 md:border-8 border-primary"
-            alt="Hoysengleang - Backend Developer Portfolio"
-            priority
-          />
-          <AnimatedText
-            as="h1"
-            delay={0.2}
-            className="font-heading text-2xl leading-tight sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl px-2"
-          >
-            Houy Sengleang
-          </AnimatedText>
-          <AnimatedText
-            as="h3"
-            delay={0.4}
-            className="font-heading text-sm sm:text-lg md:text-xl lg:text-2xl text-muted-foreground px-2"
-          >
-            Backend Developer
-          </AnimatedText>
-          <div className="mt-2 sm:mt-4 max-w-[90%] sm:max-w-[85%] md:max-w-[42rem] text-center px-2">
-            <p className="leading-relaxed text-muted-foreground text-xs sm:text-sm md:text-base line-clamp-6 sm:line-clamp-none">
-              {siteConfig.description}
-            </p>
+      <div className="page-shell">
+        <section className="pb-3 pt-2 sm:pt-5">
+          <div className="hero-panel">
+            <div className="grid items-start gap-6 md:gap-8 xl:grid-cols-[minmax(0,1fr)_340px] 2xl:grid-cols-[minmax(0,1fr)_420px]">
+              <div className="order-2 min-w-0 xl:order-1">
+                <p className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
+                  Scalable Backend Systems
+                </p>
+
+                <div className="mt-5 space-y-6">
+                  <h1 className="hero-display max-w-[8ch]">Backend Engineer</h1>
+
+                  <div className="w-full text-sm leading-8 text-muted-foreground sm:text-base">
+                    <p className="text-left md:text-justify [text-align-last:left] hyphens-auto">
+                      Detail-oriented Backend Developer with over 3 years of experience in Fintech systems and API architecture. Currently serving as an R&D Officer specializing in technical research, environment standardization using Docker, and performance benchmarking. Proven track record in architecting secure, 100% accurate financial systems including Core Banking and Pawn Management, with a focus on high-volume transaction reliability and scalable system design. I design and ship practical APIs with strong architecture, clear data flow, and stable performance in production.
+                    </p>
+                  </div>
+
+                  <div className="pt-1">
+                    <Link href="/contact" className="hero-cta-link">
+                      Get In Touch
+                      <Icons.arrowRight className="h-4 w-4" />
+                    </Link>
+                  </div>
+
+                  <div className="flex flex-wrap gap-2">
+                    {focusAreas.map((area) => (
+                      <span
+                        key={area}
+                        className="rounded-md bg-background/70 px-2.5 py-1 font-mono text-[11px] uppercase tracking-[0.07em] text-foreground"
+                      >
+                        {area}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
+                    {quickStats.map((item) => (
+                      <div key={item.label} className="stat-tile">
+                        <p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+                          {item.label}
+                        </p>
+                        <p className="mt-1 font-heading text-3xl leading-none text-foreground">{item.value}</p>
+                        <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{item.detail}</p>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="flex flex-wrap items-center gap-2.5 pt-1">
+                    {SocialLinks.slice(0, 4).map((social) => (
+                      <Link
+                        key={social.name}
+                        href={social.link}
+                        target="_blank"
+                        className="terminal-icon-btn h-9 w-9"
+                        aria-label={social.name}
+                      >
+                        <social.icon
+                          className="terminal-icon-brand h-4 w-4"
+                          style={{ color: social.color ?? "hsl(var(--foreground))" }}
+                        />
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="order-1 pb-1 xl:order-2 xl:pb-0 xl:pt-6">
+                <div className="hero-photo-shell">
+                  <Image
+                    src={hoysengleang}
+                    alt={`${siteConfig.authorName} profile`}
+                    fill
+                    priority
+                    className="hero-photo-image"
+                    sizes="(max-width: 1024px) 82vw, 440px"
+                  />
+                </div>
+              </div>
+            </div>
           </div>
+        </section>
 
-          <div className="flex flex-col mt-6 sm:mt-8 md:mt-10 items-center justify-center sm:flex-row sm:space-x-4 gap-2.5 sm:gap-3 w-full sm:w-auto px-4 sm:px-0">
-            <AnimatedText delay={0.6} className="w-full sm:w-auto">
-              <Link
-                href={"https://github.com/hoysengleang"}
-                target="_blank"
-                className={cn(buttonVariants({ size: "lg" }), "w-full sm:w-auto min-w-[140px] h-11 sm:h-12 text-sm sm:text-base")}
-                aria-label="View Hoy Sengleang's GitHub profile"
-              >
-                <Icons.gitHub className="w-4 h-4 sm:w-5 sm:h-5 mr-2" /> GitHub
+        <AnimatedSection className="pb-8 sm:pb-10" id="experience">
+          <div className="section-panel-alt">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+              <div className="space-y-2">
+                <span className="terminal-kicker">Selected projects</span>
+                <h2 className="section-title">Projects</h2>
+                <p className="max-w-2xl text-sm text-muted-foreground sm:text-base">
+                  Backend-heavy work with clean architecture, practical trade-offs, and reliable delivery.
+                </p>
+              </div>
+              <Link href="/experience" className="inline-flex w-full sm:w-auto">
+                <Button variant="secondary" className="w-full sm:w-auto">
+                  See All Projects
+                </Button>
               </Link>
-            </AnimatedText>
-            <AnimatedText delay={0.8} className="w-full sm:w-auto">
-              <Link
-                href={"/contact"}
-                rel="noreferrer"
-                className={cn(
-                  buttonVariants({
-                    variant: "outline",
-                    size: "lg",
-                  }),
-                  "w-full sm:w-auto min-w-[140px] h-11 sm:h-12 text-sm sm:text-base"
-                )}
-                aria-label="Contact Hoysengleang"
-              >
-                <Icons.contact className="w-4 h-4 sm:w-5 sm:h-5 mr-2" /> Contact
-              </Link>
-            </AnimatedText>
+            </div>
+
+            <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
+              {featuredExperiences.slice(0, 3).map((exp, index) => (
+                <AnimatedSection
+                  key={exp.id}
+                  delay={0.07 * (index + 1)}
+                  direction="up"
+                  className={cn(index === 0 ? "sm:col-span-2" : "")}
+                >
+                  <ProjectCard project={exp} />
+                </AnimatedSection>
+              ))}
+            </div>
           </div>
-          <AnimatedText delay={1.2}>
-            <Icons.chevronDown className="h-6 w-6 mt-10" />
-          </AnimatedText>
-        </div>
-      </section>
-      <AnimatedSection
-        className="container space-y-4 sm:space-y-6 bg-muted py-8 sm:py-10 md:py-12 px-4 sm:px-6"
-        id="skills"
-      >
-        <div className="mx-auto flex max-w-[58rem] flex-col items-center space-y-3 sm:space-y-4 text-center px-2">
-          <AnimatedText
-            as="h2"
-            className="font-heading text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl leading-tight"
-          >
-            {pagesConfig.skills.title}
-          </AnimatedText>
-          <AnimatedText
-            as="p"
-            delay={0.2}
-            className="max-w-[90%] sm:max-w-[85%] leading-relaxed text-muted-foreground text-xs sm:text-sm md:text-base lg:text-lg"
-          >
-            {pagesConfig.skills.description}
-          </AnimatedText>
-        </div>
-        <SkillsCard skills={featuredSkills} />
-        <AnimatedText delay={0.4} className="flex justify-center px-4">
-          <Link href="/skills" className="w-full sm:w-auto">
-            <Button variant={"outline"} className="rounded-xl w-full sm:w-auto min-w-[160px] h-11 sm:h-12 text-sm sm:text-base">
-              <Icons.chevronDown className="mr-2 h-4 w-4" /> View All
-            </Button>
-          </Link>
-        </AnimatedText>
-      </AnimatedSection>
+        </AnimatedSection>
 
-      <AnimatedSection className="py-8 sm:py-10 md:py-12 my-10 sm:my-12 md:my-14 px-4 sm:px-6">
-        <CurrentlyLearning />
-      </AnimatedSection>
-      <AnimatedSection
-        className="container space-y-4 sm:space-y-6 bg-muted py-8 sm:py-10 md:py-12 my-10 sm:my-12 md:my-14 px-4 sm:px-6"
-        id="career"
-      >
-        <div className="mx-auto flex max-w-[58rem] flex-col items-center space-y-3 sm:space-y-4 text-center px-2">
-          <AnimatedText
-            as="h2"
-            className="font-heading text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl leading-tight"
-          >
-            Career Timeline
-          </AnimatedText>
-          <AnimatedText
-            as="p"
-            delay={0.2}
-            className="max-w-[90%] sm:max-w-[85%] leading-relaxed text-muted-foreground text-xs sm:text-sm md:text-base lg:text-lg"
-          >
-            {pagesConfig.career.description}
-          </AnimatedText>
-        </div>
-        <Timeline experiences={careerExperiences} />
-        <AnimatedText delay={0.4} className="flex justify-center px-4">
-          <Link href="/career" className="w-full sm:w-auto">
-            <Button variant={"outline"} className="rounded-xl w-full sm:w-auto min-w-[160px] h-11 sm:h-12 text-sm sm:text-base">
-              <Icons.chevronDown className="mr-2 h-4 w-4" /> View All
-            </Button>
-          </Link>
-        </AnimatedText>
-      </AnimatedSection>
+        <AnimatedSection className="pb-8 sm:pb-10" id="skills">
+          <div className="section-panel">
+            <div className="space-y-2">
+              <span className="terminal-kicker">Core stack</span>
+              <h2 className="section-title">Tools I use in real projects</h2>
+              <p className="max-w-3xl text-sm text-muted-foreground sm:text-base">
+                Technology choices centered on stability, speed of delivery, and long-term maintainability.
+              </p>
+            </div>
 
-      <AnimatedSection
-        className="container space-y-4 sm:space-y-6 bg-muted py-8 sm:py-10 md:py-12 my-10 sm:my-12 md:my-14 px-4 sm:px-6"
-        id="education"
-      >
-        <div className="mx-auto flex max-w-[58rem] flex-col items-center space-y-3 sm:space-y-4 text-center px-2">
-          <AnimatedText
-            as="h2"
-            className="font-heading text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl leading-tight"
-          >
-            Education
-          </AnimatedText>
-        </div>
-        <Timeline experiences={education} baseUrl="/education" />
-      </AnimatedSection>
+            <div className="mt-5">
+              <p className="pb-2 font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
+                Hover this row to slow down
+              </p>
+              <div className="skills-marquee-mask">
+                <div className="skills-marquee-track">
+                  {[...marqueeSkills, ...marqueeSkills].map((skill, index) => (
+                    <div
+                      key={`${skill.name}-${index}`}
+                      className="skills-marquee-item section-panel-soft flex min-w-[260px] items-center gap-3 sm:min-w-[300px]"
+                    >
+                      <span className="terminal-icon-wrap">
+                        <skill.icon
+                          className="terminal-icon-brand h-6 w-6"
+                          style={{ color: skill.color ?? "hsl(var(--foreground))" }}
+                        />
+                      </span>
+                      <div className="space-y-0.5">
+                        <p className="font-semibold">{skill.name}</p>
+                        <p className="line-clamp-1 text-xs text-muted-foreground">{skill.description}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </AnimatedSection>
 
-      <AnimatedSection
-        direction="right"
-        className="container space-y-4 sm:space-y-6 py-8 sm:py-10 md:py-12 my-10 sm:my-12 md:my-14 px-4 sm:px-6"
-        id="experience"
-      >
-        <div className="mx-auto flex max-w-[58rem] flex-col items-center space-y-3 sm:space-y-4 text-center px-2">
-          <AnimatedText
-            as="h2"
-            className="font-heading text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl leading-tight"
-          >
-            Key Projects
-          </AnimatedText>
-          <AnimatedText
-            as="p"
-            delay={0.2}
-            className="max-w-[90%] sm:max-w-[85%] leading-relaxed text-muted-foreground text-xs sm:text-sm md:text-base lg:text-lg"
-          >
-            {pagesConfig.experience.description}
-          </AnimatedText>
-        </div>
-        <div className="mx-auto grid justify-center gap-4 sm:gap-5 md:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 md:w-full">
-          {featuredExperiences.map((exp, index) => (
-            <AnimatedSection
-              key={exp.id}
-              delay={0.1 * (index + 1)}
-              direction="up"
-            >
-              <ProjectCard project={exp} />
-            </AnimatedSection>
-          ))}
-        </div>
-        <AnimatedText delay={0.4} className="flex justify-center px-4">
-          <Link href="/experience" className="w-full sm:w-auto">
-            <Button variant={"outline"} className="rounded-xl w-full sm:w-auto min-w-[160px] h-11 sm:h-12 text-sm sm:text-base">
-              <Icons.chevronDown className="mr-2 h-4 w-4" /> View All
-            </Button>
-          </Link>
-        </AnimatedText>
-      </AnimatedSection>
+        <AnimatedSection className="pb-8 sm:pb-10" id="how-i-work">
+          <div className="section-panel-alt">
+            <div className="space-y-2">
+              <span className="terminal-kicker">Approach</span>
+              <h2 className="section-title">How I work</h2>
+            </div>
+
+            <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+              {workStyle.map((item, index) => (
+                <div key={item.title} className="section-panel-soft">
+                  <div className="flex items-center justify-between">
+                    <span
+                      className={cn(
+                        "rounded-md bg-background/70 px-2 py-1 font-mono text-[11px] text-foreground"
+                      )}
+                    >
+                      0{index + 1}
+                    </span>
+                    <item.icon className="terminal-icon-glyph h-5 w-5" />
+                  </div>
+                  <h3 className="mt-3 text-base font-semibold">{item.title}</h3>
+                  <p className="mt-2 text-sm text-muted-foreground">{item.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </AnimatedSection>
+
+        <AnimatedSection className="pb-8 sm:pb-10">
+          <div className="section-panel">
+            <div className="space-y-2 pb-4">
+              <span className="terminal-kicker">Now learning</span>
+              <h2 className="section-title">Learning Roadmap</h2>
+            </div>
+            <div className="section-panel-soft">
+              <CurrentlyLearning />
+            </div>
+          </div>
+        </AnimatedSection>
+
+        <AnimatedSection className="pb-8 sm:pb-10" id="career">
+          <div className="section-panel-alt">
+            <div className="grid gap-6 xl:grid-cols-[260px_minmax(0,1fr)] xl:gap-8 xl:items-start">
+              <div className="space-y-3 xl:pt-2">
+                <span className="terminal-kicker">Career</span>
+                <h2 className="section-title">Career timeline</h2>
+                <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
+                  Milestones from hands-on backend development, real business constraints, and continuous improvement.
+                </p>
+              </div>
+              <div className="section-panel-soft p-3 sm:p-4 xl:p-5">
+                <Timeline experiences={careerExperiences} className="max-w-[760px] py-1" />
+              </div>
+            </div>
+          </div>
+        </AnimatedSection>
+
+        <AnimatedSection className="pb-8 sm:pb-10" id="contributions">
+          <div className="section-panel">
+            <div className="space-y-2 pb-4">
+              <span className="terminal-kicker">Open source</span>
+              <h2 className="section-title">Contributions</h2>
+            </div>
+            <div className="section-panel-soft">
+              <ContributionCard contributions={featuredContributions} />
+            </div>
+          </div>
+        </AnimatedSection>
+
+        <AnimatedSection className="space-y-5" id="education">
+          <div className="section-panel-alt">
+            <div className="grid gap-6 xl:grid-cols-[260px_minmax(0,1fr)] xl:gap-8 xl:items-start">
+              <div className="space-y-3 xl:pt-2">
+                <span className="terminal-kicker">Education</span>
+                <h2 className="section-title">Education</h2>
+                <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
+                  Academic foundation that supports practical engineering work and system thinking.
+                </p>
+              </div>
+              <div className="section-panel-soft p-3 sm:p-4 xl:p-5">
+                <Timeline experiences={education} baseUrl="/education" className="max-w-[760px] py-1" />
+              </div>
+            </div>
+          </div>
+        </AnimatedSection>
+      </div>
     </ClientPageWrapper>
   );
 }

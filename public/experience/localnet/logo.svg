@@ -1,0 +1,24 @@
+<svg width="900" height="540" viewBox="0 0 900 540" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="localnet project card image">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b0f14"/>
+      <stop offset="100%" stop-color="#05070a"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="540" fill="url(#bg)"/>
+  <g opacity="0.25" stroke="#e5e7eb" stroke-width="1">
+    <path d="M0 110 H900"/>
+    <path d="M0 220 H900"/>
+    <path d="M0 330 H900"/>
+    <path d="M0 440 H900"/>
+    <path d="M180 0 V540"/>
+    <path d="M360 0 V540"/>
+    <path d="M540 0 V540"/>
+    <path d="M720 0 V540"/>
+  </g>
+  <rect x="70" y="80" width="760" height="380" rx="22" fill="#0f141a" stroke="#f3f4f6" stroke-opacity="0.28"/>
+  <text x="110" y="210" fill="#f3f4f6" font-family="'IBM Plex Mono', monospace" font-size="74" font-weight="700" letter-spacing="2">localnet</text>
+  <text x="110" y="265" fill="#cfd4db" font-family="'IBM Plex Mono', monospace" font-size="28" letter-spacing="1">share localhost on LAN in seconds</text>
+  <text x="110" y="340" fill="#e5e7eb" font-family="'IBM Plex Mono', monospace" font-size="24">pip install localnet-control</text>
+  <text x="110" y="382" fill="#aeb5bf" font-family="'IBM Plex Mono', monospace" font-size="21">localnet share 3000 --token myteam123</text>
+</svg>

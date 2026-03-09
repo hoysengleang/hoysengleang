@@ -37,19 +37,19 @@ export default function CareerDetailPage({ params }: CareerDetailPageProps) {
     <article className="container relative max-w-3xl py-4 sm:py-6 lg:py-10 px-3 sm:px-4 md:px-6">
       {/* Desktop back link (hidden on mobile/smaller screens) */}
       <Link
-        href="/career"
+        href="/"
         className={cn(
           buttonVariants({ variant: "ghost" }),
           "absolute left-[-200px] top-14 hidden xl:inline-flex"
         )}
       >
         <Icons.chevronLeft className="mr-2 h-4 w-4" />
-        All Career Experience
+        Back to Home
       </Link>
 
       {/* Mobile back link (shown only on mobile/smaller screens) */}
       <Link
-        href="/career"
+        href="/"
         className={cn(
           buttonVariants({ variant: "ghost", size: "sm" }),
           "mb-3 sm:mb-4 inline-flex xl:hidden"
@@ -79,7 +79,7 @@ export default function CareerDetailPage({ params }: CareerDetailPageProps) {
         <div className="flex flex-col md:flex-row md:items-center md:justify-between">
           <div className="flex flex-col sm:flex-row items-center sm:items-start gap-3 sm:gap-4 mb-4 md:mb-0">
             {career.logo ? (
-              <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full border-2 border-primary overflow-hidden bg-white">
+              <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full border-2 border-primary overflow-hidden bg-muted">
                 <Image
                   src={career.logo}
                   alt={career.company}
@@ -90,7 +90,7 @@ export default function CareerDetailPage({ params }: CareerDetailPageProps) {
               </div>
             ) : (
               <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-primary flex items-center justify-center">
-                <Icons.work className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 text-white" />
+                <Icons.work className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 text-foreground" />
               </div>
             )}
             <div className="text-center sm:text-left">
@@ -227,7 +227,7 @@ export default function CareerDetailPage({ params }: CareerDetailPageProps) {
         transition={{ duration: 0.5, delay: 0.3 }}
       >
         <Link
-          href="/career"
+          href="/"
           className={cn(
             buttonVariants({
               variant: "outline",
@@ -237,7 +237,7 @@ export default function CareerDetailPage({ params }: CareerDetailPageProps) {
           )}
         >
           <Icons.chevronLeft className="mr-1 h-3 w-3 sm:mr-2 sm:h-4 sm:w-4" />
-          All Career Experience
+          Back to Home
         </Link>
       </motion.div>
     </article>

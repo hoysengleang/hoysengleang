@@ -8,8 +8,8 @@ export default function manifest(): MetadataRoute.Manifest {
       "Hoysengleang's modern developer portfolio built with Next.js - available as an open-source template",
     start_url: "/",
     display: "standalone",
-    background_color: "#ffffff",
-    theme_color: "#000000",
+    background_color: "#0f0f0f",
+    theme_color: "#0f0f0f",
     icons: [
       {
         src: "/favicon.ico",

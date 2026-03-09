@@ -13,11 +13,15 @@ export default function PageContainer({
   description,
   children,
 }: PageContainerProps) {
+  const hasHeader = title.trim().length > 0 || description.trim().length > 0;
+
   return (
     <ClientPageWrapper>
-      <div>
-        <PageHeader title={title} description={description} className="print:hidden" />
-        <div className="mx-3 sm:mx-4 md:mx-6 print:mx-0">{children}</div>
+      <div className="space-y-6 sm:space-y-8">
+        {hasHeader ? (
+          <PageHeader title={title} description={description} className="print:hidden" />
+        ) : null}
+        <div className="px-1 sm:px-2 md:px-3 print:mx-0">{children}</div>
       </div>
     </ClientPageWrapper>
   );
