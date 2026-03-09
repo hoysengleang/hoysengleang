@@ -106,7 +106,7 @@ export default function Experience({ params }: ExperiencePageProps) {
         href="/experience"
         className={cn(
           buttonVariants({ variant: "ghost" }),
-          "absolute left-[-200px] top-14 hidden xl:inline-flex hover:bg-accent"
+          "absolute left-[-200px] top-14 hidden xl:inline-flex hover:bg-accent hover:text-black"
         )}
       >
         <Icons.chevronLeft className="mr-2 h-4 w-4" />
@@ -126,7 +126,7 @@ export default function Experience({ params }: ExperiencePageProps) {
                 <Link 
                   href={exp.githubLink} 
                   target="_blank"
-                  className="inline-flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-lg border border-border bg-background hover:bg-accent hover:border-primary transition-all"
+                  className="inline-flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-lg border border-border bg-background text-foreground hover:bg-accent hover:text-black hover:border-primary transition-all"
                 >
                   <Icons.gitHub className="w-4 h-4 sm:w-5 sm:h-5" />
                 </Link>
@@ -137,7 +137,7 @@ export default function Experience({ params }: ExperiencePageProps) {
                 <Link 
                   href={exp.websiteLink} 
                   target="_blank"
-                  className="inline-flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-lg border border-border bg-background hover:bg-accent hover:border-primary transition-all"
+                  className="inline-flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-lg border border-border bg-background text-foreground hover:bg-accent hover:text-black hover:border-primary transition-all"
                 >
                   <Icons.externalLink className="w-4 h-4 sm:w-5 sm:h-5" />
                 </Link>
@@ -237,7 +237,10 @@ export default function Experience({ params }: ExperiencePageProps) {
       <div className="flex justify-center py-6 sm:py-8 lg:py-12">
         <Link
           href="/experience"
-          className={cn(buttonVariants({ variant: "ghost", size: "default" }), "group text-sm sm:text-base")}
+          className={cn(
+            buttonVariants({ variant: "ghost", size: "default" }),
+            "group text-sm sm:text-base hover:bg-accent hover:text-black"
+          )}
         >
           <Icons.chevronLeft className="mr-2 h-3.5 w-3.5 sm:h-4 sm:w-4 transition-transform group-hover:-translate-x-1" />
           Back to All Projects
