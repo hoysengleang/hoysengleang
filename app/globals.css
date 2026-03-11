@@ -250,6 +250,19 @@
   .hero-photo-shell {
     @apply relative mx-auto aspect-square overflow-hidden rounded-full;
     width: clamp(190px, 62vw, 280px);
+    background: radial-gradient(
+      120% 120% at 24% 16%,
+      hsl(var(--panel-inner) / 0.98) 0%,
+      hsl(var(--card) / 0.92) 58%,
+      hsl(var(--background) / 0.76) 100%
+    );
+    box-shadow:
+      inset 0 0 0 1px hsl(var(--foreground) / 0.14),
+      inset 0 0 0 10px hsl(var(--panel-inner) / 0.62),
+      0 22px 44px -28px rgba(14, 29, 44, 0.42);
+  }
+
+  .dark .hero-photo-shell {
     background: hsl(var(--card));
     box-shadow:
       inset 0 0 0 1px hsl(var(--foreground) / 0.12),
@@ -258,6 +271,17 @@
 
   .hero-photo-image {
     object-fit: cover;
+    object-position: center 16%;
+  }
+
+  .hero-photo-image-light {
+    inset: 7px !important;
+    border-radius: 9999px;
+    object-position: center 14%;
+    box-shadow: 0 14px 30px -22px rgba(12, 28, 44, 0.62);
+  }
+
+  .hero-photo-image-dark {
     object-position: center 16%;
   }
 
