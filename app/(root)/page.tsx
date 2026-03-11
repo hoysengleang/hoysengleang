@@ -1,5 +1,4 @@
 import { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import Script from "next/script";
 
@@ -11,6 +10,7 @@ import { Icons } from "@/components/common/icons";
 import ContributionCard from "@/components/contributions/contribution-card";
 import ProjectCard from "@/components/experience/project-card";
 import { Button } from "@/components/ui/button";
+import { ThemedProfileImage } from "@/components/common/themed-profile-image";
 import { careerExperiences, education } from "@/config/career";
 import { featuredContributions } from "@/config/contributions";
 import { featuredExperiences } from "@/config/experience";
@@ -19,7 +19,6 @@ import { siteConfig } from "@/config/site";
 import { skills } from "@/config/skills";
 import { SocialLinks } from "@/config/socials";
 import { cn } from "@/lib/utils";
-import hoysengleang from "@/public/hoysengleang-bg-black.jpg";
 
 export const metadata: Metadata = {
   title: `${pagesConfig.home.metadata.title} | Backend Portfolio`,
@@ -167,12 +166,9 @@ export default function IndexPage() {
 
               <div className="order-1 pb-1 xl:order-2 xl:pb-0 xl:pt-6">
                 <div className="hero-photo-shell">
-                  <Image
-                    src={hoysengleang}
+                  <ThemedProfileImage
                     alt={`${siteConfig.authorName} profile`}
-                    fill
                     priority
-                    className="hero-photo-image"
                     sizes="(max-width: 1024px) 82vw, 440px"
                   />
                 </div>

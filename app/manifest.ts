@@ -3,22 +3,22 @@ import type { MetadataRoute } from "next";
 export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "Hoysengleang Portfolio",
-    short_name: "Hoysengleang's Portfolio",
+    short_name: "Hoysengleang",
     description:
       "Hoysengleang's modern developer portfolio built with Next.js - available as an open-source template",
     start_url: "/",
     display: "standalone",
-    background_color: "#0f0f0f",
-    theme_color: "#0f0f0f",
+    background_color: "#d4e9f2",
+    theme_color: "#020826",
     icons: [
       {
-        src: "/favicon.ico",
-        sizes: "64x64",
+        src: "/icon-192.png",
+        sizes: "192x192",
         type: "image/png",
       },
       {
-        src: "/favicon.ico",
-        sizes: "64x64",
+        src: "/icon-512.png",
+        sizes: "512x512",
         type: "image/png",
         purpose: "maskable",
       },
