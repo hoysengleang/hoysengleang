@@ -102,6 +102,7 @@ import {
   SiRedis,
   SiGithubactions,
   SiPytorch,
+  SiUpwork,
 } from "react-icons/si";
 
 export const Icons = {
@@ -193,6 +194,7 @@ export const Icons = {
   redis: SiRedis,
   githubActions: SiGithubactions,
   pytorch: SiPytorch,
+  upwork: SiUpwork,
   gmail: SiGmail,
   twitter: SiTwitter,
   telegram: SiTelegram,

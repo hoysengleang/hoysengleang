@@ -9,6 +9,7 @@ export const siteConfig = {
     github: "https://github.com/hoysengleang",
     linkedin: "https://www.linkedin.com/in/sengleang-houy-825801268",
     telegram: "https://t.me/houysengleang",
+    upwork: "https://www.upwork.com/freelancers/~01b585c1230a545c1a",
   },
   ogImage: "https://hoysengleang.vercel.app/og-image",
   iconIco: "/favicon.ico",

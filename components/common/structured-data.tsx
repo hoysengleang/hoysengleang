@@ -78,6 +78,7 @@ export function StructuredData({ type = "person" }: StructuredDataProps) {
       siteConfig.links.github,
       siteConfig.links.linkedin,
       siteConfig.links.telegram,
+      siteConfig.links.upwork,
     ],
   };
 

@@ -24,6 +24,11 @@ const channels = [
     href: "https://www.linkedin.com/in/sengleang-houy-825801268",
   },
   {
+    label: "Upwork",
+    value: "Hire me on Upwork",
+    href: "https://www.upwork.com/freelancers/~01b585c1230a545c1a",
+  },
+  {
     label: "GitHub",
     value: "@hoysengleang",
     href: "https://github.com/hoysengleang",
@@ -40,7 +45,17 @@ export default function ContactUnified() {
         </p>
         <p className="leading-relaxed text-muted-foreground">
           Based in Phnom Penh, happy to work remotely. Email or Telegram is the
-          quickest way to reach me, and I usually reply within a day.
+          quickest way to reach me, and I usually reply within a day. For
+          freelance projects you can also{" "}
+          <a
+            href="https://www.upwork.com/freelancers/~01b585c1230a545c1a"
+            target="_blank"
+            rel="noreferrer"
+            className="ink-link text-foreground"
+          >
+            hire me on Upwork
+          </a>
+          .
         </p>
         <div className="flex flex-wrap gap-3 pt-2">
           <a
