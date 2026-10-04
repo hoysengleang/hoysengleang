@@ -24,6 +24,13 @@ export const SocialLinks: SocialInterface[] = [
     color: "#0A66C2",
   },
   {
+    name: "Upwork",
+    username: "Hoy S.",
+    icon: Icons.upwork,
+    link: "https://www.upwork.com/freelancers/~01b585c1230a545c1a",
+    color: "#14A800",
+  },
+  {
     name: "Telegram",
     username: "@houysengleang",
     icon: Icons.telegram,
