@@ -1,43 +1,59 @@
 import Link from "next/link";
 import * as React from "react";
 
-import { siteConfig } from "@/config/site";
+import { NavItem } from "@/config/routes";
+import { SocialLinks } from "@/config/socials";
 import { useLockBody } from "@/hooks/use-lock-body";
 import { cn } from "@/lib/utils";
 
 interface MobileNavProps {
-  items: { title: string; href: string; disabled?: boolean }[];
-  children?: React.ReactNode;
+  items: NavItem[];
+  isActive: (href: string) => boolean;
 }
 
-export function MobileNav({ items, children }: MobileNavProps) {
+export function MobileNav({ items, isActive }: MobileNavProps) {
   useLockBody();
 
   return (
-    <div className="fixed inset-0 top-[72px] z-50 h-[calc(100vh-72px)] overflow-auto bg-background/70 p-4 backdrop-blur-md md:hidden">
-      <div className="backend-panel backend-grid space-y-5 p-5">
-        <div className="border-b border-border/80 pb-4">
-          <p className="mt-1 font-heading text-xl">{siteConfig.authorName}</p>
-        </div>
-
-        <nav className="grid gap-2">
-          {items.map((item) => (
-            <Link
-              key={item.href}
-              href={item.disabled ? "#" : item.href}
-              className={cn(
-                "rounded-xl border border-border/70 bg-background/60 px-4 py-3 text-sm font-semibold uppercase tracking-[0.08em] transition-all",
-                "hover:border-primary/50 hover:bg-primary/10",
-                item.disabled && "pointer-events-none opacity-60"
-              )}
-            >
-              {item.title}
-            </Link>
+    <div
+      id="mobile-nav"
+      className="fixed inset-x-0 bottom-0 top-16 z-50 overflow-auto border-t border-border bg-background md:hidden"
+    >
+      <nav aria-label="Mobile" className="page-shell py-4">
+        <ul className="divide-y divide-border">
+          {[{ title: "Home", href: "/" }, ...items].map((item) => (
+            <li key={item.href}>
+              <Link
+                href={item.href}
+                aria-current={isActive(item.href) ? "page" : undefined}
+                className={cn(
+                  "flex items-center justify-between py-4 font-heading text-2xl",
+                  isActive(item.href) ? "text-foreground" : "text-muted-foreground"
+                )}
+              >
+                {item.title}
+                {isActive(item.href) && (
+                  <span className="h-1.5 w-1.5 rounded-full bg-brand" />
+                )}
+              </Link>
+            </li>
           ))}
-        </nav>
+        </ul>
 
-        {children}
-      </div>
+        <div className="mt-8 flex flex-wrap gap-x-5 gap-y-2 text-sm text-muted-foreground">
+          {SocialLinks.map((social) => (
+            <a
+              key={social.name}
+              href={social.link}
+              target={social.link.startsWith("http") ? "_blank" : undefined}
+              rel="noreferrer"
+              className="ink-link"
+            >
+              {social.name === "Gmail" ? "Email" : social.name}
+            </a>
+          ))}
+        </div>
+      </nav>
     </div>
   );
 }

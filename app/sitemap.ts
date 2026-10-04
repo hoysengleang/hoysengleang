@@ -3,6 +3,7 @@ import { MetadataRoute } from "next";
 import { siteConfig } from "@/config/site";
 import { Experiences } from "@/config/experience";
 import { careerExperiences } from "@/config/career";
+import { blogPosts } from "@/config/blog";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = siteConfig.url;
@@ -51,6 +52,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.7,
     },
+    {
+      url: `${baseUrl}/blog`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
   ];
 
   // Dynamic experience pages
@@ -64,10 +71,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Dynamic career pages
   const careerRoutes: MetadataRoute.Sitemap = careerExperiences.map((career) => ({
     url: `${baseUrl}/career/${career.id}`,
-    lastModified: career.endDate || new Date(),
+    lastModified: career.endDate === "Present" ? new Date() : career.endDate,
     changeFrequency: "yearly" as const,
     priority: 0.6,
   }));
 
-  return [...mainRoutes, ...experienceRoutes, ...careerRoutes];
+  const blogRoutes: MetadataRoute.Sitemap = blogPosts.map((post) => ({
+    url: `${baseUrl}/blog/${post.slug}`,
+    lastModified: post.updatedAt ?? post.publishedAt,
+    changeFrequency: "monthly" as const,
+    priority: 0.7,
+  }));
+
+  return [...mainRoutes, ...experienceRoutes, ...careerRoutes, ...blogRoutes];
 }

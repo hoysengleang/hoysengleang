@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-label="free-remote: Remote control that keeps asking permission.">
+<defs><pattern id="dots" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="#1F1D1A" fill-opacity="0.09"/></pattern>
+<marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#1F1D1A"/></marker>
+<marker id="arrowA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#B4532A"/></marker></defs>
+<rect width="1200" height="675" fill="#F4F1EA"/>
+<rect width="1200" height="675" fill="url(#dots)"/>
+<rect x="24" y="24" width="1152" height="627" fill="none" stroke="#1F1D1A" stroke-opacity="0.18"/>
+<text x="72.0" y="86.0" font-family="'IBM Plex Mono', ui-monospace, Menlo, Consolas, monospace" font-size="15" font-weight="500" fill="#6B655C" text-anchor="start" letter-spacing="2">FIG. 04</text>
+<text x="1128.0" y="86.0" font-family="'IBM Plex Mono', ui-monospace, Menlo, Consolas, monospace" font-size="15" font-weight="500" fill="#6B655C" text-anchor="end" letter-spacing="2">REMOTE DESKTOP · RUST</text>
+<text x="72.0" y="172.0" font-family="Newsreader, Georgia, 'Times New Roman', serif" font-size="62" font-weight="600" fill="#1F1D1A" text-anchor="start" letter-spacing="-1">free-remote</text>
+<text x="72.0" y="218.0" font-family="Newsreader, Georgia, 'Times New Roman', serif" font-size="26" font-weight="400" fill="#6B655C" text-anchor="start" font-style="italic">Remote control that keeps asking permission.</text>
+<rect x="76.0" y="334" width="132.8" height="96" rx="6" fill="#D9D2C3" fill-opacity="0.6"/>
+<rect x="72.0" y="330" width="132.8" height="96" rx="6" fill="#FFFDF8" stroke="#1F1D1A" stroke-width="1.4"/>
+<text x="138.4" y="372.0" font-family="'IBM Plex Mono', ui-monospace, Menlo, Consolas, monospace" font-size="19" font-weight="600" fill="#1F1D1A" text-anchor="middle">viewer</text>
+<text x="138.4" y="400.0" font-family="'IBM Plex Mono', ui-monospace, Menlo, Consolas, monospace" font-size="14.1" font-weight="400" fill="#6B655C" text-anchor="middle">egui window</text>
+<line x1="212.8" y1="378.0" x2="240.9" y2="378.0" stroke="#1F1D1A" stroke-width="1.4" marker-end="url(#arrow)"/>
+<rect x="254.9" y="334" width="149.7" height="96" rx="6" fill="#D9D2C3" fill-opacity="0.6"/>
+<rect x="250.9" y="330" width="149.7" height="96" rx="6" fill="#FFFDF8" stroke="#1F1D1A" stroke-width="1.4"/>
+<text x="325.7" y="372.0" font-family="'IBM Plex Mono', ui-monospace, Menlo, Consolas, monospace" font-size="19" font-weight="600" fill="#1F1D1A" text-anchor="middle">Noise XX</text>
+<text x="325.7" y="400.0" font-family="'IBM Plex Mono', ui-monospace, Menlo, Consolas, monospace" font-size="14.1" font-weight="400" fill="#6B655C" text-anchor="middle">encrypted tcp</text>
+<line x1="408.5" y1="378.0" x2="436.6" y2="378.0" stroke="#1F1D1A" stroke-width="1.4" marker-end="url(#arrow)"/>
+<rect x="450.6" y="334" width="222.4" height="96" rx="6" fill="#D9D2C3" fill-opacity="0.6"/>
+<rect x="446.6" y="330" width="222.4" height="96" rx="6" fill="#FBEFE6" stroke="#B4532A" stroke-width="2"/>
+<text x="557.8" y="372.0" font-family="'IBM Plex Mono', ui-monospace, Menlo, Consolas, monospace" font-size="19" font-weight="600" fill="#B4532A" text-anchor="middle">permission check</text>
+<text x="557.8" y="400.0" font-family="'IBM Plex Mono', ui-monospace, Menlo, Consolas, monospace" font-size="14.1" font-weight="400" fill="#6B655C" text-anchor="middle">on every message</text>
+<line x1="677.0" y1="378.0" x2="705.1" y2="378.0" stroke="#1F1D1A" stroke-width="1.4" marker-end="url(#arrow)"/>
+<rect x="719.1" y="334" width="166.5" height="96" rx="6" fill="#D9D2C3" fill-opacity="0.6"/>
+<rect x="715.1" y="330" width="166.5" height="96" rx="6" fill="#FFFDF8" stroke="#1F1D1A" stroke-width="1.4"/>
+<text x="798.4" y="372.0" font-family="'IBM Plex Mono', ui-monospace, Menlo, Consolas, monospace" font-size="19" font-weight="600" fill="#1F1D1A" text-anchor="middle">host</text>
+<text x="798.4" y="400.0" font-family="'IBM Plex Mono', ui-monospace, Menlo, Consolas, monospace" font-size="14.1" font-weight="400" fill="#6B655C" text-anchor="middle">capture · input</text>
+<line x1="889.6" y1="378.0" x2="917.7" y2="378.0" stroke="#1F1D1A" stroke-width="1.4" marker-end="url(#arrow)"/>
+<rect x="931.7" y="334" width="200.3" height="96" rx="6" fill="#D9D2C3" fill-opacity="0.6"/>
+<rect x="927.7" y="330" width="200.3" height="96" rx="6" fill="#FFFDF8" stroke="#1F1D1A" stroke-width="1.4"/>
+<text x="1027.9" y="372.0" font-family="'IBM Plex Mono', ui-monospace, Menlo, Consolas, monospace" font-size="19" font-weight="600" fill="#1F1D1A" text-anchor="middle">human</text>
+<text x="1027.9" y="400.0" font-family="'IBM Plex Mono', ui-monospace, Menlo, Consolas, monospace" font-size="14.1" font-weight="400" fill="#6B655C" text-anchor="middle">approves or revokes</text>
+<line x1="72" y1="560" x2="1128" y2="560" stroke="#1F1D1A" stroke-opacity="0.25"/>
+<text x="72.0" y="604.0" font-family="'IBM Plex Mono', ui-monospace, Menlo, Consolas, monospace" font-size="17" font-weight="400" fill="#6B655C" text-anchor="start">rust · noise · tile diffing · linux / windows / macos</text>
+<text x="1128.0" y="604.0" font-family="'IBM Plex Mono', ui-monospace, Menlo, Consolas, monospace" font-size="17" font-weight="600" fill="#B4532A" text-anchor="end">idle: 31 → 5.9 Mbit/s</text>
+</svg>

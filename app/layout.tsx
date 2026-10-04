@@ -1,7 +1,6 @@
 import "./globals.css";
 
-import { GoogleAnalytics } from "@next/third-parties/google";
-import { Baloo_2, Fredoka } from "next/font/google";
+import { IBM_Plex_Mono, IBM_Plex_Sans, Newsreader } from "next/font/google";
 
 import { Analytics } from "@/components/common/analytics";
 import { StructuredData } from "@/components/common/structured-data";
@@ -11,18 +10,27 @@ import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 import { ModalProvider } from "@/providers/modal-provider";
 
-const fontSans = Baloo_2({
+const fontSans = IBM_Plex_Sans({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500", "600"],
   display: "swap",
   variable: "--font-sans",
 });
 
-const fontHeading = Fredoka({
+const fontSerif = Newsreader({
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
+  style: ["normal", "italic"],
   display: "swap",
-  variable: "--font-heading",
+  variable: "--font-serif",
+  // next/font has no fallback metrics for Newsreader yet.
+  adjustFontFallback: false,
+});
+
+const fontMono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  display: "swap",
+  variable: "--font-mono",
 });
 
 interface RootLayoutProps {
@@ -72,7 +80,6 @@ export const metadata = {
         alt: siteConfig.name,
       },
     ],
-    creator: `@${siteConfig.username}`,
   },
   icons: {
     icon: siteConfig.iconIco,
@@ -107,14 +114,18 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes"
+        />
         <StructuredData type="person" />
       </head>
       <body
         className={cn(
           "min-h-screen bg-background font-sans antialiased overflow-x-hidden",
           fontSans.variable,
-          fontHeading.variable
+          fontSerif.variable,
+          fontMono.variable
         )}
       >
         <ThemeProvider

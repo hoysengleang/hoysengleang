@@ -1,21 +1,21 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import * as React from "react";
 
-import { Icons } from "@/components/common/icons";
 import { MobileNav } from "@/components/common/mobile-nav";
+import { ModeToggle } from "@/components/common/mode-toggle";
 import { siteConfig } from "@/config/site";
+import { NavItem } from "@/config/routes";
 import { cn } from "@/lib/utils";
 
 interface MainNavProps {
-  items?: { title: string; href: string; disabled?: boolean }[];
-  children?: React.ReactNode;
+  items: NavItem[];
 }
 
-export function MainNav({ items, children }: MainNavProps) {
+export function MainNav({ items }: MainNavProps) {
   const [showMobileMenu, setShowMobileMenu] = React.useState(false);
   const pathname = usePathname();
 
@@ -23,57 +23,65 @@ export function MainNav({ items, children }: MainNavProps) {
     setShowMobileMenu(false);
   }, [pathname]);
 
+  const isActive = (href: string) =>
+    href === "/" ? pathname === "/" : pathname.startsWith(href);
+
   return (
-    <div className="flex items-center gap-7">
-      <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}>
-        <Link href="/" className="hidden items-center gap-3 md:flex">
-          <span className="h-3 w-3 rotate-45 rounded-[2px] bg-primary" />
-          <span className={cn("font-heading text-2xl tracking-tight")}>
-            {siteConfig.authorName}
-          </span>
-        </Link>
-      </motion.div>
-
-      {items?.length ? (
-        <nav className="hidden items-center gap-1 md:flex">
-          {items.map((item, index) => {
-            const isActive =
-              item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
-
-            return (
-              <motion.div
-                key={item.href}
-                initial={{ opacity: 0, y: -8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.05 }}
-              >
-                <Link
-                  href={item.disabled ? "#" : item.href}
-                  className={cn(
-                    "inline-flex items-center rounded-lg px-3 py-2 font-mono text-[12px] font-medium transition-colors",
-                    isActive
-                      ? "text-foreground"
-                      : "text-muted-foreground hover:text-foreground",
-                    item.disabled && "cursor-not-allowed opacity-60"
-                  )}
-                >
-                  {item.title}
-                </Link>
-              </motion.div>
-            );
-          })}
-        </nav>
-      ) : null}
-
-      <button
-        className="inline-flex items-center gap-2 rounded-lg border border-border/70 bg-background/50 px-3 py-2 font-mono text-[11px] font-medium uppercase tracking-[0.08em] md:hidden"
-        onClick={() => setShowMobileMenu((prev) => !prev)}
+    <div className="page-shell flex h-16 items-center justify-between gap-6">
+      <Link
+        href="/"
+        className="font-heading text-[1.2rem] font-medium tracking-[-0.01em]"
       >
-        {showMobileMenu ? <Icons.close className="h-4 w-4" /> : <Icons.menu className="h-4 w-4" />}
-        Menu
-      </button>
+        {toTitleCase(siteConfig.authorName)}
+      </Link>
 
-      {showMobileMenu && items && <MobileNav items={items}>{children}</MobileNav>}
+      <div className="flex items-center gap-1">
+        <nav aria-label="Main" className="hidden items-center gap-1 md:flex">
+          {items.map((item) => (
+            <Link
+              key={item.href}
+              href={item.disabled ? "#" : item.href}
+              aria-current={isActive(item.href) ? "page" : undefined}
+              className={cn(
+                "rounded px-3 py-2 text-sm transition-colors",
+                isActive(item.href)
+                  ? "text-foreground underline decoration-brand decoration-2 underline-offset-[10px]"
+                  : "text-muted-foreground hover:text-foreground",
+                item.disabled && "cursor-not-allowed opacity-60"
+              )}
+            >
+              {item.title}
+            </Link>
+          ))}
+        </nav>
+
+        <ModeToggle />
+
+        <button
+          type="button"
+          className="inline-flex h-9 items-center gap-2 rounded px-2 text-sm text-muted-foreground hover:text-foreground md:hidden"
+          aria-expanded={showMobileMenu}
+          aria-controls="mobile-nav"
+          onClick={() => setShowMobileMenu((prev) => !prev)}
+        >
+          {showMobileMenu ? (
+            <X className="h-4 w-4" />
+          ) : (
+            <Menu className="h-4 w-4" />
+          )}
+          Menu
+        </button>
+      </div>
+
+      {showMobileMenu && <MobileNav items={items} isActive={isActive} />}
     </div>
   );
+}
+
+function toTitleCase(value: string) {
+  return value
+    .toLowerCase()
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
 }

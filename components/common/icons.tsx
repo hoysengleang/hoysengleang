@@ -37,6 +37,16 @@ import {
   Layout,
   Globe,
   Languages,
+  Search,
+  ShieldCheck,
+  Brain,
+  Terminal,
+  ArrowUpRight,
+  ArrowLeft,
+  Copy,
+  MapPin,
+  Mail,
+  Download,
 } from "lucide-react";
 import { AiFillStar } from "react-icons/ai";
 import { BiLaugh, BiSolidUser } from "react-icons/bi";
@@ -88,6 +98,10 @@ import {
   SiPostgresql,
   SiComposer,
   SiTensorflow,
+  SiRust,
+  SiRedis,
+  SiGithubactions,
+  SiPytorch,
 } from "react-icons/si";
 
 export const Icons = {
@@ -165,6 +179,20 @@ export const Icons = {
   layout: Layout,
   globe: Globe,
   languages: Languages,
+  search: Search,
+  shield: ShieldCheck,
+  brain: Brain,
+  terminal: Terminal,
+  arrowUpRight: ArrowUpRight,
+  arrowLeft: ArrowLeft,
+  copy: Copy,
+  mapPin: MapPin,
+  mail: Mail,
+  download: Download,
+  rust: SiRust,
+  redis: SiRedis,
+  githubActions: SiGithubactions,
+  pytorch: SiPytorch,
   gmail: SiGmail,
   twitter: SiTwitter,
   telegram: SiTelegram,

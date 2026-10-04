@@ -14,22 +14,579 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+    id: "7",
+    title: "The Crop That Was Costing Me 15 Points of Recall",
+    slug: "visual-search-padding-vs-centre-crop",
+    excerpt:
+      "Stock CLIP preprocessing centre-crops every image. On portrait product photos that throws away about 40% of the frame. How I measured it in OpenVisionSearch, and what changed when I stopped cropping.",
+    content: `# The Crop That Was Costing Me 15 Points of Recall
+
+OpenVisionSearch is a self-hosted API for finding products by photo. You index product images, a shopper uploads a picture, and the closest matches come back. Under the hood it is simple: OpenCLIP turns each image into a vector, Qdrant finds the nearest neighbours.
+
+The interesting part turned out to be one line of preprocessing.
+
+## What the usual setup throws away
+
+The common way to prepare an image for CLIP is to resize the short side and then centre-crop to a square. That's what most examples do, and it works fine on square catalogue shots.
+
+Shoppers don't take square catalogue shots. Phone photos are portrait, the product is rarely centred, and sometimes the part that matters sits near the top or the bottom of the frame.
+
+A centre crop on a portrait photo keeps the middle square and drops the rest. That's **about 40% of the picture**, often including part of the product. The model never sees it, so it can't match on it.
+
+## Measure first
+
+I didn't want to change a default because it felt better, so I set up a benchmark before touching anything:
+
+- 300 portrait products in the index
+- a degraded query photo for each product, closer to a real upload than a catalogue image
+- Recall@1 (is the right product the first result?) and Recall@5 (is it in the top five?)
+
+Then I compared ways of framing the image before embedding it.
+
+## The numbers
+
+\`\`\`
+framing        views   recall@1   recall@5   index   query
+crop (stock)   1       75.0%      96.2%      7 ms    17 ms
+pad            1       90.0%      100%       6 ms    16 ms
+pad            3       95.0%      100%       16 ms   25 ms
+\`\`\`
+
+**Padding** scales the whole image to fit inside the square and fills the leftover space, instead of cutting anything off. The model sees everything the shopper photographed.
+
+That one change took Recall@1 from 75% to 90%. It's also fractionally faster, because there is less image to resample. On images that are already square it does nothing, and the results are byte-identical.
+
+The three-view option averages the padded frame with a centre crop and a mirrored copy. It buys another 5 points of Recall@1 for roughly double the indexing work, so it's off by default. Turn it on with \`EMBED_VIEWS=3\` if indexing time doesn't matter to you.
+
+## The part that's easy to get wrong
+
+Changing preprocessing changes the vectors. Index half a catalogue with crop and half with pad, and the scores stop being comparable. Search gets worse and nothing tells you why.
+
+So every collection stores the framing it was built with and keeps using it. Changing the server default doesn't touch collections that are already indexed. To adopt a new setting you create a new collection and re-index. It's a bit more work, and nothing breaks silently.
+
+The same rule applies to the model. Vectors from two different models mean nothing to each other, so a collection is pinned to the embedding model it was created with.
+
+## Text search for free
+
+OpenCLIP puts images and text in the same vector space, so the images you already indexed can be searched by description with no second index. You can also mix the two: a photo of a shoe, nudged by the words "but in blue".
+
+One thing to know: text-to-image scores sit much lower than image-to-image scores, roughly 0.2 to 0.35 for a good match against 0.8 and up. Tune \`min_score\` per endpoint instead of sharing one threshold.
+
+## What I took away
+
+- Check what your preprocessing throws away. Defaults are written for someone else's data.
+- Build the benchmark before the fix. Without that table this would have been an argument, not a decision.
+- Store the settings that shaped your vectors right next to the vectors.
+
+The code, the benchmark and the API docs are on GitHub: [hoysengleang/images-analystic-search](https://github.com/hoysengleang/images-analystic-search). There's a longer write-up of the project on [its case study page](/experience/openvisionsearch).`,
+    publishedAt: new Date("2026-10-04"),
+    author: "Houy Sengleang",
+    tags: ["Python", "Vector Search", "OpenCLIP", "Qdrant"],
+    featured: true,
+  },
+  {
+    id: "8",
+    title: "Building a Document Assistant That Is Allowed to Say \"Not Found\"",
+    slug: "document-assistant-that-says-not-found",
+    excerpt:
+      "Notes from building Knowledge Assistant: hybrid retrieval with pgvector and Postgres full-text search, a citation on every answer, Khmer OCR, and an evaluation set that can block a deploy.",
+    content: `# Building a Document Assistant That Is Allowed to Say "Not Found"
+
+The worst habit of document chatbots is confidence. When the answer isn't in your files, many of them write one anyway, in the same calm tone as a real answer. For HR policies, payroll rules or contracts, a wrong answer is worse than no answer.
+
+Knowledge Assistant is built around the opposite rule. It answers from your own documents, shows the excerpt it used, and when the documents don't cover the question it says so.
+
+## The pipeline
+
+\`\`\`
+Upload/Import -> Parse -> Chunk -> Embed -> pgvector + full-text
+              -> hybrid top-K (RRF) -> one LLM call -> answer + citations
+\`\`\`
+
+Everything lives in one Postgres database: documents, chunks, vectors and chat history. That's one system to run, back up and secure instead of three.
+
+## Why vector search alone wasn't enough
+
+Embeddings are good at meaning. Ask "how many days off do I get?" and they'll find the paragraph about annual leave even though none of the words match.
+
+They're weaker at exact things: an employee ID, a contract number, a person's name. That's where plain keyword search is strong.
+
+So retrieval runs both, pgvector similarity and Postgres full-text search, and merges the two ranked lists with Reciprocal Rank Fusion. The textbook version of RRF fits in a few lines:
+
+\`\`\`python
+def rrf(rankings, k=60):
+    scores = {}
+    for ranking in rankings:
+        for rank, chunk_id in enumerate(ranking, start=1):
+            scores[chunk_id] = scores.get(chunk_id, 0) + 1 / (k + rank)
+    return sorted(scores, key=scores.get, reverse=True)
+\`\`\`
+
+A chunk that ranks well in either list gets near the top. One that ranks well in both wins. There's no need to normalise two very different scoring systems or tune weights between them.
+
+## Tables need their column names
+
+When you import a spreadsheet or a database table, each row becomes text. Store only the values and \`Alice | 4200\` means nothing to a retriever. Keep the column names, \`name: Alice | salary: 4200\`, and "What is Alice's salary?" finds the right row.
+
+## Citations, and permission not to know
+
+Every answer comes with the sources it was built from. The streaming endpoint sends the sources first, then the answer token by token over SSE, so the user can see what the model is reading while it writes.
+
+The plain API makes the "not found" case explicit. \`POST /api/query\` returns \`answer\`, \`found\`, \`citations\` and \`model\`. When \`found\` is false, the interface says plainly that the documents don't cover it.
+
+Follow-up questions are condensed into standalone search queries first, so "and for part-time staff?" still retrieves the right policy.
+
+## Khmer, end to end
+
+A lot of Cambodian business documents are scanned PDFs in Khmer. The Docker image ships Tesseract with English and Khmer language packs, so scanned files are OCR'd on upload. For retrieval, \`bge-m3\` embeddings handle Khmer well and run locally through Ollama.
+
+## Fully offline when it matters
+
+With Ollama, no API key is needed and nothing leaves your server:
+
+\`\`\`bash
+ollama pull gemma3:4b
+ollama pull bge-m3
+cp .env.example .env    # set LLM_PROVIDER=ollama and EMBEDDING_MODEL=bge-m3
+docker compose up --build
+\`\`\`
+
+Each model provider (Ollama, Gemini, Claude, OpenAI, or any OpenAI-compatible API) is a small adapter, so switching is one environment variable.
+
+## Measure, don't guess
+
+The repo includes an evaluation harness. Each case is a question, the source that should be cited, and text the answer should contain:
+
+\`\`\`bash
+cd backend && python -m scripts.evaluate eval/demo.json
+\`\`\`
+
+Every case is scored on found, source cited and answer contains. The run exits non-zero if any source check fails, so it can block a deploy in CI. Build the eval file from real user questions, and every retrieval or model change gets a before-and-after number instead of a feeling.
+
+Source: [hoysengleang/local-model-free-form](https://github.com/hoysengleang/local-model-free-form). The case study is [here](/experience/knowledge-assistant).`,
+    publishedAt: new Date("2026-10-04"),
+    author: "Houy Sengleang",
+    tags: ["RAG", "PostgreSQL", "pgvector", "FastAPI"],
+    featured: true,
+  },
+  {
+    id: "9",
+    title: "Catching the Boring API Security Holes Before Someone Else Does",
+    slug: "apicheck-owasp-api-security-scanner",
+    excerpt:
+      "What apicheck looks for, why it uses two identities to test object-level access, why it refuses to be destructive, and how to run it as a CI gate with SARIF output.",
+    content: `# Catching the Boring API Security Holes Before Someone Else Does
+
+Most API security problems in business apps are not clever. A list endpoint that answers without a token. A user who can read someone else's record by changing an ID in the URL. A response that includes a field nobody meant to send.
+
+They're boring, and they're exactly the kind of thing that slips through review because everyone assumes someone else checked. apicheck is a small command-line tool that checks them for you, on APIs you own.
+
+## How it works
+
+Give it a base URL and an OpenAPI spec. It discovers every endpoint from the spec and runs a set of independent checks against each one.
+
+\`\`\`bash
+apicheck scan https://staging.example.com \\
+  --spec ./openapi.json \\
+  --token-a "$TOKEN_A" \\
+  --token-b "$TOKEN_B" \\
+  --i-am-authorized
+\`\`\`
+
+Every finding is mapped to the OWASP API Security Top 10, so a result is easy to explain to someone who wasn't in the room.
+
+## What it checks
+
+Per endpoint:
+
+- **security-headers** (API8): missing HSTS, nosniff, frame protection or cache-control
+- **missing-auth** (API2, API5): endpoints that should need auth returning data without it
+- **rate-limit** (API4): no throttling under a small, hard-capped burst
+- **idor** (API1): identity B reading identity A's object
+- **excessive-data** (API3): fields like password, secret or token in responses
+- **cors** (API8): reflective or wildcard CORS, worst when credentials are allowed
+- **cookie-flags** (API8): Set-Cookie without Secure, HttpOnly or SameSite
+- **info-disclosure** (API8): version-leaking headers and stack traces
+- **bfla** (API5): a lower-privilege identity reaching privileged functions
+
+Once per scan:
+
+- **shadow-endpoints** (API9): undocumented paths that still respond
+- **inventory-drift** (API9): deprecated operations still published, and version sprawl
+
+That's 11 checks across 6 of the OWASP API Top 10.
+
+## Two identities make access bugs testable
+
+Broken object-level authorisation sits at the top of the OWASP API Top 10, and you can't find it with one user. apicheck takes two tokens. It reads an object as identity A, then tries the same request as identity B. If B gets A's data, that's a finding:
+
+\`\`\`
+✖ GET /users/{id}   token B read token A's resource at /users/alice (identical response body) — broken object level authorization (API1:2023) [idor]
+\`\`\`
+
+## Non-destructive on purpose
+
+A scanner you're nervous to run is a scanner nobody runs. So apicheck observes and reports. It never exploits, modifies or exfiltrates anything.
+
+- A scan won't start without \`--i-am-authorized\`. Only scan systems you own or are allowed to test.
+- The rate-limit check sends a bounded burst (20 requests by default, capped at 100).
+- Concurrency defaults to 8 requests and is capped at 20.
+
+## Running it in CI
+
+The exit code is \`1\` when any finding meets \`--fail-on\` (default \`fail\`), and \`2\` for config or spec errors. That's enough to fail a pipeline.
+
+\`--sarif\` writes SARIF 2.1.0, which GitHub code scanning understands. Findings then show up in the Security tab and as annotations on pull requests:
+
+\`\`\`yaml
+- run: apicheck scan "$STAGING_URL" --spec openapi.json
+       --token-a "$TOKEN_A" --token-b "$TOKEN_B"
+       --i-am-authorized --sarif > apicheck.sarif
+  continue-on-error: true
+- uses: github/codeql-action/upload-sarif@v3
+  with:
+    sarif_file: apicheck.sarif
+\`\`\`
+
+## Living with known findings
+
+Some findings are deliberate. Your health check may be unlimited on purpose, or CORS may be handled at the gateway. Put those in \`.apicheckignore\` so the gate stays green and new problems still stand out:
+
+\`\`\`
+rate-limit:GET /health     # health is intentionally unlimited
+cors:*                     # CORS handled at the gateway
+\`\`\`
+
+## Trying it
+
+It's not on npm yet, so build it from source (Node.js 20+):
+
+\`\`\`bash
+npm install && npm run build && npm link
+\`\`\`
+
+Source and docs: [hoysengleang/api-check](https://github.com/hoysengleang/api-check).`,
+    publishedAt: new Date("2026-10-04"),
+    author: "Houy Sengleang",
+    tags: ["Security", "TypeScript", "OWASP", "CI/CD"],
+    featured: false,
+  },
+  {
+    id: "10",
+    title: "Permission on Every Message: Notes From Writing a Remote Desktop in Rust",
+    slug: "free-remote-rust-remote-desktop-permissions",
+    excerpt:
+      "free-remote checks permission on every inbound message, not once at connect time. The permission model, the encryption, and how tile diffing took an idle desktop from 31 Mbit/s to 5.9.",
+    content: `# Permission on Every Message: Notes From Writing a Remote Desktop in Rust
+
+Most remote desktop tools treat permission as a checkbox. You click "allow" once at the start, and after that the other side can do whatever the protocol lets it do.
+
+free-remote is my attempt at something stricter: share a screen and let someone use the mouse and keyboard, but only with permission a person explicitly gave, and only as much as they gave.
+
+## The permission model
+
+This is the part that matters, so it comes first.
+
+- **Nothing is granted by default.** A host with no configuration denies every request unless a person answers the prompt.
+- **Permissions are per capability.** \`view-screen\`, \`mouse\` and \`keyboard\` are separate, so you can let someone watch without letting them touch.
+- **Every inbound message is checked** against the live grant, not just the handshake. Revoking takes effect on the very next event, including events already in the queue.
+- **Held keys are released** when control is revoked, so a viewer that disconnects mid-shortcut can't leave Ctrl stuck down.
+
+There's a test that proves the last point against a real X server: with only view granted, an injected pointer move never reaches the display.
+
+## Saying no is the default
+
+When a connection arrives, the host operator sees who is asking and what for, and picks: allow as asked, view only, view plus mouse, or deny.
+
+Pressing enter denies. Not answering denies. An answer it doesn't recognise asks again rather than guessing. If there's no terminal to ask on, the host is closed by default, not open.
+
+The name the other side sends is untrusted text, so control characters, ANSI escapes and bidi overrides are stripped before it's displayed. A hostile peer can't redraw the prompt to fake an approval.
+
+During a session the operator can press \`v\` to drop to view-only immediately, or \`d\` to disconnect.
+
+## Encryption and identity
+
+Every session runs over a Noise XX handshake (\`Noise_XX_25519_ChaChaPoly_BLAKE2s\`), which gives mutual authentication and forward secrecy. Both ends see a short fingerprint for the other. Compare them on both screens before approving, or pin the host on the viewer side:
+
+\`\`\`bash
+free-remote-viewer 192.168.1.10:7777 --expect-fingerprint <64-hex-from-host>
+\`\`\`
+
+The unattended password is stored as an Argon2 hash and is never accepted on the command line, so it stays out of \`ps\` and shell history.
+
+## Making it fast enough
+
+Input was never the problem. Events are tiny and the host sends them ahead of video frames, so they arrive in about one round trip.
+
+Video was the problem. Now each frame is compared with the last one in 128x128 tiles, and only the tiles that changed are encoded, so a still screen costs nothing. Before tiling, an idle desktop cost 31 Mbit/s with 47 ms between frames. After, it was 5.9 Mbit/s and 17.6 ms.
+
+Two more rules keep latency honest under load:
+
+- **Frames are dropped, not queued**, when the network falls behind, so delay can't build up. A dropped tile update is rolled back and re-sent, so the viewer never keeps a stale patch.
+- **Capture backs off** to 4 fps once the screen has been still for a second. That took idle CPU from about 38% of a core to 6%. Remote input restores the full rate immediately.
+
+## How the code is split
+
+\`\`\`
+fr-proto       wire types, the permission model, message codec
+fr-transport   Noise XX handshake, encrypted framing, fingerprints
+fr-capture     screen capture per OS, tile diffing, JPEG encoding
+fr-input       permission-gated input injection
+fr-host        the host binary: approval, streaming, enforcement
+fr-viewer      the viewer binary: egui window, input forwarding
+\`\`\`
+
+It builds on Linux, Windows and macOS with a stable Rust toolchain and nothing else: no system libraries and no C compiler.
+
+## Honest limits
+
+There's no clipboard sync, file transfer or audio yet, no NAT traversal, and one controller at a time. Wayland hosting isn't supported. Video uses JPEG tiles rather than a real video codec, which is simple but expensive for full-screen video.
+
+Most importantly, **this is not audited software**. The cryptography is a standard construction from a well-regarded library, but the way I put it together hasn't had an outside review. Treat it that way.
+
+Source: [hoysengleang/free-remoter](https://github.com/hoysengleang/free-remoter).`,
+    publishedAt: new Date("2026-10-04"),
+    author: "Houy Sengleang",
+    tags: ["Rust", "Security", "Networking"],
+    featured: false,
+  },
+  {
+    id: "11",
+    title: "Fine-Tuning a Small Model, Then Making It Check Its Own Homework",
+    slug: "shiftai-fine-tuning-with-an-eval-loop",
+    excerpt:
+      "How ShiftAI turns your documents into training data, fine-tunes a small model with LoRA, quizzes it on the source, and retrains on exactly the questions it got wrong.",
+    content: `# Fine-Tuning a Small Model, Then Making It Check Its Own Homework
+
+Fine-tuning tutorials usually end when the loss curve goes down. That tells you the model fit the training data. It doesn't tell you whether it learned what you wanted it to learn.
+
+ShiftAI is a self-hosted studio built around that gap. It fine-tunes a small model on your data, then tests it on that data, then retrains on the questions it failed.
+
+## The loop
+
+\`\`\`
+files / SQL -> Ingest -> Understand -> Synthesize -> Train -> Auto-eval
+                                                       ^          |
+                                                       |   failed questions
+                                                       +- Improve <-+
+\`\`\`
+
+## Should you fine-tune at all?
+
+Before anything is trained, an LLM reads your source and writes a short data card: what the data is, what a model would learn from it, where the gaps are, and whether fine-tuning or retrieval (RAG) is the better fit.
+
+That last question matters. If your documents change every week, retrieval is usually the right answer and fine-tuning is wasted effort.
+
+## Turning documents into training data
+
+Documents aren't training data. A teacher model turns each passage into question-and-answer pairs, in a few deliberate shapes:
+
+- **Reasoning traces**: answers that walk step by step from the passage to the conclusion.
+- **Refusal pairs**: on-topic questions the source can't answer, paired with an honest "not in my sources". These teach the model when not to make things up.
+- **Cross-passage pairs**: questions that need facts from two passages, so the model learns to connect information.
+
+Then a judge checks every generated pair for faithfulness to the source, and low scorers are dropped. Bad training data is the fastest way to a confident, wrong model.
+
+## Training choices that mattered
+
+Training is LoRA on any Hugging Face causal model, run as a background job with a live loss curve. Two defaults are worth calling out:
+
+- **Answer-only loss.** Loss is computed on the assistant's answer tokens, not the question. The model doesn't need to learn to write questions.
+- **General-data mixing.** A slice of public instruction data is mixed into training so the model keeps its general chat and maths ability while learning your source. Without it, small models tend to forget what they knew.
+
+## Checking its homework
+
+After training, the model is automatically quizzed with questions sampled from the source and scored against the gold answers, either by an LLM judge or a deterministic token-overlap score.
+
+Then comes the part I like most. One click finds the questions it failed, generates extra training data aimed at those weak passages, and retrains. The new model is evaluated again, so you can watch the score move instead of hoping.
+
+## Running the result
+
+You can chat with the trained adapter locally, send one prompt to the fine-tuned model and the base model side by side, or export the adapter to GGUF and register it in Ollama.
+
+## A small engineering note
+
+The ML stack is heavy. The API and UI shouldn't need it. So \`torch\` and \`transformers\` are only imported inside the functions that train or run models, and the training work happens in a separate Redis Queue worker. The API and UI run fine on a machine without the training stack installed; only the machine that actually trains needs it.
+
+Source: [hoysengleang/train-model-shift-ai](https://github.com/hoysengleang/train-model-shift-ai).`,
+    publishedAt: new Date("2026-10-04"),
+    author: "Houy Sengleang",
+    tags: ["AI", "Fine-tuning", "LoRA", "Python"],
+    featured: false,
+  },
+  {
+    id: "5",
+    title: "Building Reliable Backend Services with Laravel and NestJS",
+    slug: "building-reliable-backend-services-laravel-nestjs",
+    excerpt:
+      "Practical habits for building dependable backend services with Laravel and NestJS, from validation and transactions to queues, observability, and clear API contracts.",
+    content: `# Building Reliable Backend Services with Laravel and NestJS
+
+Reliability is not one feature that can be added at the end of a project. It is the result of many small engineering decisions: validating inputs, protecting data changes, returning predictable API responses, and making failures understandable.
+
+Laravel and NestJS both provide strong foundations for this work. The framework is important, but the habits around it matter even more.
+
+## Start with Clear Boundaries
+
+Keep each part of the backend responsible for one job.
+
+- **Controllers** should receive requests, validate them, and return responses.
+- **Services** should hold business rules and workflows.
+- **Data-access code** should keep database queries focused and reusable.
+- **Jobs and queues** should handle work that does not need to finish during the request.
+
+This separation makes a feature easier to read, test, and change. It also avoids putting complex business rules directly inside controllers, where they quickly become difficult to maintain.
+
+## Validate at Every Entry Point
+
+Never assume a request contains correct data. Validation protects the application before business logic runs.
+
+In Laravel, Form Requests provide a clean place for request rules. In NestJS, DTOs with validation pipes provide the same kind of contract. The principle is identical: define what the API accepts, reject invalid input early, and return useful error messages.
+
+Good validation should cover more than required fields. It should also check formats, allowed values, permissions, and relationships between fields. For example, an end date should not be before its start date, and a user should not be able to update a record outside their access scope.
+
+## Protect Multi-Step Data Changes
+
+Many business actions update more than one record. Creating an order might update inventory, create payment data, and write an audit record. If one step fails, the data must not be left half-finished.
+
+Use database transactions for related writes that must succeed or fail together.
+
+- Begin a transaction before the related changes.
+- Create or update each required record.
+- Write the necessary audit information.
+- Commit only after every step has completed successfully.
+
+Transactions are especially important when working with balances, stock, approvals, or status transitions. They turn a group of related changes into one reliable unit of work.
+
+## Make API Responses Predictable
+
+Frontend developers should not have to guess the shape of every response. A consistent API contract helps the whole team move faster.
+
+- Use the same response shape for successful requests.
+- Return meaningful HTTP status codes.
+- Keep validation errors structured and easy to display.
+- Avoid exposing internal exception details to users.
+- Document endpoints, required fields, and error cases.
+
+Laravel API Resources and NestJS response DTOs are both useful tools for keeping response data intentional. They help prevent accidental exposure of database fields and keep APIs stable as the application grows.
+
+## Move Slow Work to Queues
+
+Sending notifications, generating reports, processing uploads, and calling non-critical external services can slow down an API request. Queue these tasks when the user does not need an immediate result.
+
+The request can return quickly after saving the important data, while a worker handles the background task. This improves the user experience and helps protect the application during busy periods.
+
+Queued work still needs care. Jobs should be retry-safe, log failures, and avoid creating duplicate results when a retry happens. A reliable queue is not only about running in the background; it is about recovering safely when something goes wrong.
+
+## Observe, Learn, and Improve
+
+Production reliability depends on visibility. Log useful context, track failed jobs, monitor response times, and investigate recurring errors. When an issue is reported, the goal is to understand what happened without reproducing the entire situation from memory.
+
+Start with practical signals:
+
+- Error rates and application exceptions
+- Slow endpoints and database queries
+- Failed or delayed queue jobs
+- Important business events, such as completed or rejected actions
+
+Logs should help answer what happened, when it happened, and which request or record was involved. They should never include secrets, passwords, or sensitive personal data.
+
+## Final Thought
+
+Laravel and NestJS make it possible to build clean, scalable applications. Reliability comes from applying the same standards consistently: validate early, keep business rules organized, protect related data with transactions, handle slow work asynchronously, and make production behavior visible.
+
+Those practices create backend services that teammates can trust and users can depend on.`,
+    publishedAt: new Date("2026-08-08"),
+    author: "Houy Sengleang",
+    tags: ["Laravel", "NestJS", "Backend", "Reliability"],
+    featured: true,
+  },
+  {
+    id: "6",
+    title: "End-to-End API Contracts for Laravel and NestJS Teams",
+    slug: "end-to-end-api-contracts-laravel-nestjs-teams",
+    excerpt:
+      "How a shared API contract connects requirements, backend implementation, frontend integration, testing, and release support in Laravel and NestJS projects.",
+    content: `# End-to-End API Contracts for Laravel and NestJS Teams
+
+When a frontend and backend team share a clear API contract, end-to-end feature delivery becomes much smoother. The frontend knows what to send and what to expect. The backend has a precise definition of the data it must support. QA can test the same behavior without relying on assumptions.
+
+Whether a service uses Laravel or NestJS, the contract should remain understandable, consistent, and documented.
+
+## Define the Request Before the Implementation
+
+Before writing a controller or service, agree on the endpoint purpose, request fields, response shape, and error cases. A short example is often enough to prevent rework later.
+
+For example, a create-project request might require a **name** and an allowed **status** value. The contract should make those expectations clear before implementation begins.
+
+For each endpoint, identify the required fields, optional fields, allowed values, and authorization rules. This turns a vague feature request into a concrete interface that both frontend and backend developers can work with.
+
+## Keep Naming Consistent
+
+Inconsistent names create unnecessary integration bugs. Choose conventions early and use them across every endpoint.
+
+- Use one case style for JSON fields, such as camelCase or snake_case.
+- Use consistent names for identifiers, timestamps, pagination, and status fields.
+- Keep resource paths predictable.
+- Use the same error format across the API.
+
+For example, if one endpoint returns createdAt, other endpoints should not return created_at unless there is a deliberate, documented reason. Consistency is a small detail with a large effect on maintainability.
+
+## Treat Errors as Part of the Contract
+
+An API is not complete when only the success response is defined. Clients also need to handle validation failures, authentication issues, missing records, and conflicts.
+
+A useful error response tells the client what happened without exposing internal implementation details. For validation errors, include a field-level message that a form can display. For unexpected errors, return a safe general message and keep the technical context in server-side logs.
+
+## Version Carefully
+
+Changing a response field can break a frontend that depends on it. Prefer additive changes when possible: add a new optional field, keep the old field during a transition, and communicate the deprecation plan.
+
+When a breaking change is unavoidable, version the API deliberately. A version is not a substitute for good communication, but it gives teams room to migrate without blocking each other.
+
+## Document the Real Behavior
+
+Documentation should reflect the API that is actually running. Keep examples close to the implementation and update them in the same pull request as the endpoint.
+
+Tools such as OpenAPI can help describe routes, requests, and responses. Even without a generated specification, a maintained collection or a small endpoint guide is much better than undocumented assumptions.
+
+## Test the Contract
+
+Backend tests should verify important response shapes, validation rules, and authorization cases. Frontend teams can use mocked responses that match the same contract. This catches integration issues before they reach users.
+
+For higher-risk endpoints, add tests for these cases:
+
+- A valid request succeeds with the expected response shape.
+- Invalid fields return clear validation messages.
+- Unauthorized users cannot access protected data.
+- Missing records return a predictable not-found response.
+- Failed dependent actions do not leave partial database changes.
+
+## Final Thought
+
+A well-defined API contract is a collaboration tool. It reduces guesswork, protects existing integrations, and allows Laravel and NestJS services to evolve with confidence. The goal is not more documentation for its own sake; it is a shared agreement that makes every feature easier to build, test, and maintain.`,
+    publishedAt: new Date("2026-07-22"),
+    author: "Houy Sengleang",
+    tags: ["API Design", "Laravel", "NestJS", "Full Stack"],
+    featured: false,
+  },
+  {
     id: "1",
     title: "Optimizing Database Queries in Laravel: A Complete Guide",
     slug: "optimizing-database-queries-laravel",
     excerpt:
-      "Learn how I reduced database query response times by 60% using advanced indexing, eager loading, and query optimization techniques in Laravel.",
+      "A practical Laravel workflow for measuring slow queries, applying targeted indexes, removing N+1 queries, and validating the result.",
     content: `# Optimizing Database Queries in Laravel: A Complete Guide
 
-In this comprehensive article, I'll share the exact techniques and strategies I used to optimize database performance in a production Laravel application, achieving a remarkable **60% reduction** in query response times while handling enterprise-scale financial transactions.
+This guide explains the techniques I use to investigate and improve database performance in Laravel applications. In one production workflow, the measured changes reduced response time by 60%; the same process can be applied without assuming that every query needs the same solution.
 
 ## The Challenge
 
-Our loan management system was processing thousands of daily transactions across multiple branches, serving hundreds of concurrent users. However, as the data grew exponentially, we started experiencing significant performance degradation:
+As the loan-management dataset grew, several high-use workflows became noticeably slower during busy periods:
 
-- **Query Response Times**: Increasing from 200ms to over 3 seconds
+- **Query Response Times**: Some requests took several seconds
 - **User Experience**: Noticeable lag during peak hours
-- **System Load**: Database CPU usage hitting 95% regularly
+- **System Load**: Expensive queries consumed unnecessary database resources
 - **Business Impact**: Customer complaints about slow processing
 
 The system was handling critical financial operations where every second counted. We needed a systematic approach to identify and resolve these bottlenecks without disrupting ongoing operations.
@@ -62,7 +619,7 @@ The analysis revealed several critical issues:
 
 **The Solution**: Implemented strategic composite indexes on frequently queried columns. Added indexes for common query patterns like filtering by branch_id, status, and created_at together.
 
-**Impact**: Reduced query time from 2.8s to 180ms on loan listing queries—a 93% improvement!
+**Impact**: The loan-listing workflow stopped relying on full table scans and became consistently faster under representative data volume.
 
 ### 2. Eager Loading Implementation
 
@@ -70,7 +627,7 @@ The analysis revealed several critical issues:
 
 Transformed inefficient queries that loaded relationships one by one into optimized eager-loaded queries using **with()** method. This dramatically reduced database round trips.
 
-**Impact**: Reduced from 1000+ queries to just 4 queries for loading 1000 loans with relationships.
+**Impact**: Loading relationships in batches removed repeated per-record queries and substantially reduced database round trips.
 
 ### 3. Query Optimization Techniques
 
@@ -99,33 +656,18 @@ Optimized database connection management to reduce overhead from establishing co
 
 ## Results and Impact
 
-The optimization efforts yielded impressive results across the board:
+The changes were compared using the same representative requests and data volume before and after each optimization.
 
 ### Performance Metrics
 
-- **60% Reduction** in average query response time
-- **45% Improvement** in overall system performance
-- **70% Decrease** in database CPU usage
-- **10,000+ Daily Transactions** handled smoothly without performance degradation
+- **60% reduction** in response time for the targeted production workflow
+- Fewer repeated relationship queries through eager loading
+- More predictable response times during busy operating periods
+- Lower database work for common list and dashboard requests
 
-### Business Impact
+### How to Report the Result
 
-- Improved customer satisfaction scores by 40%
-- Reduced support tickets related to performance by 75%
-- Enabled business expansion to 3 new branches
-- System remained stable during peak hours with 500+ concurrent users
-
-### Before vs After Comparison
-
-**Loan Listing Query**:
-- Before: 2.8 seconds (full table scan)
-- After: 180ms (indexed query with eager loading)
-- **Improvement: 93% faster**
-
-**Dashboard Statistics**:
-- Before: 5.2 seconds (multiple queries)
-- After: 420ms (cached + optimized queries)
-- **Improvement: 92% faster**
+Record the endpoint, dataset size, query count, and response-time sample before and after the change. This makes the result repeatable and avoids presenting a single local measurement as a guarantee for the entire system.
 
 ## Key Takeaways
 
@@ -201,10 +743,10 @@ These techniques aren't just applicable to Laravel—the principles apply to any
     title: "Building Scalable RESTful APIs with Laravel",
     slug: "building-scalable-restful-apis-laravel",
     excerpt:
-      "Best practices for designing and implementing secure, scalable RESTful APIs that can handle enterprise-level traffic.",
+      "Practical patterns for designing maintainable Laravel APIs with clear contracts, authorization, validation, documentation, and observability.",
     content: `# Building Scalable RESTful APIs with Laravel
 
-API architecture is the backbone of modern web applications, especially in financial systems where reliability, security, and performance are non-negotiable. In this comprehensive guide, I'll share how I architected and implemented 50+ RESTful API endpoints for our enterprise financial platform, processing over **$500K in daily transactions**.
+API architecture is the backbone of modern web applications, especially in financial systems where reliability, security, and performance are essential. This guide distills lessons from designing and documenting 50+ RESTful endpoints for multi-branch financial workflows without exposing confidential transaction values.
 
 ## The Foundation: API Design Principles
 
@@ -365,7 +907,7 @@ Comprehensive error handling ensures robust API behavior and better developer ex
 
 ### 3. API Response Compression
 
-Enable **Gzip compression** to reduce response size by 70-90%.
+Enable response compression where payload size and client support make it useful, then measure the effect on representative responses.
 
 ### 4. Database Connection Pooling
 
@@ -383,9 +925,9 @@ Reduce overhead by reusing database connections across requests.
 - **Load Tests**: Performance under stress
 - **Security Tests**: Penetration testing and vulnerability scans
 
-### Test Coverage
+### Coverage Priorities
 
-We maintain **95% code coverage** with:
+Choose coverage based on business risk rather than a vanity percentage. Prioritize:
 - Happy path tests
 - Error condition tests
 - Edge case tests
@@ -403,26 +945,23 @@ We maintain **95% code coverage** with:
 
 ### Key Metrics
 
-- **Availability**: 99.9% uptime maintained
-- **Latency**: 95th percentile < 200ms
-- **Throughput**: 10,000+ requests per minute
-- **Error Rate**: < 0.1% for all endpoints
+- **Availability**: Track successful health checks and service interruptions
+- **Latency**: Monitor median and 95th-percentile response time
+- **Throughput**: Measure request volume by endpoint and operating period
+- **Error Rate**: Separate validation, authorization, dependency, and server errors
 
-## Real-World Results
+## Production Readiness Checklist
 
-### By The Numbers
-
-- **50+ API Endpoints**: Covering all business operations
-- **$500K+ Daily Transactions**: Processed reliably and securely
-- **99.9% Uptime**: Maintained over 12 months
-- **< 200ms Average Response**: For 95% of requests
-- **Zero Security Breaches**: In production environment
-- **10,000+ API Calls**: Per minute during peak hours
+- Document success and error contracts for every endpoint
+- Protect multi-record financial changes with database transactions
+- Verify permissions at both route and record scope
+- Test retry behavior for queued and external operations
+- Establish latency, failure, and queue-health baselines before release
 
 ### Key Success Factors
 
 - **Consistent Architecture**: Easy for teams to understand and extend
-- **Comprehensive Documentation**: Reduced integration time by 70%
+- **Comprehensive Documentation**: Gives frontend and QA teams one shared contract
 - **Robust Error Handling**: Simplified debugging and support
 - **Security First**: Protected against common vulnerabilities
 - **Performance Optimization**: Handled scale without degradation

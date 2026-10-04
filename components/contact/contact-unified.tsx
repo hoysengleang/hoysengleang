@@ -1,126 +1,91 @@
-"use client";
-
-import Link from "next/link";
-
 import { Icons } from "@/components/common/icons";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+
+const channels = [
+  {
+    label: "Email",
+    value: "hoysengleang617@gmail.com",
+    href: "mailto:hoysengleang617@gmail.com",
+  },
+  {
+    label: "Telegram",
+    value: "@houysengleang",
+    href: "https://t.me/houysengleang",
+  },
+  {
+    label: "Phone",
+    value: "+855 784-197-60",
+    href: "tel:+85578419760",
+  },
+  {
+    label: "LinkedIn",
+    value: "in/sengleang-houy-825801268",
+    href: "https://www.linkedin.com/in/sengleang-houy-825801268",
+  },
+  {
+    label: "GitHub",
+    value: "@hoysengleang",
+    href: "https://github.com/hoysengleang",
+  },
+];
 
 export default function ContactUnified() {
-  const actionLinks = [
-    {
-      label: "Telegram",
-      href: "https://t.me/houysengleang",
-      icon: Icons.telegram,
-      className:
-        "w-full justify-between border border-[#229ED9] bg-[#229ED9] text-white hover:bg-[#1f8fc4]",
-    },
-    {
-      label: "Email",
-      href: "mailto:hoysengleang617@gmail.com",
-      icon: Icons.gmail,
-      className:
-        "w-full justify-between border border-[#EA4335] bg-[#EA4335] text-white hover:bg-[#d83d30]",
-    },
-    {
-      label: "Resume",
-      href: "/resume",
-      icon: Icons.page,
-      className:
-        "w-full justify-between border border-border/70 bg-background/40 text-foreground hover:bg-background/65",
-    },
-  ];
-
   return (
-    <Card className="backend-grid w-full max-w-5xl overflow-hidden p-0">
-      <div className="grid grid-cols-1 md:grid-cols-2">
-        <div className="code-texture border-b border-border/60 p-7 md:border-b-0 md:border-r md:p-9">
-          <span className="terminal-kicker">Channel Status</span>
-          <h3 className="mt-5 font-heading text-3xl leading-tight">Open For Backend Roles</h3>
-          <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base">
-            If you need API architecture, fintech-grade reliability, or system integration support,
-            send a message.
-          </p>
-
-          <div className="mt-6 space-y-2.5">
-            {actionLinks.map((item) => (
-              <Button
-                key={item.label}
-                asChild
-                variant="default"
-                className={item.className}
-              >
-                <Link href={item.href} target={item.href.startsWith("http") ? "_blank" : undefined}>
-                  <span className="inline-flex items-center gap-2.5">
-                    <item.icon className="h-4 w-4" />
-                    {item.label}
-                  </span>
-                  <Icons.arrowRight className="h-4 w-4" />
-                </Link>
-              </Button>
-            ))}
-          </div>
-
-          <p className="mt-4 text-xs text-muted-foreground">
-            Usually replies within 24 hours.
-          </p>
-        </div>
-
-        <div className="p-7 md:p-9">
-          <h4 className="font-heading text-2xl">Contact Information</h4>
-          <div className="mt-6 space-y-4">
-            <div className="rounded-xl border border-border/60 bg-background/50 p-4">
-              <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-primary">
-                Telegram / Phone
-              </p>
-              <a
-                href="tel:+85578419760"
-                className="mt-2 inline-flex items-center gap-2 text-sm transition-colors hover:text-foreground sm:text-base"
-              >
-                <Icons.contact className="h-4 w-4" />
-                +855 784-197-60
-              </a>
-            </div>
-            <div className="rounded-xl border border-border/60 bg-background/50 p-4">
-              <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-primary">
-                Email
-              </p>
-              <a
-                href="mailto:hoysengleang617@gmail.com"
-                className="mt-2 inline-flex items-center gap-2 text-sm transition-colors hover:text-foreground sm:text-base"
-              >
-                <Icons.gmail className="h-4 w-4" />
-                hoysengleang617@gmail.com
-              </a>
-            </div>
-            <div className="rounded-xl border border-border/60 bg-background/50 p-4">
-              <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-primary">
-                Address
-              </p>
-              <p className="mt-2 text-sm sm:text-base">
-                Kol village, sangkat KunTok, Khan KomBol, Phnom Penh
-              </p>
-            </div>
-            <div className="flex gap-2 pt-1">
-              <Link href="https://github.com/hoysengleang" target="_blank">
-                <Button size="icon" variant="ghost" className="rounded-xl border border-border/70 bg-background/40 hover:bg-background/65">
-                  <Icons.gitHub className="h-5 w-5" style={{ color: "hsl(var(--foreground))" }} />
-                </Button>
-              </Link>
-              <Link href="https://linkedin.com/in/hoysengleang" target="_blank">
-                <Button size="icon" variant="ghost" className="rounded-xl border border-border/70 bg-background/40 hover:bg-background/65">
-                  <Icons.linkedin className="h-5 w-5" style={{ color: "#0A66C2" }} />
-                </Button>
-              </Link>
-              <Link href="https://t.me/houysengleang" target="_blank">
-                <Button size="icon" variant="ghost" className="rounded-xl border border-border/70 bg-background/40 hover:bg-background/65">
-                  <Icons.telegram className="h-5 w-5" style={{ color: "#229ED9" }} />
-                </Button>
-              </Link>
-            </div>
-          </div>
+    <div className="grid gap-12 md:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] md:gap-16">
+      <div className="space-y-5">
+        <p className="font-heading text-[1.75rem] leading-snug">
+          I&apos;m open to backend and full-stack roles, Laravel or NestJS
+          projects, and good engineering conversations.
+        </p>
+        <p className="leading-relaxed text-muted-foreground">
+          Based in Phnom Penh, happy to work remotely. Email or Telegram is the
+          quickest way to reach me, and I usually reply within a day.
+        </p>
+        <div className="flex flex-wrap gap-3 pt-2">
+          <a
+            href="mailto:hoysengleang617@gmail.com"
+            className={cn(buttonVariants({ variant: "default" }))}
+          >
+            <Icons.mail className="h-4 w-4" />
+            Write an email
+          </a>
+          <a
+            href="https://t.me/houysengleang"
+            target="_blank"
+            rel="noreferrer"
+            className={cn(buttonVariants({ variant: "outline" }))}
+          >
+            <Icons.telegram className="h-4 w-4" />
+            Message on Telegram
+          </a>
         </div>
       </div>
-    </Card>
+
+      <dl className="divide-y divide-border border-y border-border">
+        {channels.map((channel) => (
+          <div
+            key={channel.label}
+            className="grid grid-cols-[96px_minmax(0,1fr)] items-baseline gap-4 py-4"
+          >
+            <dt className="eyebrow">{channel.label}</dt>
+            <dd className="min-w-0 truncate">
+              <a
+                href={channel.href}
+                target={channel.href.startsWith("http") ? "_blank" : undefined}
+                rel="noreferrer"
+                className="ink-link"
+              >
+                {channel.value}
+              </a>
+            </dd>
+          </div>
+        ))}
+        <div className="grid grid-cols-[96px_minmax(0,1fr)] items-baseline gap-4 py-4">
+          <dt className="eyebrow">Location</dt>
+          <dd>Phnom Penh, Cambodia (UTC+7)</dd>
+        </div>
+      </dl>
+    </div>
   );
 }

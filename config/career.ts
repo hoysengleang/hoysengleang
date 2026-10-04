@@ -15,6 +15,37 @@ export interface CareerExperienceInterface {
 }
 
 export const careerExperiences: CareerExperienceInterface[] = [
+  {
+    id: "peng-huoth-group",
+    position: "Full Stack Developer",
+    company: "Peng Huoth Group",
+    location: "Phnom Penh, Cambodia",
+    startDate: new Date("2026-01-01"),
+    endDate: "Present",
+    description: [
+      "Build web admin systems and REST APIs in Laravel for the group's business operations, from database design to deployment.",
+      "Built the NestJS backend API for the Peng Huoth mobile app.",
+      "Extend the Angular web admin with new features for managing the mobile app.",
+      "Set up and configure the staging and production servers our applications run on.",
+      "Troubleshoot production issues and make practical performance and reliability fixes.",
+    ],
+    achievements: [
+      "Own web admin systems and REST APIs end to end in Laravel and NestJS, from database design through to the production server.",
+      "Delivered the NestJS backend for the Peng Huoth mobile app, with Angular admin features to manage it.",
+      "Configured separate staging and production environments so changes are tested before they reach users.",
+    ],
+    skills: [
+      "Laravel",
+      "Nest.js",
+      "Angular",
+      "PHP",
+      "Typescript",
+      "MySQL",
+      "RESTful APIs",
+      "Linux",
+    ],
+    logo: "/career/peng-huoth.jpeg",
+  },
   // {
   //   id: "east-group",
   //   position: "R&D Software Engineer",
@@ -41,19 +72,19 @@ export const careerExperiences: CareerExperienceInterface[] = [
     id: "wintech",
     position: "Backend Developer (R&D Officer)",
     company: "Wintech Software Development",
-    location: "1363 National Road No. 2, Phnom Penh 120602",
-    startDate: new Date("2023-01-01"), 
-    endDate: "Present",
+    location: "Phnom Penh, Cambodia",
+    startDate: new Date("2023-01-01"),
+    endDate: new Date("2025-12-31"),
     description: [
       "Pawn System: Architected and developed a robust Loan and Pawn Management System using Laravel as the core framework.",
       "API Architecture: Designed and implemented secure, scalable RESTful APIs to handle complex financial transactions, pawn collateral tracking, and interest calculation schedules.",
       "API Documentation: Documented the entire RESTful API enabling smoother collaboration with the frontend team and reducing integration bugs.",
-      "Feature Development: Built critical modules for loan origination, repayment tracking, and automated penalty calculations, ensuring 100% financial accuracy.",
+      "Feature Development: Built critical modules for loan origination, repayment tracking, and automated penalty calculations with centralized validation and transactional writes.",
       "Background Processing: Leveraged Redis-backed queues for heavy lifting tasks like batch interest calculations and mass notification sending, preventing system lag during peak hours.",
       "System Optimization: Optimized database queries and backend logic to support high-volume transactions across multiple branches.",
     ],
     achievements: [
-      "Architected secure, 100% accurate financial systems including Core Banking and Pawn Management",
+      "Built financial workflows for core banking and pawn management with consistent business rules and data-integrity safeguards",
       "Specialized in technical research, environment standardization using Docker, and performance benchmarking",
       "Designed and documented complete RESTful API architecture for seamless frontend integration",
       "Implemented Redis-backed queue system for high-volume batch processing",
@@ -84,7 +115,14 @@ export const education: CareerExperienceInterface[] = [
       "Consistently applied clean coding practices and structured problem-solving in capstone assignments.",
       "Built confidence in translating business requirements into maintainable software modules.",
     ],
-    skills: ["OOP", "Database Design", "MVC Architecture", "RESTful APIs", "MySQL", "Git"],
+    skills: [
+      "OOP",
+      "Database Design",
+      "MVC Architecture",
+      "RESTful APIs",
+      "MySQL",
+      "Git",
+    ],
     logo: "/beltei.png",
   },
 ];

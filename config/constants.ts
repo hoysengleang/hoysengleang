@@ -63,7 +63,24 @@ export type ValidSkills =
   | "MVC Architecture"
   | "RESTful APIs"
   | "System Optimization"
-  | "Database Design";
+  | "Database Design"
+  | "Rust"
+  | "Angular"
+  | "Sequelize"
+  | "JWT / RBAC"
+  | "SQLite"
+  | "Qdrant"
+  | "OpenCLIP"
+  | "pgvector"
+  | "Ollama"
+  | "LLM APIs"
+  | "LoRA / PEFT"
+  | "Hugging Face"
+  | "OpenAPI"
+  | "OWASP API Top 10"
+  | "Noise Protocol"
+  | "Tesseract OCR"
+  | "GitHub Actions";
 
 export type ValidCategory =
   | "C#"
@@ -80,7 +97,11 @@ export type ValidCategory =
   | "UI/UX"
   | "Web Dev"
   | "Mobile Dev"
-  | "3D Modeling";
+  | "3D Modeling"
+  | "AI & Search"
+  | "Developer Tools"
+  | "Security"
+  | "Business Systems";
 
 export type ValidExpType = "Personal Project" | "Professional";
 

@@ -57,26 +57,15 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        brand: {
+          DEFAULT: "hsl(var(--brand))",
+          soft: "hsl(var(--brand-soft))",
+        },
       },
       fontFamily: {
-        sans: [
-          "var(--font-sans)",
-          "Comic Sans MS",
-          "Comic Neue",
-          "Chalkboard SE",
-          "Marker Felt",
-          "cursive",
-          ...fontFamily.sans,
-        ],
-        heading: [
-          "var(--font-heading)",
-          "Comic Sans MS",
-          "Comic Neue",
-          "Chalkboard SE",
-          "Marker Felt",
-          "cursive",
-          ...fontFamily.sans,
-        ],
+        sans: ["var(--font-sans)", ...fontFamily.sans],
+        heading: ["var(--font-serif)", "Georgia", ...fontFamily.serif],
+        serif: ["var(--font-serif)", "Georgia", ...fontFamily.serif],
         mono: ["var(--font-mono)", ...fontFamily.mono],
       },
       borderRadius: {

@@ -1,41 +1,71 @@
-import Rating from "@/components/skills/rating";
 import { skillsInterface } from "@/config/skills";
 
 interface SkillsCardProps {
   skills: skillsInterface[];
 }
 
+const groups = [
+  {
+    level: "Core" as const,
+    title: "Every week",
+    description: "What I reach for in professional backend and full-stack work.",
+  },
+  {
+    level: "Project Experience" as const,
+    title: "Shipped with",
+    description: "Used in real projects, at work or in open source.",
+  },
+  {
+    level: "Familiar" as const,
+    title: "Getting familiar",
+    description: "I can work with these and I'm still getting better.",
+  },
+];
+
 export default function SkillsCard({ skills }: SkillsCardProps) {
   return (
-    <div className="mx-auto grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      {skills.map((skill, id) => (
-        <div
-          key={id}
-          className="backend-panel backend-grid h-full overflow-hidden p-1"
-        >
-          <div className="code-texture flex h-[210px] flex-col justify-between rounded-[1.2rem] p-5">
-            <div className="flex items-start justify-between gap-3">
-              <span className="terminal-icon-wrap h-10 w-10">
-                <skill.icon
-                  size={30}
-                  className="terminal-icon-brand h-8 w-8"
-                  style={{ color: skill.color ?? "hsl(var(--foreground))" }}
-                />
-              </span>
-              <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-primary">
-                Skill Node
-              </span>
-            </div>
-            <div className="space-y-2.5">
-              <h3 className="font-semibold text-base">{skill.name}</h3>
-              <p className="line-clamp-2 text-sm text-muted-foreground">
-                {skill.description}
+    <div className="space-y-14">
+      {groups.map((group) => {
+        const groupSkills = skills.filter((skill) => skill.level === group.level);
+        const headingId = `skills-${group.level.toLowerCase().replace(" ", "-")}`;
+
+        return (
+          <section
+            key={group.level}
+            aria-labelledby={headingId}
+            className="grid gap-6 md:grid-cols-[180px_minmax(0,1fr)] md:gap-10"
+          >
+            <div>
+              <h2 id={headingId} className="font-heading text-2xl leading-tight">
+                {group.title}
+              </h2>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                {group.description}
               </p>
-              <Rating stars={skill.rating} />
             </div>
-          </div>
-        </div>
-      ))}
+
+            <ul className="grid border-t border-border sm:grid-cols-2 sm:gap-x-10">
+              {groupSkills.map((skill) => (
+                <li
+                  key={skill.name}
+                  className="flex items-start gap-3 border-b border-border py-4"
+                >
+                  <skill.icon
+                    aria-hidden
+                    className="mt-0.5 h-[18px] w-[18px] shrink-0 text-muted-foreground"
+                  />
+                  <div>
+                    <p className="font-medium">{skill.name}</p>
+                    <p className="mt-0.5 text-sm leading-relaxed text-muted-foreground">
+                      {skill.description}
+                    </p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </section>
+        );
+      })}
     </div>
   );
 }

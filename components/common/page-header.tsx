@@ -2,21 +2,28 @@ interface PageHeaderProps {
   title: string;
   description: string;
   className?: string;
+  eyebrow?: string;
 }
 
-export default function PageHeader({ title, description, className }: PageHeaderProps) {
+export default function PageHeader({
+  title,
+  description,
+  className,
+  eyebrow,
+}: PageHeaderProps) {
   return (
-    <div className={className}>
-      <div className="rounded-2xl border border-border bg-card px-5 py-6 sm:px-8 sm:py-8">
-        <div className="flex flex-col gap-4">
-          <h1 className="font-heading text-3xl leading-tight tracking-tight sm:text-4xl md:text-5xl">
-            {title}
-          </h1>
-          <p className="max-w-3xl text-sm leading-relaxed text-muted-foreground sm:text-base">
+    <header className={className}>
+      <div className="border-b border-border pb-10 pt-12 sm:pb-12 sm:pt-16">
+        {eyebrow ? <p className="eyebrow mb-4">{eyebrow}</p> : null}
+        <h1 className="font-heading text-[2.5rem] font-medium leading-[1.05] tracking-[-0.02em] sm:text-[3.25rem]">
+          {title}
+        </h1>
+        {description ? (
+          <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
             {description}
           </p>
-        </div>
+        ) : null}
       </div>
-    </div>
+    </header>
   );
 }

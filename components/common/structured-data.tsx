@@ -1,6 +1,6 @@
-import { siteConfig } from "@/config/site";
-import { Experiences } from "@/config/experience";
 import { careerExperiences } from "@/config/career";
+import { Experiences } from "@/config/experience";
+import { siteConfig } from "@/config/site";
 
 interface StructuredDataProps {
   type?: "person" | "organization" | "website" | "portfolio";
@@ -16,11 +16,13 @@ export function StructuredData({ type = "person" }: StructuredDataProps) {
     url: siteConfig.url,
     image: `${siteConfig.url}/hoysengleang-bg-black.jpg`,
     description: siteConfig.description,
-    jobTitle: "Backend Developer & R&D Officer",
+    jobTitle: "Backend-Focused Full Stack Developer",
     knowsAbout: [
       "Backend Development",
+      "Full Stack Development",
       "API Architecture",
       "Laravel",
+      "NestJS",
       "PHP",
       "Python",
       "FastAPI",
@@ -32,10 +34,15 @@ export function StructuredData({ type = "person" }: StructuredDataProps) {
       "Fintech Systems",
       "Core Banking",
       "RESTful APIs",
+      "Vector Search",
+      "Retrieval-Augmented Generation",
+      "LLM Fine-tuning",
+      "API Security",
+      "Rust",
     ],
     hasOccupation: {
       "@type": "Occupation",
-      name: "Backend Developer",
+      name: "Backend-Focused Full Stack Developer",
       occupationalCategory: "15-1252.00",
       estimatedSalary: {
         "@type": "MonetaryAmountDistribution",
@@ -43,7 +50,7 @@ export function StructuredData({ type = "person" }: StructuredDataProps) {
         currency: "USD",
       },
       responsibilities:
-        "Technical research, environment standardization using Docker, performance benchmarking, API architecture, and financial system development",
+        "Delivering end-to-end business application features, including requirements, API and database design, Laravel and NestJS implementation, frontend integration, testing, and production support",
     },
     alumniOf: [
       {
@@ -54,20 +61,23 @@ export function StructuredData({ type = "person" }: StructuredDataProps) {
       {
         "@type": "EducationalOrganization",
         name: "BELTEI International University",
-        description: "Bachelor's Degree in Information Technology",
+        description: "Bachelor of Software Engineering",
       },
     ],
     worksFor: careerExperiences.map((exp) => ({
       "@type": "Organization",
       name: exp.company,
       startDate: exp.startDate.toISOString().split("T")[0],
-      endDate: exp.endDate && exp.endDate !== "Present" ? exp.endDate.toISOString().split("T")[0] : undefined,
+      endDate:
+        exp.endDate && exp.endDate !== "Present"
+          ? exp.endDate.toISOString().split("T")[0]
+          : undefined,
       jobTitle: exp.position,
     })),
     sameAs: [
       siteConfig.links.github,
-      siteConfig.links.twitter,
-      siteConfig.url,
+      siteConfig.links.linkedin,
+      siteConfig.links.telegram,
     ],
   };
 
@@ -83,14 +93,6 @@ export function StructuredData({ type = "person" }: StructuredDataProps) {
       name: siteConfig.authorName,
     },
     inLanguage: "en-US",
-    potentialAction: {
-      "@type": "SearchAction",
-      target: {
-        "@type": "EntryPoint",
-        urlTemplate: `${siteConfig.url}/?q={search_term_string}`,
-      },
-      "query-input": "required name=search_term_string",
-    },
   };
 
   // Portfolio Schema
@@ -225,9 +227,7 @@ export function ExperienceStructuredData({ expId }: { expId: string }) {
     ...(exp.githubLink && {
       codeRepository: exp.githubLink,
     }),
-    ...(exp.websiteLink && {
-      url: exp.websiteLink,
-    }),
+    ...(exp.websiteLink && { sameAs: exp.websiteLink }),
     about: exp.descriptionDetails.bullets.map((bullet) => ({
       "@type": "Thing",
       description: bullet,

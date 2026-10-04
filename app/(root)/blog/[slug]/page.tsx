@@ -1,10 +1,9 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import PageContainer from "@/components/common/page-container";
-import { blogPosts } from "@/config/blog";
-import { Button } from "@/components/ui/button";
+import { ClientPageWrapper } from "@/components/common/client-page-wrapper";
 import { Icons } from "@/components/common/icons";
+import { blogPosts } from "@/config/blog";
 
 interface BlogPostPageProps {
   params: {
@@ -44,19 +43,41 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     notFound();
   }
 
-  // Enhanced markdown parser
+  const escapeHtml = (value: string) =>
+    value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+  const inline = (value: string) =>
+    escapeHtml(value)
+      .replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold">$1</strong>')
+      .replace(/`(.*?)`/g, "<code>$1</code>")
+      .replace(
+        /\[([^\]]+)\]\((https?:\/\/[^\s)]+|\/[^\s)]*)\)/g,
+        (_match, text: string, href: string) =>
+          href.startsWith("http")
+            ? `<a href="${href}" target="_blank" rel="noreferrer">${text}</a>`
+            : `<a href="${href}">${text}</a>`
+      );
+
+  // Small markdown renderer for the hand-written posts in config/blog.ts.
   const parseContent = (content: string) => {
     const lines = content.split("\n");
     let html = "";
     let inCodeBlock = false;
-    let inList = false;
+    let list: "ul" | "ol" | null = null;
+    let skippedTitle = false;
 
-    lines.forEach((line, index) => {
-      // Code blocks
+    const closeList = () => {
+      if (list) {
+        html += `</${list}>`;
+        list = null;
+      }
+    };
+
+    lines.forEach((line) => {
       if (line.startsWith("```")) {
         if (!inCodeBlock) {
-          const lang = line.slice(3).trim();
-          html += `<pre class="bg-slate-900 dark:bg-slate-950 text-slate-100 p-6 rounded-xl overflow-x-auto my-8 border border-slate-700 shadow-lg"><code class="text-sm font-mono">`;
+          closeList();
+          html += `<pre class="my-7 overflow-x-auto rounded-md border border-border bg-[#1F1D1A] p-5 text-[#EDE8DF]"><code class="font-mono text-sm">`;
           inCodeBlock = true;
         } else {
           html += `</code></pre>`;
@@ -66,133 +87,117 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       }
 
       if (inCodeBlock) {
-        html += line + "\n";
+        html += escapeHtml(line) + "\n";
         return;
       }
 
-      // Headings
+      const ordered = line.match(/^\d+\.\s+(.*)$/);
+
       if (line.startsWith("# ")) {
-        if (inList) {
-          html += "</ul>";
-          inList = false;
+        closeList();
+        // The first top-level heading restates the title already shown in the header.
+        if (!skippedTitle) {
+          skippedTitle = true;
+        } else {
+          html += `<h2 class="mb-4 mt-12 text-[1.9rem] font-medium leading-tight">${inline(line.slice(2))}</h2>`;
         }
-        html += `<h1 class="text-5xl font-extrabold mb-8 mt-12 leading-tight tracking-tight bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">${line.slice(2)}</h1>`;
       } else if (line.startsWith("## ")) {
-        if (inList) {
-          html += "</ul>";
-          inList = false;
-        }
-        html += `<h2 class="text-4xl font-bold mb-6 mt-10 leading-tight text-foreground border-l-4 border-primary pl-4">${line.slice(3)}</h2>`;
+        closeList();
+        html += `<h2 class="mb-4 mt-12 text-[1.75rem] font-medium leading-tight">${inline(line.slice(3))}</h2>`;
       } else if (line.startsWith("### ")) {
-        if (inList) {
-          html += "</ul>";
-          inList = false;
-        }
-        html += `<h3 class="text-2xl font-semibold mb-4 mt-8 leading-snug text-foreground">${line.slice(4)}</h3>`;
+        closeList();
+        html += `<h3 class="mb-3 mt-9 text-[1.35rem] font-medium leading-snug">${inline(line.slice(4))}</h3>`;
       } else if (line.startsWith("- ")) {
-        // List items
-        if (!inList) {
-          html += '<ul class="space-y-3 my-6 ml-6">';
-          inList = true;
+        if (list !== "ul") {
+          closeList();
+          html += '<ul class="my-5 list-disc space-y-2 pl-6 marker:text-brand">';
+          list = "ul";
         }
-        html += `<li class="text-lg leading-relaxed text-muted-foreground flex items-start gap-3"><span class="text-primary font-bold mt-1">•</span><span>${line.slice(2)}</span></li>`;
+        html += `<li>${inline(line.slice(2))}</li>`;
+      } else if (ordered) {
+        if (list !== "ol") {
+          closeList();
+          html += '<ol class="my-5 list-decimal space-y-2 pl-6 marker:font-mono marker:text-sm marker:text-brand">';
+          list = "ol";
+        }
+        html += `<li>${inline(ordered[1])}</li>`;
+      } else if (line.startsWith("> ")) {
+        closeList();
+        html += `<blockquote class="my-6 border-l-2 border-brand pl-5 font-heading text-[1.2rem] leading-snug text-foreground">${inline(line.slice(2))}</blockquote>`;
       } else if (line.trim() === "") {
-        if (inList) {
-          html += "</ul>";
-          inList = false;
-        }
-        html += "<div class='h-4'></div>";
-      } else if (line.trim()) {
-        if (inList) {
-          html += "</ul>";
-          inList = false;
-        }
-        // Regular paragraphs with better formatting
-        const formattedLine = line
-          .replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold text-foreground">$1</strong>')
-          .replace(/`(.*?)`/g, '<code class="px-2 py-1 rounded bg-slate-100 dark:bg-slate-800 text-primary font-mono text-sm">$1</code>');
-        html += `<p class="text-lg leading-relaxed mb-6 text-muted-foreground">${formattedLine}</p>`;
+        closeList();
+      } else {
+        closeList();
+        html += `<p class="mb-5">${inline(line)}</p>`;
       }
     });
 
-    if (inList) html += "</ul>";
+    closeList();
     return html;
   };
 
+  const dateLabel = post.publishedAt.toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
+
   return (
-    <PageContainer title="" description="">
-      <article className="max-w-5xl mx-auto px-4">
-        {/* Article Header - Book Style */}
-        <header className="mb-12 text-center">
-          <div className="flex flex-wrap justify-center gap-2 mb-6">
-            {post.tags.map((tag) => (
-              <span
-                key={tag}
-                className="text-xs uppercase tracking-wider px-4 py-2 rounded-full bg-primary/10 text-primary font-semibold border border-primary/20"
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
-          
-          <h1 className="text-5xl md:text-6xl font-extrabold mb-6 leading-tight tracking-tight">
-            {post.title}
-          </h1>
-          
-          <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed">
-            {post.excerpt}
-          </p>
-          
-          <div className="flex items-center justify-center gap-6 text-sm text-muted-foreground py-6 border-y border-border">
-            <span className="flex items-center gap-2 font-medium">
-              <Icons.user className="w-4 h-4" />
-              {post.author}
-            </span>
-            <span className="w-1 h-1 rounded-full bg-muted-foreground"></span>
-            <time className="font-medium">
-              {post.publishedAt.toLocaleDateString("en-US", {
-                month: "long",
-                day: "numeric",
-                year: "numeric",
-              })}
-            </time>
+    <ClientPageWrapper>
+      <article className="page-shell">
+        <div className="pt-8">
+          <Link
+            href="/blog"
+            className="inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+          >
+            <Icons.arrowLeft className="h-3.5 w-3.5" />
+            All writing
+          </Link>
+        </div>
+
+        <header className="mx-auto max-w-[68ch] border-b border-border pb-10 pt-10">
+          <p className="eyebrow">
+            <time dateTime={post.publishedAt.toISOString()}>{dateLabel}</time>
             {post.updatedAt && (
               <>
-                <span className="w-1 h-1 rounded-full bg-muted-foreground"></span>
-                <span className="italic">
-                  Updated: {post.updatedAt.toLocaleDateString("en-US", {
-                    month: "short",
-                    day: "numeric",
-                    year: "numeric",
-                  })}
-                </span>
+                {" · Updated "}
+                {post.updatedAt.toLocaleDateString("en-US", {
+                  month: "short",
+                  day: "numeric",
+                  year: "numeric",
+                })}
               </>
             )}
-          </div>
+          </p>
+          <h1 className="mt-4 font-heading text-[2.4rem] font-medium leading-[1.08] tracking-[-0.02em] sm:text-[3rem]">
+            {post.title}
+          </h1>
+          <p className="mt-5 text-lg leading-relaxed text-muted-foreground">
+            {post.excerpt}
+          </p>
+          <p className="mt-5 font-mono text-[11px] text-muted-foreground">
+            {post.tags.join(" · ")}
+          </p>
         </header>
 
-        {/* Article Content - Typography Optimized */}
-        <div 
-          className="article-content max-w-4xl mx-auto mb-16 text-lg leading-relaxed"
+        <div
+          className="article-content mx-auto max-w-[68ch] pt-8"
           dangerouslySetInnerHTML={{ __html: parseContent(post.content) }}
         />
 
-        {/* Article Footer */}
-        <footer className="max-w-4xl mx-auto pt-12 mt-12 border-t border-border">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
-            <div className="text-center sm:text-left">
-              <p className="text-sm text-muted-foreground mb-1">Thanks for reading!</p>
-              <p className="text-lg font-semibold">{post.author}</p>
-            </div>
-            <Link href="/blog">
-              <Button variant="default" size="lg" className="shadow-lg">
-                <Icons.chevronLeft className="w-4 h-4 mr-2" />
-                More Articles
-              </Button>
+        <footer className="mx-auto mt-14 flex max-w-[68ch] flex-wrap items-center justify-between gap-4 border-t border-border pt-8">
+          <p className="text-muted-foreground">
+            Thanks for reading. Questions or corrections are welcome on{" "}
+            <Link href="/contact" className="ink-link text-foreground">
+              the contact page
             </Link>
-          </div>
+            .
+          </p>
+          <Link href="/blog" className="ink-link text-sm">
+            More writing
+          </Link>
         </footer>
       </article>
-    </PageContainer>
+    </ClientPageWrapper>
   );
 }
