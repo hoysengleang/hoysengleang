@@ -36,10 +36,13 @@ export default function ContactUnified() {
       <div className="grid grid-cols-1 md:grid-cols-2">
         <div className="code-texture border-b border-border/60 p-7 md:border-b-0 md:border-r md:p-9">
           <span className="terminal-kicker">Channel Status</span>
-          <h3 className="mt-5 font-heading text-3xl leading-tight">Open For Backend Roles</h3>
+          <h3 className="mt-5 font-heading text-3xl leading-tight">
+            Open to Software Engineering Opportunities
+          </h3>
           <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base">
-            If you need API architecture, fintech-grade reliability, or system integration support,
-            send a message.
+            I am open to discussing backend-focused full-stack roles, Laravel or
+            NestJS projects, and engineering collaboration in Phnom Penh or
+            remotely.
           </p>
 
           <div className="mt-6 space-y-2.5">
@@ -50,7 +53,11 @@ export default function ContactUnified() {
                 variant="default"
                 className={item.className}
               >
-                <Link href={item.href} target={item.href.startsWith("http") ? "_blank" : undefined}>
+                <Link
+                  href={item.href}
+                  target={item.href.startsWith("http") ? "_blank" : undefined}
+                  rel={item.href.startsWith("http") ? "noreferrer" : undefined}
+                >
                   <span className="inline-flex items-center gap-2.5">
                     <item.icon className="h-4 w-4" />
                     {item.label}
@@ -71,7 +78,7 @@ export default function ContactUnified() {
           <div className="mt-6 space-y-4">
             <div className="rounded-xl border border-border/60 bg-background/50 p-4">
               <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-primary">
-                Telegram / Phone
+                Phone
               </p>
               <a
                 href="tel:+85578419760"
@@ -97,24 +104,58 @@ export default function ContactUnified() {
               <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-primary">
                 Address
               </p>
-              <p className="mt-2 text-sm sm:text-base">
-                Kol village, sangkat KunTok, Khan KomBol, Phnom Penh
-              </p>
+              <p className="mt-2 text-sm sm:text-base">Phnom Penh, Cambodia</p>
             </div>
             <div className="flex gap-2 pt-1">
-              <Link href="https://github.com/hoysengleang" target="_blank">
-                <Button size="icon" variant="ghost" className="rounded-xl border border-border/70 bg-background/40 hover:bg-background/65">
-                  <Icons.gitHub className="h-5 w-5" style={{ color: "hsl(var(--foreground))" }} />
+              <Link
+                href="https://github.com/hoysengleang"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="GitHub profile"
+              >
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  className="rounded-xl border border-border/70 bg-background/40 hover:bg-background/65"
+                >
+                  <Icons.gitHub
+                    className="h-5 w-5"
+                    style={{ color: "hsl(var(--foreground))" }}
+                  />
                 </Button>
               </Link>
-              <Link href="https://linkedin.com/in/hoysengleang" target="_blank">
-                <Button size="icon" variant="ghost" className="rounded-xl border border-border/70 bg-background/40 hover:bg-background/65">
-                  <Icons.linkedin className="h-5 w-5" style={{ color: "#0A66C2" }} />
+              <Link
+                href="https://linkedin.com/in/hoysengleang"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="LinkedIn profile"
+              >
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  className="rounded-xl border border-border/70 bg-background/40 hover:bg-background/65"
+                >
+                  <Icons.linkedin
+                    className="h-5 w-5"
+                    style={{ color: "#0A66C2" }}
+                  />
                 </Button>
               </Link>
-              <Link href="https://t.me/houysengleang" target="_blank">
-                <Button size="icon" variant="ghost" className="rounded-xl border border-border/70 bg-background/40 hover:bg-background/65">
-                  <Icons.telegram className="h-5 w-5" style={{ color: "#229ED9" }} />
+              <Link
+                href="https://t.me/houysengleang"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Telegram profile"
+              >
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  className="rounded-xl border border-border/70 bg-background/40 hover:bg-background/65"
+                >
+                  <Icons.telegram
+                    className="h-5 w-5"
+                    style={{ color: "#229ED9" }}
+                  />
                 </Button>
               </Link>
             </div>

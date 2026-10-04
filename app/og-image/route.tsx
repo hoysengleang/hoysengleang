@@ -1,5 +1,5 @@
-import { ImageResponse } from "next/og";
 import { siteConfig } from "@/config/site";
+import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
 
@@ -51,7 +51,7 @@ export async function GET() {
               marginBottom: 40,
             }}
           >
-            Backend Developer
+            Backend-Focused Full Stack Developer
           </div>
 
           {/* Description */}
@@ -64,7 +64,7 @@ export async function GET() {
               textAlign: "center",
             }}
           >
-            Building high-performance APIs and scalable web architectures
+            Building reliable backend services and scalable web applications
           </div>
 
           {/* Skills Badge */}
@@ -75,7 +75,7 @@ export async function GET() {
               marginTop: 40,
             }}
           >
-            {["Laravel", "Python", "Next.js", "PostgreSQL"].map((skill) => (
+            {["Laravel", "NestJS", "TypeScript", "MySQL"].map((skill) => (
               <div
                 key={skill}
                 style={{

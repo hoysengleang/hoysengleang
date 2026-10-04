@@ -1,6 +1,5 @@
 import "./globals.css";
 
-import { GoogleAnalytics } from "@next/third-parties/google";
 import { Baloo_2, Fredoka } from "next/font/google";
 
 import { Analytics } from "@/components/common/analytics";
@@ -72,7 +71,6 @@ export const metadata = {
         alt: siteConfig.name,
       },
     ],
-    creator: `@${siteConfig.username}`,
   },
   icons: {
     icon: siteConfig.iconIco,
@@ -107,7 +105,10 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes"
+        />
         <StructuredData type="person" />
       </head>
       <body

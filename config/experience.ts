@@ -11,6 +11,14 @@ interface DescriptionDetailsInterface {
   bullets: string[];
 }
 
+export interface CaseStudyInterface {
+  problem: string;
+  role: string;
+  approach: string[];
+  outcome: string;
+  evidence?: string[];
+}
+
 export interface ExperienceInterface {
   id: string;
   type: ValidExpType;
@@ -25,6 +33,7 @@ export interface ExperienceInterface {
   companyLogoImg: any;
   descriptionDetails: DescriptionDetailsInterface;
   pagesInfoArr: PagesInfoInterface[];
+  caseStudy?: CaseStudyInterface;
 }
 
 export const Experiences: ExperienceInterface[] = [
@@ -44,17 +53,20 @@ export const Experiences: ExperienceInterface[] = [
     pagesInfoArr: [
       {
         title: "Backend Architecture (FastAPI)",
-        description: "Built a robust FastAPI backend with Python 3.12, featuring dynamic mock endpoint management, JSON-backed storage, and hot-reload development support with Uvicorn. The backend exposes RESTful APIs for creating, reading, updating, and deleting mock endpoints with customizable responses.",
+        description:
+          "Built a robust FastAPI backend with Python 3.12, featuring dynamic mock endpoint management, JSON-backed storage, and hot-reload development support with Uvicorn. The backend exposes RESTful APIs for creating, reading, updating, and deleting mock endpoints with customizable responses.",
         imgArr: ["/experience/mimic/api_dashboard.svg"],
       },
       {
         title: "Frontend Interface (Vue 3 + TypeScript)",
-        description: "Developed a modern, responsive UI using Vue 3 with TypeScript, Vite for instant HMR, and a clean component architecture for managing mock APIs visually. The interface provides an intuitive way to manage endpoints, configure responses, and monitor request statistics.",
+        description:
+          "Developed a modern, responsive UI using Vue 3 with TypeScript, Vite for instant HMR, and a clean component architecture for managing mock APIs visually. The interface provides an intuitive way to manage endpoints, configure responses, and monitor request statistics.",
         imgArr: ["/experience/mimic/ui_interface.svg"],
       },
       {
         title: "Docker Infrastructure",
-        description: "Implemented a Docker-first development approach with multi-container orchestration using Docker Compose. The architecture ensures portability across all development environments with automatic dependency installation, volume mounting for hot-reload, and isolated networking between services.",
+        description:
+          "Implemented a Docker-first development approach with multi-container orchestration using Docker Compose. The architecture ensures portability across all development environments with automatic dependency installation, volume mounting for hot-reload, and isolated networking between services.",
         imgArr: ["/experience/mimic/docker_architecture.svg"],
       },
     ],
@@ -75,6 +87,22 @@ export const Experiences: ExperienceInterface[] = [
         "JSON-backed data persistence for mock configurations",
         "Multi-environment support (Dev, Staging, Production)",
         "Open-source and actively maintained on GitHub",
+      ],
+    },
+    caseStudy: {
+      problem:
+        "Frontend teams needed a dependable way to develop and test integrations before every real backend endpoint was available.",
+      role: "I designed and built the full-stack tool, including the API, management interface, local development workflow, and Docker setup.",
+      approach: [
+        "Defined a RESTful model for dynamic mock endpoints and response configuration.",
+        "Built the FastAPI service and Vue 3 interface with TypeScript for a clear, type-safe workflow.",
+        "Containerized the services with Docker Compose so the project is easy to run consistently.",
+      ],
+      outcome:
+        "A self-hosted developer tool that lets teams simulate APIs, test integrations, and iterate without waiting for dependent services.",
+      evidence: [
+        "Public source code and setup documentation are available on GitHub.",
+        "The repository includes separate FastAPI and Vue applications with Docker Compose orchestration.",
       ],
     },
   },
@@ -134,6 +162,22 @@ export const Experiences: ExperienceInterface[] = [
         "README and source: github.com/hoysengleang/localnet",
       ],
     },
+    caseStudy: {
+      problem:
+        "Sharing a local frontend or API with teammates and mobile devices often required extra setup or an external service.",
+      role: "I built and released the CLI end to end, from the local proxy and access controls to packaging, documentation, and PyPI delivery.",
+      approach: [
+        "Created a LAN-first sharing workflow with simple share, list, stop, and scan commands.",
+        "Added token authentication, IP/CIDR rules, request logging, QR output, and optional tunnel support.",
+        "Automated a repeatable Python package release workflow and documented practical usage examples.",
+      ],
+      outcome:
+        "A published developer tool that makes local testing and collaboration faster while keeping access controls visible and configurable.",
+      evidence: [
+        "Published on PyPI as localnet-control with an installable CLI package.",
+        "Public source, command documentation, and release history are available on GitHub.",
+      ],
+    },
   },
   {
     id: "pawn-system",
@@ -144,7 +188,13 @@ export const Experiences: ExperienceInterface[] = [
       "A robust system for managing loans, pawns, and financial transactions, built with Laravel and RESTful APIs.",
     websiteLink: "",
     githubLink: "",
-    techStack: ["Laravel", "PHP", "MySQL", "RESTful APIs", "System Optimization"],
+    techStack: [
+      "Laravel",
+      "PHP",
+      "MySQL",
+      "RESTful APIs",
+      "System Optimization",
+    ],
     startDate: new Date("2023-01-01"),
     endDate: new Date(), // Present
     companyLogoImg: "/experience/pawn-system.png",
@@ -153,14 +203,30 @@ export const Experiences: ExperienceInterface[] = [
       paragraphs: [
         "Architected and developed a robust Loan and Pawn Management System using Laravel, serving 5+ branches with 10,000+ daily transactions.",
         "Designed and implemented 50+ secure, scalable RESTful APIs to handle complex financial transactions, pawn collateral tracking, and interest calculation schedules.",
-        "Optimized database queries and backend logic, reducing response time by 60% and improving system performance by 45%.",
-        "Built critical modules for loan origination, repayment tracking, and automated penalty calculations, ensuring 100% financial accuracy with zero calculation errors.",
+        "Reduced response time by 60% in targeted workflows by profiling slow queries, adding appropriate indexes, and simplifying backend logic.",
+        "Built loan origination, repayment, and penalty modules with centralized validation and transactional database writes to protect financial data consistency.",
       ],
       bullets: [
-        "Deployed system processing $500K+ in daily transactions across multiple branches.",
-        "Reduced database query response time by 60% through optimization.",
+        "Supported daily financial workflows across 5+ operating branches.",
+        "Reduced response time by 60% in measured, high-traffic workflows.",
         "Implemented 50+ secure RESTful API endpoints for financial operations.",
-        "Maintained 100% financial accuracy with zero calculation errors.",
+        "Protected related financial updates with validation, database transactions, and consistent business rules.",
+      ],
+    },
+    caseStudy: {
+      problem:
+        "Loan and pawn operations needed one dependable system for financial transactions, collateral tracking, repayments, and branch workflows.",
+      role: "I worked across the application lifecycle, from Laravel backend architecture and database design to API integration, optimization, and production support.",
+      approach: [
+        "Modeled financial workflows and implemented RESTful APIs for loan, repayment, collateral, and penalty operations.",
+        "Protected related financial writes with validation, clear business rules, and reliable database handling.",
+        "Improved query and backend performance while using queues for heavier batch processing and notifications.",
+      ],
+      outcome:
+        "A production financial management platform supporting branch operations with consistent data flow and reliable transaction processing.",
+      evidence: [
+        "The project details are anonymized because the production system and business data are confidential.",
+        "The case study focuses on my responsibilities, technical approach, and measured workflow improvements.",
       ],
     },
   },
@@ -182,14 +248,14 @@ export const Experiences: ExperienceInterface[] = [
       paragraphs: [
         "Developed and maintained a large-scale School Management System for Aii and AIS, managing 5,000+ students and 200+ staff members.",
         "Implemented comprehensive features for student enrollment, academic grading, attendance tracking, and class scheduling, processing 50,000+ records monthly.",
-        "Optimized database performance by 70%, handling 100,000+ concurrent requests during peak exam periods and enrollment seasons.",
-        "Ensured data security and integrity for sensitive student and financial records with 99.9% uptime.",
+        "Improved database performance for peak exam and enrollment workflows by reviewing execution plans, indexing high-use fields, and reducing expensive queries.",
+        "Applied role-based access, validation, and database constraints to protect sensitive student and financial records.",
       ],
       bullets: [
         "Managed system for 5,000+ students and 200+ staff members.",
-        "Processed 50,000+ academic records monthly with 100% accuracy.",
-        "Improved database performance by 70% during peak traffic.",
-        "Achieved 99.9% system uptime with zero data breaches.",
+        "Supported enrollment, grading, attendance, and scheduling workflows for 5,000+ students.",
+        "Improved high-use database queries for peak academic periods.",
+        "Strengthened record integrity with access controls, validation, and relational constraints.",
       ],
     },
   },
@@ -210,13 +276,13 @@ export const Experiences: ExperienceInterface[] = [
     descriptionDetails: {
       paragraphs: [
         "Built a comprehensive web application to streamline guest bookings and room management for a 50-room hotel.",
-        "Designed a normalized relational database handling 1,000+ bookings annually, eliminating data redundancy by 80%.",
-        "Created an efficient 'Room Availability' algorithm that automatically filters rooms based on check-in/out dates, reducing booking errors by 95%.",
+        "Designed a normalized relational database for rooms, guests, reservations, and payment records.",
+        "Created a room-availability algorithm that filters inventory by check-in and check-out dates to prevent overlapping bookings.",
       ],
       bullets: [
         "Streamlined booking process for 50-room hotel with 1,000+ annual bookings.",
-        "Reduced data redundancy by 80% through normalized database design.",
-        "Decreased booking errors by 95% with automated availability checking.",
+        "Reduced duplicated booking data through a normalized relational schema.",
+        "Prevented overlapping reservations with automated availability checks.",
       ],
     },
   },
@@ -229,7 +295,7 @@ export const Experiences: ExperienceInterface[] = [
       "A web-based system simulating core banking operations like deposits, withdrawals, and transfers.",
     websiteLink: "",
     githubLink: "",
-    techStack: ["C#", ".NET", "Database Design"], // Guessing C#/.NET as it is in skills
+    techStack: ["C#", ".NET", "Database Design"],
     startDate: new Date("2023-06-01"),
     endDate: new Date("2023-12-01"),
     companyLogoImg: "/experience/banking-system.png", // Generated image
@@ -238,12 +304,12 @@ export const Experiences: ExperienceInterface[] = [
       paragraphs: [
         "Developed a web-based system simulating core banking operations, supporting 500+ virtual customer accounts.",
         "Built a comprehensive Customer Information File (CIF) module with automated unique account number generation, processing 100+ registrations.",
-        "Implemented real-time transaction processing for Deposits, Withdrawals, and Fund Transfers with 100% accuracy and instant balance updates.",
+        "Implemented deposits, withdrawals, and fund transfers with transactional balance updates and validation for insufficient funds.",
       ],
       bullets: [
         "Simulated banking operations for 500+ virtual customer accounts.",
         "Automated account generation with 100+ successful registrations.",
-        "Processed transactions with 100% accuracy and real-time updates.",
+        "Protected balance changes with transactional updates and business-rule validation.",
       ],
     },
   },

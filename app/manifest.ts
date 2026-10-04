@@ -5,7 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: "Hoysengleang Portfolio",
     short_name: "Hoysengleang",
     description:
-      "Hoysengleang's modern developer portfolio built with Next.js - available as an open-source template",
+      "Houy Sengleang's backend-focused full-stack developer portfolio and project case studies.",
     start_url: "/",
     display: "standalone",
     background_color: "#d4e9f2",
