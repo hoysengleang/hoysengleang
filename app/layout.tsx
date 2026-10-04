@@ -1,6 +1,6 @@
 import "./globals.css";
 
-import { Baloo_2, Fredoka } from "next/font/google";
+import { IBM_Plex_Mono, IBM_Plex_Sans, Newsreader } from "next/font/google";
 
 import { Analytics } from "@/components/common/analytics";
 import { StructuredData } from "@/components/common/structured-data";
@@ -10,18 +10,27 @@ import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 import { ModalProvider } from "@/providers/modal-provider";
 
-const fontSans = Baloo_2({
+const fontSans = IBM_Plex_Sans({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500", "600"],
   display: "swap",
   variable: "--font-sans",
 });
 
-const fontHeading = Fredoka({
+const fontSerif = Newsreader({
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
+  style: ["normal", "italic"],
   display: "swap",
-  variable: "--font-heading",
+  variable: "--font-serif",
+  // next/font has no fallback metrics for Newsreader yet.
+  adjustFontFallback: false,
+});
+
+const fontMono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  display: "swap",
+  variable: "--font-mono",
 });
 
 interface RootLayoutProps {
@@ -115,7 +124,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
         className={cn(
           "min-h-screen bg-background font-sans antialiased overflow-x-hidden",
           fontSans.variable,
-          fontHeading.variable
+          fontSerif.variable,
+          fontMono.variable
         )}
       >
         <ThemeProvider

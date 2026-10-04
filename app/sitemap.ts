@@ -71,7 +71,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Dynamic career pages
   const careerRoutes: MetadataRoute.Sitemap = careerExperiences.map((career) => ({
     url: `${baseUrl}/career/${career.id}`,
-    lastModified: career.endDate || new Date(),
+    lastModified: career.endDate === "Present" ? new Date() : career.endDate,
     changeFrequency: "yearly" as const,
     priority: 0.6,
   }));

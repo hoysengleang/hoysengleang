@@ -52,7 +52,7 @@ I'm a full-stack developer focused on building high-performance APIs and scalabl
 ## 📬 Connect With Me
 
 - 📧 Email: [hoysengleang617@gmail.com](mailto:hoysengleang617@gmail.com)
-- 💼 LinkedIn: [linkedin.com/in/hoysengleang](https://linkedin.com/in/hoysengleang)
+- 💼 LinkedIn: [linkedin.com/in/sengleang-houy-825801268](https://www.linkedin.com/in/sengleang-houy-825801268)
 - 🌐 Portfolio: [hoysengleang.vercel.app](https://hoysengleang.vercel.app/)
 
 ---

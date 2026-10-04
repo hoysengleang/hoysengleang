@@ -34,6 +34,11 @@ export function StructuredData({ type = "person" }: StructuredDataProps) {
       "Fintech Systems",
       "Core Banking",
       "RESTful APIs",
+      "Vector Search",
+      "Retrieval-Augmented Generation",
+      "LLM Fine-tuning",
+      "API Security",
+      "Rust",
     ],
     hasOccupation: {
       "@type": "Occupation",

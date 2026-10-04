@@ -3,7 +3,20 @@ import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
 
-export async function GET() {
+const PAPER = "#F4F1EA";
+const INK = "#1F1D1A";
+const MUTED = "#6B655C";
+const ACCENT = "#B4532A";
+
+// Optional ?title=&subtitle= make per-page previews (used by project pages).
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const title = (searchParams.get("title") ?? "Houy Sengleang").slice(0, 80);
+  const subtitle = (
+    searchParams.get("subtitle") ??
+    "Backend-focused full stack developer. Laravel, NestJS, and open-source tools for search, AI and API security."
+  ).slice(0, 180);
+
   return new ImageResponse(
     (
       <div
@@ -12,97 +25,65 @@ export async function GET() {
           width: "100%",
           display: "flex",
           flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          backgroundColor: "#0a0a0a",
-          backgroundImage:
-            "linear-gradient(to bottom right, #1a1a2e 0%, #0a0a0a 100%)",
+          justifyContent: "space-between",
+          backgroundColor: PAPER,
+          padding: "72px 80px",
+          border: `24px solid ${PAPER}`,
+          outline: `1px solid ${INK}`,
         }}
       >
-        {/* Main Content */}
         <div
           style={{
             display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            textAlign: "center",
-            padding: "60px",
+            justifyContent: "space-between",
+            fontSize: 22,
+            letterSpacing: 3,
+            color: MUTED,
+            textTransform: "uppercase",
           }}
         >
-          {/* Name */}
+          <span>Houy Sengleang</span>
+          <span>Phnom Penh</span>
+        </div>
+
+        <div style={{ display: "flex", flexDirection: "column" }}>
           <div
             style={{
-              fontSize: 72,
-              fontWeight: "bold",
-              color: "white",
-              marginBottom: 20,
-              letterSpacing: "-0.05em",
+              fontSize: 84,
+              fontWeight: 700,
+              color: INK,
+              letterSpacing: "-0.03em",
+              lineHeight: 1.05,
             }}
           >
-            {siteConfig.authorName}
+            {title}
           </div>
-
-          {/* Title */}
           <div
             style={{
-              fontSize: 36,
-              color: "#a78bfa",
-              marginBottom: 40,
-            }}
-          >
-            Backend-Focused Full Stack Developer
-          </div>
-
-          {/* Description */}
-          <div
-            style={{
-              fontSize: 24,
-              color: "#9ca3af",
-              maxWidth: 800,
+              marginTop: 28,
+              fontSize: 32,
+              color: MUTED,
               lineHeight: 1.4,
-              textAlign: "center",
+              maxWidth: 940,
             }}
           >
-            Building reliable backend services and scalable web applications
-          </div>
-
-          {/* Skills Badge */}
-          <div
-            style={{
-              display: "flex",
-              gap: 15,
-              marginTop: 40,
-            }}
-          >
-            {["Laravel", "NestJS", "TypeScript", "MySQL"].map((skill) => (
-              <div
-                key={skill}
-                style={{
-                  backgroundColor: "rgba(167, 139, 250, 0.1)",
-                  border: "2px solid rgba(167, 139, 250, 0.3)",
-                  padding: "10px 20px",
-                  borderRadius: 8,
-                  color: "#a78bfa",
-                  fontSize: 18,
-                }}
-              >
-                {skill}
-              </div>
-            ))}
+            {subtitle}
           </div>
         </div>
 
-        {/* Footer */}
         <div
           style={{
-            position: "absolute",
-            bottom: 40,
-            fontSize: 18,
-            color: "#6b7280",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            borderTop: `1px solid ${MUTED}`,
+            paddingTop: 24,
+            fontSize: 22,
+            color: MUTED,
           }}
         >
-          {siteConfig.url.replace("https://", "")}
+          <span>{siteConfig.url.replace("https://", "")}</span>
+          <span style={{ color: ACCENT }}>github.com/{siteConfig.username}</span>
         </div>
       </div>
     ),

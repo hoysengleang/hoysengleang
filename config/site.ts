@@ -3,11 +3,11 @@ export const siteConfig = {
   authorName: "HOUY SENGLEANG",
   username: "hoysengleang",
   description:
-    "Backend-focused Full Stack Developer building reliable business applications with Laravel and NestJS, from API and database design through frontend integration and production support.",
+    "Backend-focused full stack developer in Phnom Penh. I build reliable business systems with Laravel and NestJS, and open-source tools for self-hosted search, AI and API security.",
   url: "https://hoysengleang.vercel.app",
   links: {
     github: "https://github.com/hoysengleang",
-    linkedin: "https://www.linkedin.com/in/hoysengleang",
+    linkedin: "https://www.linkedin.com/in/sengleang-houy-825801268",
     telegram: "https://t.me/houysengleang",
   },
   ogImage: "https://hoysengleang.vercel.app/og-image",
@@ -52,10 +52,25 @@ export const siteConfig = {
     "Payment Systems",
     "High-volume Transactions",
 
+    // Search, AI & security tooling
+    "Vector Search",
+    "Qdrant",
+    "pgvector",
+    "OpenCLIP",
+    "RAG Developer",
+    "Self-hosted AI",
+    "Ollama",
+    "LoRA Fine-tuning",
+    "OWASP API Security",
+    "API Security Scanner",
+    "Rust Developer",
+    "Khmer OCR",
+
     // Frontend (secondary)
     "Vue.js Developer",
     "Next.js",
     "React Developer",
+    "Angular",
     "TypeScript",
     "Tailwind CSS",
 
@@ -73,12 +88,9 @@ export const siteConfig = {
     "Software Engineer Phnom Penh",
     "Remote Backend Developer",
 
-    // Portfolio template
+    // Portfolio
     "Developer Portfolio",
     "Backend Developer Portfolio",
-    "Modern Portfolio Website",
-    "Next.js Portfolio Template",
     "Open Source Portfolio",
-    "Professional Portfolio",
   ],
 };

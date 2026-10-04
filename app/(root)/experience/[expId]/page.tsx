@@ -3,16 +3,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
+import { ClientPageWrapper } from "@/components/common/client-page-wrapper";
 import { Icons } from "@/components/common/icons";
 import { ExperienceStructuredData } from "@/components/common/structured-data";
-import ExperienceDescription from "@/components/experience/exp-description";
+import CopyCommand from "@/components/experience/copy-command";
 import { buttonVariants } from "@/components/ui/button";
-import ChipContainer from "@/components/ui/chip-container";
-import CustomTooltip from "@/components/ui/custom-tooltip";
 import { Experiences } from "@/config/experience";
 import { siteConfig } from "@/config/site";
-import { cn, formatDateFromObj } from "@/lib/utils";
-import hoysengleang from "@/public/hoysengleang-bg-black.jpg";
+import { cn, formatMonthYear, isOngoing } from "@/lib/utils";
 
 interface ExperiencePageProps {
   params: {
@@ -20,9 +18,11 @@ interface ExperiencePageProps {
   };
 }
 
-const githubUsername = "hoysengleang";
+function ogImageFor(title: string, subtitle: string) {
+  const params = new URLSearchParams({ title, subtitle });
+  return `${siteConfig.url}/og-image?${params.toString()}`;
+}
 
-// Generate dynamic metadata for each experience page
 export async function generateMetadata({
   params,
 }: ExperiencePageProps): Promise<Metadata> {
@@ -30,23 +30,22 @@ export async function generateMetadata({
 
   if (!exp) {
     return {
-      title: "Experience Not Found",
-      description: "The requested experience could not be found.",
+      title: "Project Not Found",
+      description: "The requested project could not be found.",
     };
   }
 
   const pageUrl = `${siteConfig.url}/experience/${exp.id}`;
-  const imageUrl = `${siteConfig.url}${exp.companyLogoImg}`;
+  const imageUrl = ogImageFor(exp.companyName, exp.shortDescription);
 
   return {
-    title: `${exp.companyName} | ${exp.type} - HOUY SENGLEANG`,
+    title: `${exp.companyName} | ${exp.type}`,
     description: exp.shortDescription,
     keywords: [
       exp.companyName,
       ...exp.techStack,
       ...exp.category,
-      "project showcase",
-      "portfolio",
+      "project case study",
       exp.type,
     ],
     authors: [
@@ -59,7 +58,7 @@ export async function generateMetadata({
       type: "article",
       locale: "en_US",
       url: pageUrl,
-      title: `${exp.companyName} - ${exp.type}`,
+      title: exp.companyName,
       description: exp.shortDescription,
       siteName: siteConfig.name,
       images: [
@@ -76,7 +75,7 @@ export async function generateMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title: `${exp.companyName} - ${exp.type}`,
+      title: exp.companyName,
       description: exp.shortDescription,
       images: [imageUrl],
     },
@@ -86,242 +85,255 @@ export async function generateMetadata({
   };
 }
 
-// Generate static params for all experiences (for SSG)
 export async function generateStaticParams() {
   return Experiences.map((exp) => ({
     expId: exp.id,
   }));
 }
 
+function SectionHeading({ children }: { children: React.ReactNode }) {
+  return (
+    <h2 className="font-heading text-[1.6rem] font-medium leading-tight tracking-[-0.01em]">
+      {children}
+    </h2>
+  );
+}
+
 export default function Experience({ params }: ExperiencePageProps) {
-  let exp = Experiences.find((val) => val.id === params.expId);
-  if (!exp) {
+  const index = Experiences.findIndex((val) => val.id === params.expId);
+  if (index === -1) {
     redirect("/experience");
   }
+  const exp = Experiences[index];
+  const next = Experiences[(index + 1) % Experiences.length];
+
+  const startLabel = formatMonthYear(exp.startDate);
+  const endLabel = isOngoing(exp.endDate) ? "now" : formatMonthYear(exp.endDate);
+  const timeframe = startLabel === endLabel ? startLabel : `${startLabel} – ${endLabel}`;
 
   return (
     <>
       <ExperienceStructuredData expId={params.expId} />
-      <article className="container relative max-w-4xl py-4 sm:py-6 lg:py-10 px-4 sm:px-6 lg:px-8">
-        <Link
-          href="/experience"
-          className={cn(
-            buttonVariants({ variant: "ghost" }),
-            "absolute left-[-200px] top-14 hidden xl:inline-flex hover:bg-accent hover:text-black"
-          )}
-        >
-          <Icons.chevronLeft className="mr-2 h-4 w-4" />
-          All Experience
-        </Link>
-        <div className="space-y-3 sm:space-y-4">
-          <div className="flex items-center justify-between flex-wrap gap-3 sm:gap-4">
-            <time
-              dateTime={Date.now().toString()}
-              className="text-xs sm:text-sm font-medium text-muted-foreground"
+      <ClientPageWrapper>
+        <article className="page-shell">
+          <div className="pt-8">
+            <Link
+              href="/experience"
+              className="inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
             >
-              {formatDateFromObj(exp.startDate)} -{" "}
-              {exp.endDate.getTime() > new Date().getTime() - 86400000
-                ? "Present"
-                : formatDateFromObj(exp.endDate)}
-            </time>
-            <div className="flex items-center gap-2">
-              {exp.githubLink && (
-                <CustomTooltip text="View source code on GitHub">
-                  <Link
+              <Icons.arrowLeft className="h-3.5 w-3.5" />
+              All work
+            </Link>
+          </div>
+
+          <header className="border-b border-border pb-10 pt-8">
+            <p className="eyebrow">
+              {exp.type === "Professional" ? "Client work" : "Open source"} ·{" "}
+              {exp.category[0]}
+            </p>
+            <h1 className="mt-4 font-heading text-[2.5rem] font-medium leading-[1.05] tracking-[-0.02em] sm:text-[3.25rem]">
+              {exp.companyName}
+            </h1>
+            <p className="mt-4 max-w-2xl text-lg leading-relaxed text-muted-foreground">
+              {exp.shortDescription}
+            </p>
+
+            {(exp.githubLink || exp.websiteLink) && (
+              <div className="mt-7 flex flex-wrap gap-3">
+                {exp.githubLink && (
+                  <a
                     href={exp.githubLink}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex h-9 items-center justify-center gap-2 rounded-lg border border-border bg-background px-3 text-xs font-medium text-foreground transition-all hover:border-primary hover:bg-accent hover:text-black sm:h-10 sm:text-sm"
+                    className={cn(buttonVariants({ variant: "default", size: "sm" }))}
                   >
-                    <Icons.gitHub className="w-4 h-4 sm:w-5 sm:h-5" />
-                    Source
-                  </Link>
-                </CustomTooltip>
-              )}
-              {exp.websiteLink && (
-                <CustomTooltip text="Visit live website">
-                  <Link
+                    <Icons.gitHub className="h-4 w-4" />
+                    Read the source
+                  </a>
+                )}
+                {exp.websiteLink && (
+                  <a
                     href={exp.websiteLink}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex h-9 items-center justify-center gap-2 rounded-lg border border-border bg-background px-3 text-xs font-medium text-foreground transition-all hover:border-primary hover:bg-accent hover:text-black sm:h-10 sm:text-sm"
+                    className={cn(buttonVariants({ variant: "outline", size: "sm" }))}
                   >
-                    <Icons.externalLink className="w-4 h-4 sm:w-5 sm:h-5" />
-                    Live project
-                  </Link>
-                </CustomTooltip>
+                    <Icons.externalLink className="h-4 w-4" />
+                    {exp.websiteLink.includes("pypi.org") ? "View on PyPI" : "Visit live site"}
+                  </a>
+                )}
+              </div>
+            )}
+          </header>
+
+          <div className="grid gap-12 pt-10 lg:grid-cols-[minmax(0,1fr)_240px] lg:gap-16">
+            <div className="min-w-0 space-y-12">
+              <figure className="figure-frame">
+                <Image
+                  src={exp.companyLogoImg}
+                  alt={`Diagram of how ${exp.companyName} works`}
+                  width={1200}
+                  height={675}
+                  className="h-auto w-full"
+                  sizes="(max-width: 1024px) 100vw, 760px"
+                  priority
+                />
+              </figure>
+
+              {exp.highlight && (
+                <p className="border-l-2 border-brand pl-5 font-heading text-[1.35rem] leading-snug">
+                  {exp.highlight}
+                </p>
               )}
-            </div>
-          </div>
-          <h1 className="font-heading text-2xl sm:text-3xl md:text-4xl lg:text-5xl leading-tight tracking-tight">
-            {exp.companyName}
-          </h1>
-          <ChipContainer textArr={exp.category} />
-          <div className="flex space-x-2 sm:space-x-3 pt-2">
-            <Link
-              href={siteConfig.links.github}
-              className="flex items-center space-x-2 sm:space-x-3 text-xs sm:text-sm group"
-            >
-              <Image
-                src={hoysengleang}
-                alt={"hoysengleang"}
-                width={36}
-                height={36}
-                className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-background ring-2 ring-border group-hover:ring-primary transition-all"
-              />
-              <div className="flex-1 text-left leading-tight">
-                <p className="font-semibold group-hover:text-primary transition-colors text-sm sm:text-base">
-                  Hoysengleang
-                </p>
-                <p className="text-[10px] sm:text-xs text-muted-foreground">
-                  @{githubUsername}
-                </p>
-              </div>
-            </Link>
-          </div>
-        </div>
 
-        <div className="relative my-6 sm:my-8 md:my-10 overflow-hidden rounded-lg sm:rounded-xl border bg-muted">
-          <Image
-            src={exp.companyLogoImg}
-            alt={exp.companyName}
-            width={1200}
-            height={675}
-            className="w-full h-auto"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
-            priority
-          />
-        </div>
-
-        <div className="mb-8 sm:mb-10 space-y-3 sm:space-y-4">
-          <h2 className="font-heading text-xl sm:text-2xl md:text-3xl leading-tight tracking-tight">
-            Tech Stack
-          </h2>
-          <ChipContainer textArr={exp.techStack} />
-        </div>
-
-        <div className="mb-8 sm:mb-10 space-y-4 sm:space-y-6">
-          <h2 className="font-heading text-xl sm:text-2xl md:text-3xl leading-tight tracking-tight">
-            Overview
-          </h2>
-          <ExperienceDescription
-            paragraphs={exp.descriptionDetails.paragraphs}
-            bullets={exp.descriptionDetails.bullets}
-          />
-        </div>
-
-        {exp.caseStudy && (
-          <section className="mb-10 sm:mb-12 rounded-2xl border border-border/70 bg-card/60 p-5 sm:p-7 md:p-8">
-            <div className="mb-6 space-y-2">
-              <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-primary">
-                Case study
-              </p>
-              <h2 className="font-heading text-xl sm:text-2xl md:text-3xl leading-tight tracking-tight">
-                How I approached the work
-              </h2>
-              <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
-                A concise view of the problem, ownership, engineering decisions,
-                and value delivered.
-              </p>
-            </div>
-
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div className="rounded-xl border border-border/70 bg-background/60 p-4 sm:p-5">
-                <h3 className="mb-2 font-semibold">The problem</h3>
-                <p className="text-sm leading-relaxed text-muted-foreground">
-                  {exp.caseStudy.problem}
-                </p>
-              </div>
-              <div className="rounded-xl border border-border/70 bg-background/60 p-4 sm:p-5">
-                <h3 className="mb-2 font-semibold">My role</h3>
-                <p className="text-sm leading-relaxed text-muted-foreground">
-                  {exp.caseStudy.role}
-                </p>
-              </div>
-              <div className="rounded-xl border border-border/70 bg-background/60 p-4 sm:p-5">
-                <h3 className="mb-2 font-semibold">The approach</h3>
-                <ul className="space-y-2 text-sm leading-relaxed text-muted-foreground">
-                  {exp.caseStudy.approach.map((item) => (
-                    <li key={item} className="flex gap-2">
-                      <span className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-primary" />
-                      <span>{item}</span>
-                    </li>
+              <section className="space-y-4">
+                <SectionHeading>Overview</SectionHeading>
+                <div className="space-y-4 text-[1.0625rem] leading-[1.75] text-foreground/85">
+                  {exp.descriptionDetails.paragraphs.map((paragraph) => (
+                    <p key={paragraph}>{paragraph}</p>
                   ))}
-                </ul>
-              </div>
-              <div className="rounded-xl border border-primary/30 bg-primary/5 p-4 sm:p-5">
-                <h3 className="mb-2 font-semibold">The outcome</h3>
-                <p className="text-sm leading-relaxed text-muted-foreground">
-                  {exp.caseStudy.outcome}
-                </p>
-              </div>
-              {exp.caseStudy.evidence && (
-                <div className="rounded-xl border border-border/70 bg-background/60 p-4 sm:col-span-2 sm:p-5">
-                  <h3 className="mb-2 font-semibold">Evidence and context</h3>
-                  <ul className="space-y-2 text-sm leading-relaxed text-muted-foreground">
-                    {exp.caseStudy.evidence.map((item) => (
-                      <li key={item} className="flex gap-2">
-                        <Icons.check className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary" />
-                        <span>{item}</span>
+                </div>
+              </section>
+
+              {exp.caseStudy && (
+                <section className="space-y-8">
+                  <div className="space-y-3">
+                    <SectionHeading>The problem</SectionHeading>
+                    <p className="text-[1.0625rem] leading-[1.75] text-foreground/85">
+                      {exp.caseStudy.problem}
+                    </p>
+                  </div>
+                  <div className="space-y-3">
+                    <SectionHeading>What I did</SectionHeading>
+                    <p className="text-[1.0625rem] leading-[1.75] text-foreground/85">
+                      {exp.caseStudy.role}
+                    </p>
+                    <ol className="space-y-3 pt-1">
+                      {exp.caseStudy.approach.map((step, stepIndex) => (
+                        <li key={step} className="flex gap-4 text-[1.0625rem] leading-[1.7]">
+                          <span className="mt-[0.35rem] font-mono text-xs text-brand">
+                            {String(stepIndex + 1).padStart(2, "0")}
+                          </span>
+                          <span className="text-foreground/85">{step}</span>
+                        </li>
+                      ))}
+                    </ol>
+                  </div>
+                  <div className="space-y-3">
+                    <SectionHeading>The result</SectionHeading>
+                    <p className="text-[1.0625rem] leading-[1.75] text-foreground/85">
+                      {exp.caseStudy.outcome}
+                    </p>
+                    {exp.caseStudy.evidence && (
+                      <ul className="space-y-1.5 pt-1 text-sm text-muted-foreground">
+                        {exp.caseStudy.evidence.map((item) => (
+                          <li key={item} className="flex gap-2">
+                            <Icons.check className="mt-0.5 h-4 w-4 shrink-0 text-brand" />
+                            <span>{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                </section>
+              )}
+
+              {exp.descriptionDetails.bullets.length > 0 && (
+                <section className="space-y-4">
+                  <SectionHeading>In short</SectionHeading>
+                  <ul className="divide-y divide-border border-y border-border">
+                    {exp.descriptionDetails.bullets.map((bullet) => (
+                      <li key={bullet} className="py-3 text-[0.975rem] leading-relaxed">
+                        {bullet}
                       </li>
                     ))}
                   </ul>
-                </div>
+                </section>
               )}
-            </div>
-          </section>
-        )}
 
-        {exp.pagesInfoArr && exp.pagesInfoArr.length > 0 && (
-          <div className="mb-10 sm:mb-12 space-y-8 sm:space-y-10">
-            <h2 className="font-heading text-xl sm:text-2xl md:text-3xl leading-tight tracking-tight">
-              Project Highlights
-            </h2>
-            {exp.pagesInfoArr.map((page, ind) => (
-              <div key={ind} className="space-y-3 sm:space-y-4">
-                <h3 className="flex items-start sm:items-center font-heading text-lg sm:text-xl md:text-2xl leading-tight">
-                  <Icons.star className="h-4 w-4 sm:h-5 sm:w-5 mr-2 text-primary flex-shrink-0 mt-1 sm:mt-0" />
-                  <span className="flex-1">{page.title}</span>
-                </h3>
-                <p className="text-sm sm:text-base text-muted-foreground leading-relaxed pl-0 sm:pl-7">
-                  {page.description}
-                </p>
-                <div className="grid gap-4 sm:gap-6 pl-0 sm:pl-7">
-                  {page.imgArr.map((img, imgInd) => (
-                    <div
-                      key={imgInd}
-                      className="relative overflow-hidden rounded-lg sm:rounded-xl border bg-muted group"
-                    >
-                      <Image
-                        src={img}
-                        alt={`${page.title} - Image ${imgInd + 1}`}
-                        width={1200}
-                        height={675}
-                        className="w-full h-auto transition-transform duration-300 group-hover:scale-105"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
-                      />
+              {exp.pagesInfoArr.length > 0 && (
+                <section className="space-y-8">
+                  <SectionHeading>Notes</SectionHeading>
+                  {exp.pagesInfoArr.map((page) => (
+                    <div key={page.title} className="space-y-3">
+                      <h3 className="text-base font-semibold">{page.title}</h3>
+                      {page.description && (
+                        <p className="leading-[1.75] text-foreground/85">{page.description}</p>
+                      )}
+                      {page.imgArr.map((img, imgIndex) => (
+                        <figure key={img} className="figure-frame">
+                          <Image
+                            src={img}
+                            alt={`${page.title}, image ${imgIndex + 1}`}
+                            width={1200}
+                            height={675}
+                            className="h-auto w-full"
+                            sizes="(max-width: 1024px) 100vw, 760px"
+                          />
+                        </figure>
+                      ))}
                     </div>
                   ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
+                </section>
+              )}
+            </div>
 
-        <hr className="mt-10 sm:mt-12 border-border" />
-        <div className="flex justify-center py-6 sm:py-8 lg:py-12">
-          <Link
-            href="/experience"
-            className={cn(
-              buttonVariants({ variant: "ghost", size: "default" }),
-              "group text-sm sm:text-base hover:bg-accent hover:text-black"
-            )}
+            <aside className="h-fit space-y-8 text-sm lg:sticky lg:top-24">
+              <dl className="space-y-5">
+                <div>
+                  <dt className="eyebrow">When</dt>
+                  <dd className="mt-1.5">{timeframe}</dd>
+                </div>
+                <div>
+                  <dt className="eyebrow">Type</dt>
+                  <dd className="mt-1.5">
+                    {exp.type === "Professional"
+                      ? "Client work (details anonymised)"
+                      : "Personal, open source"}
+                  </dd>
+                </div>
+                <div>
+                  <dt className="eyebrow">Built with</dt>
+                  <dd className="mt-2 flex flex-wrap gap-1.5">
+                    {exp.techStack.map((tech) => (
+                      <span key={tech} className="tag">
+                        {tech}
+                      </span>
+                    ))}
+                  </dd>
+                </div>
+              </dl>
+
+              {exp.install && (
+                <div>
+                  <p className="eyebrow mb-2">Try it</p>
+                  <CopyCommand command={exp.install} />
+                  {exp.githubLink && !exp.install.startsWith("pip install") && (
+                    <p className="mt-2 text-xs text-muted-foreground">
+                      Run inside a clone of the repository.
+                    </p>
+                  )}
+                </div>
+              )}
+            </aside>
+          </div>
+
+          <nav
+            aria-label="Next project"
+            className="mt-16 border-t border-border pt-8"
           >
-            <Icons.chevronLeft className="mr-2 h-3.5 w-3.5 sm:h-4 sm:w-4 transition-transform group-hover:-translate-x-1" />
-            Back to All Projects
-          </Link>
-        </div>
-      </article>
+            <Link href={`/experience/${next.id}`} className="group block">
+              <span className="eyebrow">Next project</span>
+              <span className="mt-2 flex items-center gap-2 font-heading text-[1.75rem] leading-tight">
+                <span className="decoration-brand decoration-1 underline-offset-4 group-hover:underline">
+                  {next.companyName}
+                </span>
+                <Icons.arrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+              </span>
+            </Link>
+          </nav>
+        </article>
+      </ClientPageWrapper>
     </>
   );
 }

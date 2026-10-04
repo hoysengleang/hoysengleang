@@ -14,6 +14,407 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+    id: "7",
+    title: "The Crop That Was Costing Me 15 Points of Recall",
+    slug: "visual-search-padding-vs-centre-crop",
+    excerpt:
+      "Stock CLIP preprocessing centre-crops every image. On portrait product photos that throws away about 40% of the frame. How I measured it in OpenVisionSearch, and what changed when I stopped cropping.",
+    content: `# The Crop That Was Costing Me 15 Points of Recall
+
+OpenVisionSearch is a self-hosted API for finding products by photo. You index product images, a shopper uploads a picture, and the closest matches come back. Under the hood it is simple: OpenCLIP turns each image into a vector, Qdrant finds the nearest neighbours.
+
+The interesting part turned out to be one line of preprocessing.
+
+## What the usual setup throws away
+
+The common way to prepare an image for CLIP is to resize the short side and then centre-crop to a square. That's what most examples do, and it works fine on square catalogue shots.
+
+Shoppers don't take square catalogue shots. Phone photos are portrait, the product is rarely centred, and sometimes the part that matters sits near the top or the bottom of the frame.
+
+A centre crop on a portrait photo keeps the middle square and drops the rest. That's **about 40% of the picture**, often including part of the product. The model never sees it, so it can't match on it.
+
+## Measure first
+
+I didn't want to change a default because it felt better, so I set up a benchmark before touching anything:
+
+- 300 portrait products in the index
+- a degraded query photo for each product, closer to a real upload than a catalogue image
+- Recall@1 (is the right product the first result?) and Recall@5 (is it in the top five?)
+
+Then I compared ways of framing the image before embedding it.
+
+## The numbers
+
+\`\`\`
+framing        views   recall@1   recall@5   index   query
+crop (stock)   1       75.0%      96.2%      7 ms    17 ms
+pad            1       90.0%      100%       6 ms    16 ms
+pad            3       95.0%      100%       16 ms   25 ms
+\`\`\`
+
+**Padding** scales the whole image to fit inside the square and fills the leftover space, instead of cutting anything off. The model sees everything the shopper photographed.
+
+That one change took Recall@1 from 75% to 90%. It's also fractionally faster, because there is less image to resample. On images that are already square it does nothing, and the results are byte-identical.
+
+The three-view option averages the padded frame with a centre crop and a mirrored copy. It buys another 5 points of Recall@1 for roughly double the indexing work, so it's off by default. Turn it on with \`EMBED_VIEWS=3\` if indexing time doesn't matter to you.
+
+## The part that's easy to get wrong
+
+Changing preprocessing changes the vectors. Index half a catalogue with crop and half with pad, and the scores stop being comparable. Search gets worse and nothing tells you why.
+
+So every collection stores the framing it was built with and keeps using it. Changing the server default doesn't touch collections that are already indexed. To adopt a new setting you create a new collection and re-index. It's a bit more work, and nothing breaks silently.
+
+The same rule applies to the model. Vectors from two different models mean nothing to each other, so a collection is pinned to the embedding model it was created with.
+
+## Text search for free
+
+OpenCLIP puts images and text in the same vector space, so the images you already indexed can be searched by description with no second index. You can also mix the two: a photo of a shoe, nudged by the words "but in blue".
+
+One thing to know: text-to-image scores sit much lower than image-to-image scores, roughly 0.2 to 0.35 for a good match against 0.8 and up. Tune \`min_score\` per endpoint instead of sharing one threshold.
+
+## What I took away
+
+- Check what your preprocessing throws away. Defaults are written for someone else's data.
+- Build the benchmark before the fix. Without that table this would have been an argument, not a decision.
+- Store the settings that shaped your vectors right next to the vectors.
+
+The code, the benchmark and the API docs are on GitHub: [hoysengleang/images-analystic-search](https://github.com/hoysengleang/images-analystic-search). There's a longer write-up of the project on [its case study page](/experience/openvisionsearch).`,
+    publishedAt: new Date("2026-10-04"),
+    author: "Houy Sengleang",
+    tags: ["Python", "Vector Search", "OpenCLIP", "Qdrant"],
+    featured: true,
+  },
+  {
+    id: "8",
+    title: "Building a Document Assistant That Is Allowed to Say \"Not Found\"",
+    slug: "document-assistant-that-says-not-found",
+    excerpt:
+      "Notes from building Knowledge Assistant: hybrid retrieval with pgvector and Postgres full-text search, a citation on every answer, Khmer OCR, and an evaluation set that can block a deploy.",
+    content: `# Building a Document Assistant That Is Allowed to Say "Not Found"
+
+The worst habit of document chatbots is confidence. When the answer isn't in your files, many of them write one anyway, in the same calm tone as a real answer. For HR policies, payroll rules or contracts, a wrong answer is worse than no answer.
+
+Knowledge Assistant is built around the opposite rule. It answers from your own documents, shows the excerpt it used, and when the documents don't cover the question it says so.
+
+## The pipeline
+
+\`\`\`
+Upload/Import -> Parse -> Chunk -> Embed -> pgvector + full-text
+              -> hybrid top-K (RRF) -> one LLM call -> answer + citations
+\`\`\`
+
+Everything lives in one Postgres database: documents, chunks, vectors and chat history. That's one system to run, back up and secure instead of three.
+
+## Why vector search alone wasn't enough
+
+Embeddings are good at meaning. Ask "how many days off do I get?" and they'll find the paragraph about annual leave even though none of the words match.
+
+They're weaker at exact things: an employee ID, a contract number, a person's name. That's where plain keyword search is strong.
+
+So retrieval runs both, pgvector similarity and Postgres full-text search, and merges the two ranked lists with Reciprocal Rank Fusion. The textbook version of RRF fits in a few lines:
+
+\`\`\`python
+def rrf(rankings, k=60):
+    scores = {}
+    for ranking in rankings:
+        for rank, chunk_id in enumerate(ranking, start=1):
+            scores[chunk_id] = scores.get(chunk_id, 0) + 1 / (k + rank)
+    return sorted(scores, key=scores.get, reverse=True)
+\`\`\`
+
+A chunk that ranks well in either list gets near the top. One that ranks well in both wins. There's no need to normalise two very different scoring systems or tune weights between them.
+
+## Tables need their column names
+
+When you import a spreadsheet or a database table, each row becomes text. Store only the values and \`Alice | 4200\` means nothing to a retriever. Keep the column names, \`name: Alice | salary: 4200\`, and "What is Alice's salary?" finds the right row.
+
+## Citations, and permission not to know
+
+Every answer comes with the sources it was built from. The streaming endpoint sends the sources first, then the answer token by token over SSE, so the user can see what the model is reading while it writes.
+
+The plain API makes the "not found" case explicit. \`POST /api/query\` returns \`answer\`, \`found\`, \`citations\` and \`model\`. When \`found\` is false, the interface says plainly that the documents don't cover it.
+
+Follow-up questions are condensed into standalone search queries first, so "and for part-time staff?" still retrieves the right policy.
+
+## Khmer, end to end
+
+A lot of Cambodian business documents are scanned PDFs in Khmer. The Docker image ships Tesseract with English and Khmer language packs, so scanned files are OCR'd on upload. For retrieval, \`bge-m3\` embeddings handle Khmer well and run locally through Ollama.
+
+## Fully offline when it matters
+
+With Ollama, no API key is needed and nothing leaves your server:
+
+\`\`\`bash
+ollama pull gemma3:4b
+ollama pull bge-m3
+cp .env.example .env    # set LLM_PROVIDER=ollama and EMBEDDING_MODEL=bge-m3
+docker compose up --build
+\`\`\`
+
+Each model provider (Ollama, Gemini, Claude, OpenAI, or any OpenAI-compatible API) is a small adapter, so switching is one environment variable.
+
+## Measure, don't guess
+
+The repo includes an evaluation harness. Each case is a question, the source that should be cited, and text the answer should contain:
+
+\`\`\`bash
+cd backend && python -m scripts.evaluate eval/demo.json
+\`\`\`
+
+Every case is scored on found, source cited and answer contains. The run exits non-zero if any source check fails, so it can block a deploy in CI. Build the eval file from real user questions, and every retrieval or model change gets a before-and-after number instead of a feeling.
+
+Source: [hoysengleang/local-model-free-form](https://github.com/hoysengleang/local-model-free-form). The case study is [here](/experience/knowledge-assistant).`,
+    publishedAt: new Date("2026-10-04"),
+    author: "Houy Sengleang",
+    tags: ["RAG", "PostgreSQL", "pgvector", "FastAPI"],
+    featured: true,
+  },
+  {
+    id: "9",
+    title: "Catching the Boring API Security Holes Before Someone Else Does",
+    slug: "apicheck-owasp-api-security-scanner",
+    excerpt:
+      "What apicheck looks for, why it uses two identities to test object-level access, why it refuses to be destructive, and how to run it as a CI gate with SARIF output.",
+    content: `# Catching the Boring API Security Holes Before Someone Else Does
+
+Most API security problems in business apps are not clever. A list endpoint that answers without a token. A user who can read someone else's record by changing an ID in the URL. A response that includes a field nobody meant to send.
+
+They're boring, and they're exactly the kind of thing that slips through review because everyone assumes someone else checked. apicheck is a small command-line tool that checks them for you, on APIs you own.
+
+## How it works
+
+Give it a base URL and an OpenAPI spec. It discovers every endpoint from the spec and runs a set of independent checks against each one.
+
+\`\`\`bash
+apicheck scan https://staging.example.com \\
+  --spec ./openapi.json \\
+  --token-a "$TOKEN_A" \\
+  --token-b "$TOKEN_B" \\
+  --i-am-authorized
+\`\`\`
+
+Every finding is mapped to the OWASP API Security Top 10, so a result is easy to explain to someone who wasn't in the room.
+
+## What it checks
+
+Per endpoint:
+
+- **security-headers** (API8): missing HSTS, nosniff, frame protection or cache-control
+- **missing-auth** (API2, API5): endpoints that should need auth returning data without it
+- **rate-limit** (API4): no throttling under a small, hard-capped burst
+- **idor** (API1): identity B reading identity A's object
+- **excessive-data** (API3): fields like password, secret or token in responses
+- **cors** (API8): reflective or wildcard CORS, worst when credentials are allowed
+- **cookie-flags** (API8): Set-Cookie without Secure, HttpOnly or SameSite
+- **info-disclosure** (API8): version-leaking headers and stack traces
+- **bfla** (API5): a lower-privilege identity reaching privileged functions
+
+Once per scan:
+
+- **shadow-endpoints** (API9): undocumented paths that still respond
+- **inventory-drift** (API9): deprecated operations still published, and version sprawl
+
+That's 11 checks across 6 of the OWASP API Top 10.
+
+## Two identities make access bugs testable
+
+Broken object-level authorisation sits at the top of the OWASP API Top 10, and you can't find it with one user. apicheck takes two tokens. It reads an object as identity A, then tries the same request as identity B. If B gets A's data, that's a finding:
+
+\`\`\`
+✖ GET /users/{id}   token B read token A's resource at /users/alice (identical response body) — broken object level authorization (API1:2023) [idor]
+\`\`\`
+
+## Non-destructive on purpose
+
+A scanner you're nervous to run is a scanner nobody runs. So apicheck observes and reports. It never exploits, modifies or exfiltrates anything.
+
+- A scan won't start without \`--i-am-authorized\`. Only scan systems you own or are allowed to test.
+- The rate-limit check sends a bounded burst (20 requests by default, capped at 100).
+- Concurrency defaults to 8 requests and is capped at 20.
+
+## Running it in CI
+
+The exit code is \`1\` when any finding meets \`--fail-on\` (default \`fail\`), and \`2\` for config or spec errors. That's enough to fail a pipeline.
+
+\`--sarif\` writes SARIF 2.1.0, which GitHub code scanning understands. Findings then show up in the Security tab and as annotations on pull requests:
+
+\`\`\`yaml
+- run: apicheck scan "$STAGING_URL" --spec openapi.json
+       --token-a "$TOKEN_A" --token-b "$TOKEN_B"
+       --i-am-authorized --sarif > apicheck.sarif
+  continue-on-error: true
+- uses: github/codeql-action/upload-sarif@v3
+  with:
+    sarif_file: apicheck.sarif
+\`\`\`
+
+## Living with known findings
+
+Some findings are deliberate. Your health check may be unlimited on purpose, or CORS may be handled at the gateway. Put those in \`.apicheckignore\` so the gate stays green and new problems still stand out:
+
+\`\`\`
+rate-limit:GET /health     # health is intentionally unlimited
+cors:*                     # CORS handled at the gateway
+\`\`\`
+
+## Trying it
+
+It's not on npm yet, so build it from source (Node.js 20+):
+
+\`\`\`bash
+npm install && npm run build && npm link
+\`\`\`
+
+Source and docs: [hoysengleang/api-check](https://github.com/hoysengleang/api-check).`,
+    publishedAt: new Date("2026-10-04"),
+    author: "Houy Sengleang",
+    tags: ["Security", "TypeScript", "OWASP", "CI/CD"],
+    featured: false,
+  },
+  {
+    id: "10",
+    title: "Permission on Every Message: Notes From Writing a Remote Desktop in Rust",
+    slug: "free-remote-rust-remote-desktop-permissions",
+    excerpt:
+      "free-remote checks permission on every inbound message, not once at connect time. The permission model, the encryption, and how tile diffing took an idle desktop from 31 Mbit/s to 5.9.",
+    content: `# Permission on Every Message: Notes From Writing a Remote Desktop in Rust
+
+Most remote desktop tools treat permission as a checkbox. You click "allow" once at the start, and after that the other side can do whatever the protocol lets it do.
+
+free-remote is my attempt at something stricter: share a screen and let someone use the mouse and keyboard, but only with permission a person explicitly gave, and only as much as they gave.
+
+## The permission model
+
+This is the part that matters, so it comes first.
+
+- **Nothing is granted by default.** A host with no configuration denies every request unless a person answers the prompt.
+- **Permissions are per capability.** \`view-screen\`, \`mouse\` and \`keyboard\` are separate, so you can let someone watch without letting them touch.
+- **Every inbound message is checked** against the live grant, not just the handshake. Revoking takes effect on the very next event, including events already in the queue.
+- **Held keys are released** when control is revoked, so a viewer that disconnects mid-shortcut can't leave Ctrl stuck down.
+
+There's a test that proves the last point against a real X server: with only view granted, an injected pointer move never reaches the display.
+
+## Saying no is the default
+
+When a connection arrives, the host operator sees who is asking and what for, and picks: allow as asked, view only, view plus mouse, or deny.
+
+Pressing enter denies. Not answering denies. An answer it doesn't recognise asks again rather than guessing. If there's no terminal to ask on, the host is closed by default, not open.
+
+The name the other side sends is untrusted text, so control characters, ANSI escapes and bidi overrides are stripped before it's displayed. A hostile peer can't redraw the prompt to fake an approval.
+
+During a session the operator can press \`v\` to drop to view-only immediately, or \`d\` to disconnect.
+
+## Encryption and identity
+
+Every session runs over a Noise XX handshake (\`Noise_XX_25519_ChaChaPoly_BLAKE2s\`), which gives mutual authentication and forward secrecy. Both ends see a short fingerprint for the other. Compare them on both screens before approving, or pin the host on the viewer side:
+
+\`\`\`bash
+free-remote-viewer 192.168.1.10:7777 --expect-fingerprint <64-hex-from-host>
+\`\`\`
+
+The unattended password is stored as an Argon2 hash and is never accepted on the command line, so it stays out of \`ps\` and shell history.
+
+## Making it fast enough
+
+Input was never the problem. Events are tiny and the host sends them ahead of video frames, so they arrive in about one round trip.
+
+Video was the problem. Now each frame is compared with the last one in 128x128 tiles, and only the tiles that changed are encoded, so a still screen costs nothing. Before tiling, an idle desktop cost 31 Mbit/s with 47 ms between frames. After, it was 5.9 Mbit/s and 17.6 ms.
+
+Two more rules keep latency honest under load:
+
+- **Frames are dropped, not queued**, when the network falls behind, so delay can't build up. A dropped tile update is rolled back and re-sent, so the viewer never keeps a stale patch.
+- **Capture backs off** to 4 fps once the screen has been still for a second. That took idle CPU from about 38% of a core to 6%. Remote input restores the full rate immediately.
+
+## How the code is split
+
+\`\`\`
+fr-proto       wire types, the permission model, message codec
+fr-transport   Noise XX handshake, encrypted framing, fingerprints
+fr-capture     screen capture per OS, tile diffing, JPEG encoding
+fr-input       permission-gated input injection
+fr-host        the host binary: approval, streaming, enforcement
+fr-viewer      the viewer binary: egui window, input forwarding
+\`\`\`
+
+It builds on Linux, Windows and macOS with a stable Rust toolchain and nothing else: no system libraries and no C compiler.
+
+## Honest limits
+
+There's no clipboard sync, file transfer or audio yet, no NAT traversal, and one controller at a time. Wayland hosting isn't supported. Video uses JPEG tiles rather than a real video codec, which is simple but expensive for full-screen video.
+
+Most importantly, **this is not audited software**. The cryptography is a standard construction from a well-regarded library, but the way I put it together hasn't had an outside review. Treat it that way.
+
+Source: [hoysengleang/free-remoter](https://github.com/hoysengleang/free-remoter).`,
+    publishedAt: new Date("2026-10-04"),
+    author: "Houy Sengleang",
+    tags: ["Rust", "Security", "Networking"],
+    featured: false,
+  },
+  {
+    id: "11",
+    title: "Fine-Tuning a Small Model, Then Making It Check Its Own Homework",
+    slug: "shiftai-fine-tuning-with-an-eval-loop",
+    excerpt:
+      "How ShiftAI turns your documents into training data, fine-tunes a small model with LoRA, quizzes it on the source, and retrains on exactly the questions it got wrong.",
+    content: `# Fine-Tuning a Small Model, Then Making It Check Its Own Homework
+
+Fine-tuning tutorials usually end when the loss curve goes down. That tells you the model fit the training data. It doesn't tell you whether it learned what you wanted it to learn.
+
+ShiftAI is a self-hosted studio built around that gap. It fine-tunes a small model on your data, then tests it on that data, then retrains on the questions it failed.
+
+## The loop
+
+\`\`\`
+files / SQL -> Ingest -> Understand -> Synthesize -> Train -> Auto-eval
+                                                       ^          |
+                                                       |   failed questions
+                                                       +- Improve <-+
+\`\`\`
+
+## Should you fine-tune at all?
+
+Before anything is trained, an LLM reads your source and writes a short data card: what the data is, what a model would learn from it, where the gaps are, and whether fine-tuning or retrieval (RAG) is the better fit.
+
+That last question matters. If your documents change every week, retrieval is usually the right answer and fine-tuning is wasted effort.
+
+## Turning documents into training data
+
+Documents aren't training data. A teacher model turns each passage into question-and-answer pairs, in a few deliberate shapes:
+
+- **Reasoning traces**: answers that walk step by step from the passage to the conclusion.
+- **Refusal pairs**: on-topic questions the source can't answer, paired with an honest "not in my sources". These teach the model when not to make things up.
+- **Cross-passage pairs**: questions that need facts from two passages, so the model learns to connect information.
+
+Then a judge checks every generated pair for faithfulness to the source, and low scorers are dropped. Bad training data is the fastest way to a confident, wrong model.
+
+## Training choices that mattered
+
+Training is LoRA on any Hugging Face causal model, run as a background job with a live loss curve. Two defaults are worth calling out:
+
+- **Answer-only loss.** Loss is computed on the assistant's answer tokens, not the question. The model doesn't need to learn to write questions.
+- **General-data mixing.** A slice of public instruction data is mixed into training so the model keeps its general chat and maths ability while learning your source. Without it, small models tend to forget what they knew.
+
+## Checking its homework
+
+After training, the model is automatically quizzed with questions sampled from the source and scored against the gold answers, either by an LLM judge or a deterministic token-overlap score.
+
+Then comes the part I like most. One click finds the questions it failed, generates extra training data aimed at those weak passages, and retrains. The new model is evaluated again, so you can watch the score move instead of hoping.
+
+## Running the result
+
+You can chat with the trained adapter locally, send one prompt to the fine-tuned model and the base model side by side, or export the adapter to GGUF and register it in Ollama.
+
+## A small engineering note
+
+The ML stack is heavy. The API and UI shouldn't need it. So \`torch\` and \`transformers\` are only imported inside the functions that train or run models, and the training work happens in a separate Redis Queue worker. The API and UI run fine on a machine without the training stack installed; only the machine that actually trains needs it.
+
+Source: [hoysengleang/train-model-shift-ai](https://github.com/hoysengleang/train-model-shift-ai).`,
+    publishedAt: new Date("2026-10-04"),
+    author: "Houy Sengleang",
+    tags: ["AI", "Fine-tuning", "LoRA", "Python"],
+    featured: false,
+  },
+  {
     id: "5",
     title: "Building Reliable Backend Services with Laravel and NestJS",
     slug: "building-reliable-backend-services-laravel-nestjs",

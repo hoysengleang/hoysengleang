@@ -11,12 +11,10 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   return (
     <PageContainer
-      title={pagesConfig.contact.title}
+      title="Say hello"
       description={pagesConfig.contact.description}
     >
-      <div className="flex justify-center items-center min-h-[50vh]">
-        <ContactUnified />
-      </div>
+      <ContactUnified />
     </PageContainer>
   );
 }

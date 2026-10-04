@@ -6,6 +6,41 @@ import { Button } from "@/components/ui/button";
 import { careerExperiences, education } from "@/config/career";
 import { siteConfig } from "@/config/site";
 
+const resumeProjects = [
+  {
+    name: "OpenVisionSearch — Self-hosted Visual Search API",
+    stack: "Python · FastAPI · OpenCLIP · Qdrant · Docker · GitHub Actions",
+    points: [
+      "Image, text and hybrid product search over HTTP; indexes from URLs, uploads, folders or S3.",
+      "Measured stock CLIP framing on 300 portrait products and switched to padded framing: Recall@1 75% → 90%.",
+    ],
+  },
+  {
+    name: "Knowledge Assistant — Document Q&A with Citations",
+    stack: "FastAPI · PostgreSQL + pgvector · React · Ollama · Tesseract OCR",
+    points: [
+      "Hybrid retrieval (pgvector + full-text, fused with RRF); every answer cites its source or says \"not found\".",
+      "Runs fully offline with Ollama; Khmer and English OCR for scanned PDFs.",
+    ],
+  },
+  {
+    name: "apicheck — API Security Scanner",
+    stack: "TypeScript · Node.js · OpenAPI · OWASP API Top 10",
+    points: [
+      "11 non-destructive checks across 6 OWASP API categories, discovered from an OpenAPI spec.",
+      "Terminal, JSON and SARIF output with exit codes for CI gating.",
+    ],
+  },
+  {
+    name: "localnet-control — Published Developer CLI",
+    stack: "Python · Networking · Security · PyPI",
+    points: [
+      "LAN-first localhost sharing with QR output, token auth, IP/CIDR rules and optional tunnels.",
+      "Released on PyPI as localnet-control with public source and documentation.",
+    ],
+  },
+];
+
 export default function ResumePage() {
   const handlePrint = () => {
     window.print();
@@ -33,17 +68,17 @@ export default function ResumePage() {
 
   return (
     <PageContainer
-      title="Resume"
-      description="Download or view my professional resume"
+      title="Résumé"
+      description="The one-page version. Print it, or download the PDF."
     >
       <div className="max-w-4xl mx-auto">
-        <div className="mb-8 flex flex-col sm:flex-row justify-center gap-4 print:hidden">
-          <Button onClick={handleDownloadPDF} size="lg" className="shadow-lg">
-            <Icons.page className="w-5 h-5 mr-2" />
+        <div className="mb-8 flex flex-wrap gap-3 print:hidden">
+          <Button onClick={handleDownloadPDF}>
+            <Icons.download className="w-4 h-4" />
             Download PDF
           </Button>
-          <Button onClick={handlePrint} variant="outline" size="lg">
-            <Icons.page className="w-5 h-5 mr-2" />
+          <Button onClick={handlePrint} variant="outline">
+            <Icons.page className="w-4 h-4" />
             Print Resume
           </Button>
           {/* <a href="/HOUY_SENGLEANG.pdf" download="HOUY_SENGLEANG_Resume.pdf">
@@ -54,10 +89,10 @@ export default function ResumePage() {
           </a> */}
         </div>
 
-        <div className="resume-sheet bg-white dark:bg-card rounded-lg shadow-xl p-8 md:p-12 print:shadow-none print:p-0 print:bg-white">
+        <div className="resume-sheet bg-card border border-border rounded-md p-8 md:p-12 print:shadow-none print:p-0 print:bg-white">
           {/* Header */}
           <div className="text-center border-b border-gray-300 pb-4 mb-6 print:pb-3 print:mb-4">
-            <h1 className="text-4xl font-bold mb-2 print:text-3xl print:mb-1 print:text-black">
+            <h1 className="font-heading text-4xl font-medium mb-2 print:text-3xl print:mb-1 print:text-black">
               {siteConfig.authorName}
             </h1>
             <p className="text-xl text-muted-foreground mb-3 print:text-lg print:mb-2 print:text-gray-700">
@@ -82,7 +117,7 @@ export default function ResumePage() {
               </span>
               <span className="flex items-center gap-1 print:text-black">
                 <Icons.linkedin className="w-4 h-4 print:hidden" />
-                linkedin.com/in/hoysengleang
+                linkedin.com/in/sengleang-houy-825801268
               </span>
             </div>
             <p className="text-sm text-muted-foreground mt-2 print:text-xs print:mt-1 print:text-gray-600">
@@ -92,7 +127,7 @@ export default function ResumePage() {
 
           {/* About Me */}
           <section className="mb-6 print:mb-3">
-            <h2 className="text-2xl font-bold mb-3 text-primary print:text-xl print:mb-2 print:text-black">
+            <h2 className="font-heading text-2xl font-medium mb-3 text-primary print:text-xl print:mb-2 print:text-black">
               About Me
             </h2>
             <p className="text-muted-foreground leading-relaxed print:text-sm print:leading-snug print:text-black">
@@ -102,7 +137,7 @@ export default function ResumePage() {
 
           {/* Experience */}
           <section className="mb-6 print:mb-3">
-            <h2 className="text-2xl font-bold mb-4 text-primary print:text-xl print:mb-2 print:text-black">
+            <h2 className="font-heading text-2xl font-medium mb-4 text-primary print:text-xl print:mb-2 print:text-black">
               Experience
             </h2>
             {careerExperiences.map((exp) => (
@@ -152,60 +187,36 @@ export default function ResumePage() {
             ))}
           </section>
 
-          {/* Feature Project */}
-          <section className="mb-6 print:mb-3 print:break-inside-avoid">
-            <h2 className="text-2xl font-bold mb-4 text-primary print:text-xl print:mb-2 print:text-black">
-              Featured Project
+          {/* Selected Projects */}
+          <section className="mb-6 print:mb-3">
+            <h2 className="font-heading text-2xl font-medium mb-4 text-primary print:text-xl print:mb-2 print:text-black">
+              Selected Projects
             </h2>
-            <div className="mb-4 print:mb-2">
-              <div className="mb-3 print:mb-2">
-                <h3 className="text-lg font-bold print:text-base print:text-black">
-                  localnet-control — Published Developer CLI
-                </h3>
-                <p className="text-sm text-muted-foreground italic print:text-xs print:text-gray-600">
-                  Python · Networking · Security · PyPI
-                </p>
-              </div>
-              <ul className="list-none space-y-2 text-sm text-muted-foreground print:space-y-1 print:text-xs print:text-black">
-                <li className="flex gap-2 print:gap-1">
-                  <span className="text-primary font-bold print:text-black">
-                    -
-                  </span>
-                  <span className="print:leading-tight">
-                    <strong className="print:font-semibold">Problem:</strong>{" "}
-                    Sharing localhost applications with teammates and mobile
-                    devices required repetitive network setup or an external
-                    service.
-                  </span>
-                </li>
-                <li className="flex gap-2 print:gap-1">
-                  <span className="text-primary font-bold print:text-black">
-                    -
-                  </span>
-                  <span className="print:leading-tight">
-                    <strong className="print:font-semibold">Solution:</strong>{" "}
-                    Built a LAN-first CLI with QR output, request logging, token
-                    authentication, IP/CIDR rules, and optional tunnel support.
-                  </span>
-                </li>
-                <li className="flex gap-2 print:gap-1">
-                  <span className="text-primary font-bold print:text-black">
-                    -
-                  </span>
-                  <span className="print:leading-tight">
-                    <strong className="print:font-semibold">Evidence:</strong>{" "}
-                    Released as <strong>localnet-control</strong> on PyPI with
-                    public source code, command documentation, and release
-                    history on GitHub.
-                  </span>
-                </li>
-              </ul>
+            <div className="space-y-4 print:space-y-2">
+              {resumeProjects.map((project) => (
+                <div key={project.name} className="print:break-inside-avoid">
+                  <h3 className="text-lg font-bold print:text-base print:text-black">
+                    {project.name}
+                  </h3>
+                  <p className="text-sm text-muted-foreground italic print:text-xs print:text-gray-600">
+                    {project.stack}
+                  </p>
+                  <ul className="mt-1.5 list-none space-y-1.5 text-sm text-muted-foreground print:space-y-0.5 print:text-xs print:text-black">
+                    {project.points.map((point) => (
+                      <li key={point} className="flex gap-2 print:gap-1">
+                        <span className="text-primary font-bold print:text-black">-</span>
+                        <span className="print:leading-tight">{point}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
             </div>
           </section>
 
           {/* Education */}
           <section className="mb-6 print:mb-3 print:break-inside-avoid">
-            <h2 className="text-2xl font-bold mb-4 text-primary print:text-xl print:mb-2 print:text-black">
+            <h2 className="font-heading text-2xl font-medium mb-4 text-primary print:text-xl print:mb-2 print:text-black">
               Education
             </h2>
             {education.map((edu) => (
@@ -234,7 +245,7 @@ export default function ResumePage() {
 
           {/* Technical Skills */}
           <section className="mb-6 print:mb-3 print:break-inside-avoid">
-            <h2 className="text-2xl font-bold mb-4 text-primary print:text-xl print:mb-2 print:text-black">
+            <h2 className="font-heading text-2xl font-medium mb-4 text-primary print:text-xl print:mb-2 print:text-black">
               Technical
             </h2>
             <div className="space-y-3 print:space-y-1">
@@ -244,7 +255,8 @@ export default function ResumePage() {
                 </h3>
                 <p className="text-sm text-muted-foreground print:text-xs print:text-black">
                   <strong>Core:</strong> PHP (Laravel), TypeScript (NestJS),
-                  JavaScript, Python.
+                  Python (FastAPI), JavaScript. <strong>Also:</strong> React,
+                  Vue, Rust.
                 </p>
               </div>
               <div>
@@ -252,7 +264,8 @@ export default function ResumePage() {
                   Databases
                 </h3>
                 <p className="text-sm text-muted-foreground print:text-xs print:text-black">
-                  MySQL, PostgreSQL, Database Design.
+                  MySQL, PostgreSQL, Redis, Database Design. Vector search with
+                  Qdrant and pgvector.
                 </p>
               </div>
               <div>
@@ -260,7 +273,7 @@ export default function ResumePage() {
                   Tools & DevOps
                 </h3>
                 <p className="text-sm text-muted-foreground print:text-xs print:text-black">
-                  Git/GitHub, Postman, Linux, Composer, Docker, Nginx.
+                  Git/GitHub, GitHub Actions, Docker, Linux, Nginx, Postman.
                 </p>
               </div>
               <div>
@@ -268,7 +281,8 @@ export default function ResumePage() {
                   Concepts
                 </h3>
                 <p className="text-sm text-muted-foreground print:text-xs print:text-black">
-                  RESTful APIs, OOP, MVC Architecture.
+                  RESTful APIs, RBAC and JWT auth, OWASP API security, RAG and
+                  LLM evaluation, LoRA fine-tuning.
                 </p>
               </div>
             </div>
@@ -276,7 +290,7 @@ export default function ResumePage() {
 
           {/* Language */}
           <section className="mb-6 print:mb-3 print:break-inside-avoid">
-            <h2 className="text-2xl font-bold mb-4 text-primary print:text-xl print:mb-2 print:text-black">
+            <h2 className="font-heading text-2xl font-medium mb-4 text-primary print:text-xl print:mb-2 print:text-black">
               Language
             </h2>
             <div className="space-y-1">

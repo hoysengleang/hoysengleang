@@ -4,80 +4,65 @@ interface SkillsCardProps {
   skills: skillsInterface[];
 }
 
-export default function SkillsCard({ skills }: SkillsCardProps) {
-  const groups = [
-    {
-      level: "Core" as const,
-      description:
-        "Technologies I use most often in professional backend and full-stack delivery.",
-    },
-    {
-      level: "Project Experience" as const,
-      description:
-        "Technologies I have applied in shipped professional, personal, or open-source work.",
-    },
-    {
-      level: "Familiar" as const,
-      description:
-        "Technologies I can work with and continue developing through focused practice.",
-    },
-  ];
+const groups = [
+  {
+    level: "Core" as const,
+    title: "Every week",
+    description: "What I reach for in professional backend and full-stack work.",
+  },
+  {
+    level: "Project Experience" as const,
+    title: "Shipped with",
+    description: "Used in real projects, at work or in open source.",
+  },
+  {
+    level: "Familiar" as const,
+    title: "Getting familiar",
+    description: "I can work with these and I'm still getting better.",
+  },
+];
 
+export default function SkillsCard({ skills }: SkillsCardProps) {
   return (
-    <div className="mx-auto space-y-10">
+    <div className="space-y-14">
       {groups.map((group) => {
-        const groupSkills = skills.filter(
-          (skill) => skill.level === group.level
-        );
+        const groupSkills = skills.filter((skill) => skill.level === group.level);
+        const headingId = `skills-${group.level.toLowerCase().replace(" ", "-")}`;
 
         return (
           <section
             key={group.level}
-            aria-labelledby={`skills-${group.level.toLowerCase().replace(" ", "-")}`}
+            aria-labelledby={headingId}
+            className="grid gap-6 md:grid-cols-[180px_minmax(0,1fr)] md:gap-10"
           >
-            <div className="mb-4 space-y-1.5">
-              <h2
-                id={`skills-${group.level.toLowerCase().replace(" ", "-")}`}
-                className="font-heading text-2xl font-semibold"
-              >
-                {group.level}
+            <div>
+              <h2 id={headingId} className="font-heading text-2xl leading-tight">
+                {group.title}
               </h2>
-              <p className="max-w-3xl text-sm text-muted-foreground">
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                 {group.description}
               </p>
             </div>
 
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <ul className="grid border-t border-border sm:grid-cols-2 sm:gap-x-10">
               {groupSkills.map((skill) => (
-                <div
+                <li
                   key={skill.name}
-                  className="backend-panel backend-grid h-full overflow-hidden p-1"
+                  className="flex items-start gap-3 border-b border-border py-4"
                 >
-                  <div className="code-texture flex h-[190px] flex-col justify-between rounded-[1.2rem] p-5">
-                    <div className="flex items-start justify-between gap-3">
-                      <span className="terminal-icon-wrap h-10 w-10">
-                        <skill.icon
-                          size={30}
-                          className="terminal-icon-brand h-8 w-8"
-                          style={{
-                            color: skill.color ?? "hsl(var(--foreground))",
-                          }}
-                        />
-                      </span>
-                      <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-primary">
-                        {skill.level}
-                      </span>
-                    </div>
-                    <div className="space-y-2.5">
-                      <h3 className="text-base font-semibold">{skill.name}</h3>
-                      <p className="line-clamp-2 text-sm text-muted-foreground">
-                        {skill.description}
-                      </p>
-                    </div>
+                  <skill.icon
+                    aria-hidden
+                    className="mt-0.5 h-[18px] w-[18px] shrink-0 text-muted-foreground"
+                  />
+                  <div>
+                    <p className="font-medium">{skill.name}</p>
+                    <p className="mt-0.5 text-sm leading-relaxed text-muted-foreground">
+                      {skill.description}
+                    </p>
                   </div>
-                </div>
+                </li>
               ))}
-            </div>
+            </ul>
           </section>
         );
       })}

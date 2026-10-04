@@ -10,7 +10,7 @@ export interface SocialInterface {
 
 export const SocialLinks: SocialInterface[] = [
   {
-    name: "Github",
+    name: "GitHub",
     username: "@hoysengleang",
     icon: Icons.gitHub,
     link: "https://github.com/hoysengleang",
@@ -18,9 +18,9 @@ export const SocialLinks: SocialInterface[] = [
   },
   {
     name: "LinkedIn",
-    username: "hoysengleang",
+    username: "sengleang-houy-825801268",
     icon: Icons.linkedin,
-    link: "https://www.linkedin.com/in/hoysengleang",
+    link: "https://www.linkedin.com/in/sengleang-houy-825801268",
     color: "#0A66C2",
   },
   {
