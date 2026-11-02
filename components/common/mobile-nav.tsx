@@ -27,14 +27,11 @@ export function MobileNav({ items, isActive }: MobileNavProps) {
                 href={item.href}
                 aria-current={isActive(item.href) ? "page" : undefined}
                 className={cn(
-                  "flex items-center justify-between py-4 font-heading text-2xl",
+                  "flex items-center justify-between py-3 text-lg",
                   isActive(item.href) ? "text-foreground" : "text-muted-foreground"
                 )}
               >
                 {item.title}
-                {isActive(item.href) && (
-                  <span className="h-1.5 w-1.5 rounded-full bg-brand" />
-                )}
               </Link>
             </li>
           ))}

@@ -44,6 +44,54 @@ export interface ExperienceInterface {
 
 export const Experiences: ExperienceInterface[] = [
   {
+    id: "wslog",
+    companyName: "wslog",
+    type: "Personal Project",
+    category: ["Developer Tools", "Backend"],
+    shortDescription:
+      "A WebSocket proxy that records every message and streams it live to a browser dashboard. Point your app at it instead of your server; no code changes.",
+    githubLink: "https://github.com/hoysengleang/wslog",
+    websiteLink: "https://www.npmjs.com/package/wslog-proxy",
+    techStack: ["Typescript", "Node.js", "React", "SQLite", "Docker"],
+    startDate: new Date("2026-10-27"),
+    endDate: new Date(),
+    companyLogoImg: "/experience/covers/wslog.svg",
+    featured: true,
+    highlight:
+      "Sensitive fields are masked before anything is stored, so tokens never reach disk, the dashboard or exports.",
+    install: "npx wslog-proxy --demo",
+    pagesInfoArr: [],
+    descriptionDetails: {
+      paragraphs: [
+        "wslog sits between a client and a WebSocket server. You paste the ws:// or wss:// URL your app connects to, get a proxy URL back, and use that in your app instead. Every frame is forwarded both ways and recorded.",
+        "Because it is a proxy rather than a browser tool, it works for any client: Node services, mobile apps and IoT devices, not just pages open in DevTools.",
+        "Paths, query strings, handshake headers and the negotiated subprotocol are passed through, and close codes and handshake rejections are mirrored, so the app behaves the same as it does without wslog.",
+        "It is published on npm as wslog-proxy and as a Docker image, with CI, unit tests and Playwright end-to-end tests against a real running instance.",
+      ],
+      bullets: [
+        "Live traffic table that stays fast with tens of thousands of rows",
+        "JSON tree, raw, hex and base64 views for each message",
+        "Several targets at once, each with its own stable proxy URL",
+        "Pause, search, filter by direction or connection, export JSON",
+        "Read-only share link protected by a token",
+        "Storage in memory, a JSONL file, or SQLite, with a size limit",
+        "Binds to localhost by default; masked fields never reach storage",
+      ],
+    },
+    caseStudy: {
+      problem:
+        "Browser DevTools only shows WebSocket traffic for pages in the browser, and general-purpose proxies need certificates and setup. Debugging a Node service or a mobile app's socket meant adding logging code.",
+      role: "I built the proxy, the storage layer, the security model, the React dashboard, and the npm and Docker packaging.",
+      approach: [
+        "Made the proxy URL derived from the target URL and remembered across restarts, so the URL in your app keeps working.",
+        "Masked configured fields at any depth, including JSON inside strings and query parameters, before storage rather than at display time.",
+        "Defaulted to localhost only, rejected cross-origin and DNS-rebinding requests, and required a token for any remote access.",
+      ],
+      outcome:
+        "One command, no certificates and no code changes, and you can watch every message your app sends and receives.",
+    },
+  },
+  {
     id: "openvisionsearch",
     companyName: "OpenVisionSearch",
     type: "Personal Project",
@@ -200,6 +248,7 @@ export const Experiences: ExperienceInterface[] = [
     startDate: new Date("2026-09-01"),
     endDate: new Date(),
     companyLogoImg: "/experience/covers/free-remote.svg",
+    featured: true,
     highlight:
       "Sending only changed 128×128 tiles cut an idle desktop from 31 Mbit/s to 5.9 Mbit/s.",
     install: "cargo build --release",

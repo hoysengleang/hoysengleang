@@ -1,6 +1,6 @@
 import "./globals.css";
 
-import { IBM_Plex_Mono, IBM_Plex_Sans, Newsreader } from "next/font/google";
+import { IBM_Plex_Mono, Inter } from "next/font/google";
 
 import { Analytics } from "@/components/common/analytics";
 import { StructuredData } from "@/components/common/structured-data";
@@ -10,20 +10,10 @@ import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 import { ModalProvider } from "@/providers/modal-provider";
 
-const fontSans = IBM_Plex_Sans({
+const fontSans = Inter({
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
   display: "swap",
   variable: "--font-sans",
-});
-
-const fontSerif = Newsreader({
-  subsets: ["latin"],
-  style: ["normal", "italic"],
-  display: "swap",
-  variable: "--font-serif",
-  // next/font has no fallback metrics for Newsreader yet.
-  adjustFontFallback: false,
 });
 
 const fontMono = IBM_Plex_Mono({
@@ -124,7 +114,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
         className={cn(
           "min-h-screen bg-background font-sans antialiased overflow-x-hidden",
           fontSans.variable,
-          fontSerif.variable,
           fontMono.variable
         )}
       >

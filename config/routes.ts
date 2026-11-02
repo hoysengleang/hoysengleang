@@ -7,12 +7,8 @@ export interface NavItem {
 export const routesConfig: { mainNav: NavItem[] } = {
   mainNav: [
     {
-      title: "Work",
+      title: "Projects",
       href: "/experience",
-    },
-    {
-      title: "Open source",
-      href: "/contributions",
     },
     {
       title: "Writing",

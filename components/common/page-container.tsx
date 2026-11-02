@@ -29,7 +29,7 @@ export default function PageContainer({
             className="print:hidden"
           />
         ) : null}
-        <div className="pt-10 sm:pt-12 print:pt-0">{children}</div>
+        <div className="pt-10 sm:pt-12 print:!pt-0">{children}</div>
       </div>
     </ClientPageWrapper>
   );
