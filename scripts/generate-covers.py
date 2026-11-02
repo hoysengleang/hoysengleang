@@ -88,6 +88,11 @@ cover("free-remote", 4, "remote desktop · rust", "free-remote", "Remote control
        ("host", "capture · input"), ("human", "approves or revokes")],
       "rust · noise · tile diffing · linux / windows / macos", "idle: 31 → 5.9 Mbit/s")
 
+cover("wslog", 13, "websocket debugger · npm", "wslog", "Watch every WebSocket message. No code changes.",
+      [("your app", "node · mobile · iot"), ("wslog proxy", "mask before storage", "accent"), ("ws server", "frames both ways"),
+       ("dashboard", "live · search · export")],
+      "typescript · node · ws · react · sqlite", "npx wslog-proxy")
+
 cover("shiftai", 5, "fine-tuning studio · open source", "ShiftAI", "Train a small model on your data, then check its homework.",
       [("your data", "docs · sheets · sql"), ("teacher LLM", "q&a + judge filter"), ("LoRA train", "peft · trl", "accent"),
        ("auto-eval", "quiz on the source"), ("export", "gguf → ollama")],

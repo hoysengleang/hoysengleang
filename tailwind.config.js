@@ -64,8 +64,8 @@ module.exports = {
       },
       fontFamily: {
         sans: ["var(--font-sans)", ...fontFamily.sans],
-        heading: ["var(--font-serif)", "Georgia", ...fontFamily.serif],
-        serif: ["var(--font-serif)", "Georgia", ...fontFamily.serif],
+        heading: ["var(--font-sans)", ...fontFamily.sans],
+        serif: ["var(--font-sans)", ...fontFamily.sans],
         mono: ["var(--font-mono)", ...fontFamily.mono],
       },
       borderRadius: {

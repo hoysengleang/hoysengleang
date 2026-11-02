@@ -8,8 +8,8 @@ export default function manifest(): MetadataRoute.Manifest {
       "Houy Sengleang's backend-focused full-stack developer portfolio and project case studies.",
     start_url: "/",
     display: "standalone",
-    background_color: "#d4e9f2",
-    theme_color: "#020826",
+    background_color: "#ffffff",
+    theme_color: "#171717",
     icons: [
       {
         src: "/icon-192.png",

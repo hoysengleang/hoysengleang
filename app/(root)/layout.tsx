@@ -15,7 +15,7 @@ export default function MarketingLayout({ children }: MarketingLayoutProps) {
       >
         Skip to content
       </a>
-      <header className="sticky top-0 z-50 border-b border-border bg-background print:hidden">
+      <header className="print:hidden">
         <MainNav items={routesConfig.mainNav} />
       </header>
       <main

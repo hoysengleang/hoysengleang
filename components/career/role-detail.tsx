@@ -67,7 +67,7 @@ export default function RoleDetail({
               <h2 className="font-heading text-[1.6rem] font-medium leading-tight">
                 {descriptionHeading}
               </h2>
-              <ul className="list-disc space-y-3 pl-5 text-[1.0625rem] leading-[1.7] text-foreground/85 marker:text-brand">
+              <ul className="list-disc space-y-3 pl-5 text-[1.0625rem] leading-[1.7] text-foreground/90 marker:text-brand">
                 {role.description.map((line) => (
                   <li key={line}>{line}</li>
                 ))}
