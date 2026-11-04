@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
+import { DocHeader } from "@/components/common/doc-header";
 import { ExperienceStructuredData } from "@/components/common/structured-data";
 import CopyCommand from "@/components/experience/copy-command";
 import { hasSketch, ProjectSketch } from "@/components/home/project-sketch";
@@ -89,10 +90,6 @@ export async function generateStaticParams() {
   }));
 }
 
-function SectionHeading({ children }: { children: React.ReactNode }) {
-  return <h2 className="mb-3 font-medium">{children}</h2>;
-}
-
 function websiteLabel(url: string) {
   if (url.includes("npmjs.com")) return "npm";
   if (url.includes("pypi.org")) return "PyPI";
@@ -126,28 +123,21 @@ export default function Experience({ params }: ExperiencePageProps) {
     <>
       <ExperienceStructuredData expId={params.expId} />
       <article className="page-shell">
-        <div className="max-w-[68ch] pb-8 pt-10">
-          <Link
-            href="/experience"
-            className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+        <div className="mx-auto max-w-[640px] pb-8 pt-10">
+          <DocHeader
+            back={{ href: "/experience", label: "Projects" }}
+            title={exp.companyName}
+            lead={exp.shortDescription}
+            meta={
+              <>
+                {timeframe} ·{" "}
+                {exp.type === "Professional" ? "Client work" : "Open source"} ·{" "}
+                {exp.techStack.join(", ")}
+              </>
+            }
           >
-            ← Projects
-          </Link>
-
-          <header className="mt-10">
-            <h1 className="text-2xl font-semibold tracking-tight">
-              {exp.companyName}
-            </h1>
-            <p className="mt-2 leading-7 text-muted-foreground">
-              {exp.shortDescription}
-            </p>
-            <p className="mt-4 text-sm text-muted-foreground">
-              {timeframe} ·{" "}
-              {exp.type === "Professional" ? "Client work" : "Open source"} ·{" "}
-              {exp.techStack.join(", ")}
-            </p>
             {links.length > 0 && (
-              <ul className="mt-4 flex gap-5 text-sm">
+              <ul className="mt-3 flex gap-5 text-sm">
                 {links.map((link) => (
                   <li key={link.label}>
                     <a
@@ -162,73 +152,63 @@ export default function Experience({ params }: ExperiencePageProps) {
                 ))}
               </ul>
             )}
-          </header>
+          </DocHeader>
 
           {hasSketch(exp.id) && (
-            <figure className="mt-10">
-              <div className="crop-marks h-56 p-6 text-muted-foreground sm:h-64">
-                <ProjectSketch id={exp.id} />
-              </div>
+            <figure className="crop-marks mt-8 h-56 p-6 text-muted-foreground sm:h-64">
+              <ProjectSketch id={exp.id} />
             </figure>
           )}
 
-          <div className="mt-10 space-y-10 leading-7 text-foreground/90">
+          <div className="doc mt-8">
             {exp.highlight && (
               <p className="text-foreground">{exp.highlight}</p>
             )}
 
-            <section>
-              <SectionHeading>Overview</SectionHeading>
-              <div className="space-y-4">
-                {exp.descriptionDetails.paragraphs.map((paragraph) => (
-                  <p key={paragraph}>{paragraph}</p>
-                ))}
-              </div>
-            </section>
+            <h2>Overview</h2>
+            {exp.descriptionDetails.paragraphs.map((paragraph) => (
+              <p key={paragraph}>{paragraph}</p>
+            ))}
 
             {exp.caseStudy && (
               <>
-                <section>
-                  <SectionHeading>The problem</SectionHeading>
-                  <p>{exp.caseStudy.problem}</p>
-                </section>
-                <section>
-                  <SectionHeading>What I did</SectionHeading>
-                  <p>{exp.caseStudy.role}</p>
-                  <ol className="mt-4 list-decimal space-y-2 pl-5 marker:text-muted-foreground">
-                    {exp.caseStudy.approach.map((step) => (
-                      <li key={step}>{step}</li>
+                <h2>The problem</h2>
+                <p>{exp.caseStudy.problem}</p>
+
+                <h2>What I did</h2>
+                <p>{exp.caseStudy.role}</p>
+                <ol>
+                  {exp.caseStudy.approach.map((step) => (
+                    <li key={step}>{step}</li>
+                  ))}
+                </ol>
+
+                <h2>The result</h2>
+                <p>{exp.caseStudy.outcome}</p>
+                {exp.caseStudy.evidence && (
+                  <ul>
+                    {exp.caseStudy.evidence.map((item) => (
+                      <li key={item}>{item}</li>
                     ))}
-                  </ol>
-                </section>
-                <section>
-                  <SectionHeading>The result</SectionHeading>
-                  <p>{exp.caseStudy.outcome}</p>
-                  {exp.caseStudy.evidence && (
-                    <ul className="mt-4 list-disc space-y-2 pl-5 marker:text-muted-foreground">
-                      {exp.caseStudy.evidence.map((item) => (
-                        <li key={item}>{item}</li>
-                      ))}
-                    </ul>
-                  )}
-                </section>
+                  </ul>
+                )}
               </>
             )}
 
             {exp.descriptionDetails.bullets.length > 0 && (
-              <section>
-                <SectionHeading>Features</SectionHeading>
-                <ul className="list-disc space-y-2 pl-5 marker:text-muted-foreground">
+              <>
+                <h2>Features</h2>
+                <ul>
                   {exp.descriptionDetails.bullets.map((bullet) => (
                     <li key={bullet}>{bullet}</li>
                   ))}
                 </ul>
-              </section>
+              </>
             )}
 
             {exp.install && (
-              <section>
-                <SectionHeading>Try it</SectionHeading>
+              <>
+                <h2>Try it</h2>
                 <CopyCommand command={exp.install} />
                 {exp.githubLink &&
                   !exp.install.startsWith("pip install") &&
@@ -237,40 +217,43 @@ export default function Experience({ params }: ExperiencePageProps) {
                       Run inside a clone of the repository.
                     </p>
                   )}
-              </section>
+              </>
             )}
 
             {exp.pagesInfoArr.length > 0 && (
-              <section className="space-y-8">
-                <SectionHeading>Notes</SectionHeading>
+              <>
+                <h2>Notes</h2>
                 {exp.pagesInfoArr.map((page) => (
-                  <div key={page.title} className="space-y-3">
-                    <h3 className="font-medium">{page.title}</h3>
+                  <div key={page.title}>
+                    <h3>{page.title}</h3>
                     {page.description && <p>{page.description}</p>}
                     {page.imgArr.map((img, imgIndex) => (
-                      <figure key={img} className="figure-frame">
+                      <figure key={img} className="figure-frame mb-5">
                         <Image
                           src={img}
                           alt={`${page.title}, image ${imgIndex + 1}`}
                           width={1200}
                           height={675}
                           className="h-auto w-full"
-                          sizes="(max-width: 768px) 100vw, 680px"
+                          sizes="(max-width: 768px) 100vw, 640px"
                         />
                       </figure>
                     ))}
                   </div>
                 ))}
-              </section>
+              </>
             )}
           </div>
 
           <nav
             aria-label="Next project"
-            className="mt-16 border-t border-border pt-6 text-sm"
+            className="mt-14 border-t border-border pt-6 text-sm text-muted-foreground"
           >
-            <span className="text-muted-foreground">Next: </span>
-            <Link href={`/experience/${next.id}`} className="ink-link">
+            Next:{" "}
+            <Link
+              href={`/experience/${next.id}`}
+              className="ink-link text-foreground"
+            >
               {next.companyName}
             </Link>
           </nav>

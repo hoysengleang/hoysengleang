@@ -253,46 +253,113 @@
   animation: rise 0.5s ease-out both;
 }
 
-/* Blog article content */
-.article-content {
-  font-size: 1.0625rem;
-  line-height: 1.8;
-  color: hsl(var(--foreground) / 0.86);
+/*
+  Long-form documents: blog posts and project write-ups share one style.
+  Elements are styled here so content needs no per-tag classes.
+*/
+.doc {
+  font-size: 1rem;
+  line-height: 1.75;
+  color: hsl(var(--foreground) / 0.9);
 }
 
-.article-content strong {
+.doc > :first-child {
+  margin-top: 0;
+}
+
+.doc p,
+.doc ul,
+.doc ol,
+.doc pre,
+.doc blockquote {
+  margin-bottom: 1.25rem;
+}
+
+.doc h2 {
+  margin-top: 2.5rem;
+  margin-bottom: 0.75rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
   color: hsl(var(--foreground));
-}
-
-.article-content h1,
-.article-content h2,
-.article-content h3 {
   scroll-margin-top: 5rem;
 }
 
-.article-content a {
-  text-decoration: underline;
-  text-underline-offset: 4px;
-  text-decoration-color: hsl(var(--foreground) / 0.3);
+.doc h3 {
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.5;
+  color: hsl(var(--foreground));
+  scroll-margin-top: 5rem;
 }
 
-.article-content code {
-  font-size: 0.88em;
+.doc ul,
+.doc ol {
+  padding-left: 1.25rem;
+}
+
+.doc ul {
+  list-style: disc;
+}
+
+.doc ol {
+  list-style: decimal;
+}
+
+.doc li + li {
+  margin-top: 0.375rem;
+}
+
+.doc li::marker {
+  color: hsl(var(--muted-foreground));
+}
+
+.doc strong {
+  font-weight: 600;
+  color: hsl(var(--foreground));
+}
+
+.doc a {
+  text-decoration: underline;
+  text-decoration-color: hsl(var(--foreground) / 0.3);
+  text-underline-offset: 4px;
+}
+
+.doc a:hover {
+  text-decoration-color: hsl(var(--foreground));
+}
+
+/* Inline code only; components with their own <code> carry a class. */
+.doc code:not([class]) {
+  font-size: 0.875em;
   border-radius: 0.25rem;
   padding: 0.1rem 0.35rem;
   background: hsl(var(--muted));
   color: hsl(var(--foreground));
 }
 
-.article-content pre {
-  font-size: 0.875rem;
-  line-height: 1.7;
-  border-radius: 0.5rem;
+.doc pre {
+  overflow-x: auto;
+  border: 1px solid hsl(var(--border));
+  border-radius: 0.375rem;
+  background: hsl(var(--muted));
+  padding: 1rem 1.25rem;
+  font-size: 0.8125rem;
+  line-height: 1.65;
+  color: hsl(var(--foreground));
 }
 
-.article-content pre code {
+.doc pre code:not([class]) {
   padding: 0;
   background: transparent;
-  color: inherit;
   font-size: inherit;
+}
+
+.doc blockquote {
+  border-left: 2px solid hsl(var(--border));
+  padding-left: 1rem;
+  color: hsl(var(--muted-foreground));
 }
