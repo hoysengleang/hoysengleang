@@ -49,9 +49,9 @@ export default function IndexPage() {
 
         <div className="mt-6 space-y-4 leading-7 text-foreground/90">
           <p>
-            I build admin systems and APIs at Peng Huoth Group. Before that I
-            spent three years at Wintech on a loan and pawn system used across
-            5+ branches.
+            I build admin systems and APIs for a local business group. Before
+            that I spent three years at a software company, working on a loan
+            and pawn system used across 5+ branches.
           </p>
           <p>On the side I write open-source tools. A few of them are below.</p>
         </div>

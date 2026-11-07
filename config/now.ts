@@ -12,7 +12,7 @@ export const nowConfig: { updatedAt: Date; items: NowItem[] } = {
   items: [
     {
       label: "Work",
-      text: "Building web admin systems and APIs in Laravel and NestJS at Peng Huoth Group, and running their staging and production servers.",
+      text: "Building web admin systems and APIs in Laravel and NestJS at my day job, and running the staging and production servers.",
     },
     {
       label: "Building",
