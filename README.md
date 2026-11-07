@@ -2,7 +2,7 @@
 
 Software engineer in Phnom Penh.
 
-I build admin systems and APIs at Peng Huoth Group. Before that I spent three years at Wintech on a loan and pawn system used across 5+ branches.
+I build admin systems and APIs for a local business group. Before that I spent three years at a software company, working on a loan and pawn system used across 5+ branches.
 
 I'm also doing research on AI. My goal is to help make it safer and better.
 
